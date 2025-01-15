@@ -1,0 +1,108 @@
+<style>
+    table{
+
+        height: 70%;
+        margin: auto;            
+    }
+    td{
+        background-color: lightgrey;
+       
+        padding-top: 15px;
+        padding-left: 15px;
+        padding-bottom: 7px;
+        line-height: 1.9;
+       
+        font-weight: bold;
+        font-size: 15px;
+
+    }
+   td:hover { 
+       
+       background-color:gray; 
+   }
+   tr{
+
+       background-color: lightgrey;
+       border:2px solid whitesmoke;
+   }
+
+</style>  <!-- margin: auto -> this will center the element horizontally -->
+<form:form modelAttribute="searchUserInput">
+    <table>
+        <tr>
+           <td style="display: flex; justify-content: flex-start; align-items: center;">
+                <form:label path="make" style="margin-right: 135px;">Make</form:label>
+                <form:select path="make" required="required" style="font-size:13px; width:45%" cssClass="alert-link form-control text-primary">
+                    <form:option value="" label="Please Select"  hidden="true"/>
+                    <form:options items ="${availableMakes}" itemValue="availableMake" itemLabel="availableMake" cssClass="alert-link"/>
+                </form:select>               
+            </td>
+        </tr>
+
+        <tr>
+           <td style="display: flex; justify-content: flex-start; align-items: center;">
+                <form:label path="modelList" style="margin-right: 110px;">Model(s)</form:label><br>
+                <form:select path="modelList"  style="font-size:13px; width:45%" cssClass="form-control text-primary" size="8">
+                    <form:option value="" label="Please Select"  selected="true" disabled="true" cssClass="text-center text-dark alert-link bg-light"/> 
+                    <form:option value="" label="Any Model" cssClass="alert-link text-danger "/>
+                    <form:options items ="${availableModels}" itemValue="availableModel" itemLabel="availableModel" cssClass="alert-link"/>
+                </form:select> &emsp;
+           </td>
+        </tr>
+        <tr>
+           <td style="display: flex; justify-content: flex-start; align-items: center;" colspan="2">
+                <form:label path="year" style="margin-right: 92px;">Year</form:label>
+                <form:label path="year" style="margin-right: 10px;">From:</form:label>
+                <form:select path="year" style="font-size:13px; width: 25%;" cssClass="alert-link form-control text-primary ">
+                    <form:option value="" label="Please Select"  hidden="true"/>
+                    <form:option value="" label="Any Year" cssClass=" bg-warning "/>
+                    <form:options items ="${availableYears}" cssClass="alert-link"/>
+                </form:select>
+                &emsp;&emsp;
+                <form:label path="yearTo" style="margin-right: 7px;">To:</form:label>
+                <form:select path="yearTo" style="font-size:13px; width: 24.6%;" cssClass="alert-link form-control text-primary">
+                    <form:option value="" label="Please Select"  hidden="true"/>
+                    <form:option value="" label="Any Year" cssClass="bg-warning"/>
+                    <form:options items ="${availableYears}" cssClass="alert-link"/>
+                </form:select>
+                &emsp;
+                    <input type="submit"  value="${button}" class="bg-dark  btn text-light"/>
+                &emsp;
+            </td>
+        </tr>
+        <tr>
+           <td style="display: flex; justify-content: flex-start; align-items: center;">
+                <form:label style="margin-right: 13px;"  path="datePurchased">Purchased Date</form:label>
+                <form:label style="margin-right: 10px;" path="datePurchased">From:</form:label>
+                <form:input path="datePurchased" cssClass="alert-link form-control text-primary " style="font-size:13px; width: 23.4%;" placeholder="Pick a Date"/>
+                 &emsp;&emsp;
+                <form:label path="datePurchasedTo" style="margin-right: 7px;">To:</form:label>
+                <form:input path="datePurchasedTo" cssClass="alert-link form-control text-primary " style="font-size:13px; width: 23.4%;"  placeholder="Pick a Date"/>     
+            </td>
+        </tr>
+        <tr>
+           <td style="display: flex; justify-content: flex-start; align-items: center;">
+                <form:label style="margin-right: 90px;" path="price">Price</form:label>
+                <form:label style="margin-right: 10px;" path="price">From:</form:label>
+                <form:select path="price" style="font-size:13px; width: 23.4%;" cssClass="alert-link form-control text-primary">
+                    <form:option value="" label="Please Select"  hidden="true" />
+                    <form:option value="" label="Any Price" cssClass=" bg-warning"/>
+                    <form:options items="${availableprices}" cssClass="alert-link"/>
+                </form:select>
+                &emsp;&emsp;
+                <form:label path="priceTo" style="margin-right: 7px;">To:</form:label>
+                <form:select path="priceTo" style="font-size:13px; width: 23.4%;" cssClass="alert-link form-control text-primary">
+                    <form:option value="" label="Please Select"  hidden="true" />
+                    <form:option value="" label="Any Price" cssClass=" bg-warning"/>
+                    <form:options items="${availableprices}"  cssClass="alert-link"/>
+                </form:select>
+            </td>
+        </tr>
+    </table>
+    <div style="text-align: center; margin-top: 25px"> 
+        <input type="submit" value="${button}" class="btn btn-primary btn-lg mr-2"/>
+        <input type="button" value="Cancel" onclick="window.location.href='/cars/allcars/preshow'" style="border: 2px solid blue;" class="btn btn-light btn-lg text-black mr-2"/>
+        <input type="button" value="Clear" onclick="window.location.href='/cars/showsearchresult/pre'" class="btn btn-info btn-lg"/>
+    </div>
+
+</form:form>

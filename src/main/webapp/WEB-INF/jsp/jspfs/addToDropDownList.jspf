@@ -1,0 +1,97 @@
+<style>
+    table{
+
+        height: 60%;
+        width: 50%;
+        margin-bottom: 20px;
+        margin-top:1px;
+        margin-left:260px;
+        border-collapse: collapse;
+    }
+    td{
+        background-color: #96d4d4;
+        border:5px solid whitesmoke;
+        
+        line-height: 1.4;
+        text-align: center;
+        font-weight: bold;
+        font-size: 15px;
+
+    }
+     select option:checked {
+
+            background-color: darkgray; /* Highlight color */
+            color: #000; /* Text color */
+        }
+</style>
+
+<form:form modelAttribute="car" action="addToDropDownList">
+    <table>
+        <tr>
+            <td style="padding-right: 90px; padding-left: 90px" class="text-">
+                <form:label path="make">Make:</form:label>
+                
+               
+                <form:select path="make" size="9" cssClass="form-control" required="required">
+                    <form:option value="" label="Please Select" disabled="true" cssClass="alert-primary"/>
+                    <form:options items ="${allPossibleMakes}" cssClass="alert-dark alert-link"/>                   
+                </form:select> 
+                <form:errors path="make" cssClass="text-danger" style="font-size:13px;"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form:label path="model">Model(optional):</form:label>
+                <form:input path="model" id ="clearModel"/><br>
+                <form:errors path="model" cssClass="text-danger" style="font-size:13px;"/>
+
+            </td>
+        </tr>
+    </table>
+    <p style="text-align: center"> 
+        <input type="submit" value="save" style="width: 100px;" class="btn btn-success alert-link"/>
+        &nbsp;&nbsp;&nbsp;
+        <input type="button" value="Cancel" 
+               onclick="window.location.href='/cars/allcars/preshow'" class="btn btn-warning alert-link"/>
+        &nbsp;&nbsp;                 <!-- onclick="history.back()" -->
+        <input type="button" value="Clear" onclick="resset()" class="btn btn-info alert-link"/>
+    </p>
+
+</form:form>
+
+<script>
+        window.onload = function() {
+            const selectedItem = '${car.getMake()}';/*car.getMake() : access model attribute named 'car' and invoke a method on it,
+     *                                               MUST be wrapped in single quotes*/
+            const selectElement = document.getElementById("make");
+
+/*
+ * In JavaScript, selectElement.options refers to the list of <option> elements inside a <select> dropdown.
+ * selectElement : here is the reference to the <select> DOM element (e.g., the dropdown list).
+ * selectElement.options : is an HTMLCollection (like an array) containing all the <option> elements inside that <select>.
+ * selectElement.options[i] : gives you access to each individual <option> element at index i within the <select>.
+ * selectElement.options[i].scrollIntoView() : makes sure the option is scrolled into view, so the user can see it 
+ *                                             without needing to manually scroll the dropdown.
+ * scrollIntoView() method : is used to scroll an element into the visible area of the browser window or 
+ *                           a scrolling container. The { block: "center" } part specifies how the element should align within the 
+ *                           container (or viewport) after scrolling.
+ * Here are the other available options for the block parameter in scrollIntoView(): start, center, end, nearest
+ * 
+ * The window.onload event : is fired when the entire page and all its dependent resources 
+ * (such as images, script files, CSS files, etc.) have fully loaded. It signals that everything 
+ * is ready for interaction.
+ * 
+ * When Is window.onload Triggered?
+ *    The event fires only after:
+ *    All HTML elements are loaded and rendered.
+ *    All external resources (e.g., images, stylesheets, scripts) are fully downloaded and parsed.
+ */
+            for (let i = 0; i < selectElement.options.length; i++) {
+                if (selectElement.options[i].value === selectedItem) {
+                    
+                    selectElement.options[i].scrollIntoView({ block: "nearest" });
+                    break;
+                }
+            }
+        };
+    </script>

@@ -1,0 +1,17 @@
+<c:set var="price" value="${selectedOrder.endsWith('price')}"/>
+<c:set var="make" value="${selectedOrder.endsWith('make')}"/>
+<c:set var="year" value="${selectedOrder.endsWith('year')}"/>
+<c:set var="condn" value="${selectedOrder.endsWith('condn')}"/>
+<c:set var="color" value="${price?'yellow' :make? 'red':year?'aqua': condn ? 'lightblue':'white'}"/>
+<c:set var="italic" value="style='font-style: italic;'"/>
+
+<select  onchange="window.location.href = this.value" 
+         style="width : 130px; font-weight: bold; background-color:${color};">
+
+    <option disabled selected hidden>Select one</option>
+    <option name ="id1" value="price" ${price ? 'selected' : ''} ${italic} Class="bg-warning">Price</option> 
+    <option name ="id2" value="make"  <c:if test="${make}">selected</c:if> ${italic} Class="bg-danger" >Make</option>
+    <option name ="id3" value="year"  ${year? 'selected' : ''} ${italic} Class="bg-info">Year</option>
+    <option name ="id4" value="condn" ${condn? 'selected' : ''} ${italic} Class="bg-primary">Condition</option>
+
+</select>

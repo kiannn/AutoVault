@@ -1,0 +1,403 @@
+<style>
+    #mytable{
+        width: 105%;
+        /*position: relative;
+        right: 50px;*/
+                 
+    }
+    tr,td,th{
+
+        height: 60px;
+        width: 150px;
+        text-align: center;
+    }
+    .borderTbody{border: solid black 1px;}
+    th{
+         background: lightgray;
+         font-size: 14.25px
+    }
+    th:hover{ background-color: darkblue; color: whitesmoke}
+   
+    .edit-button{
+            width: 50px; 
+            height: 25px; 
+            font-weight: bolder; 
+            background:skyblue; 
+            border-width: 1px; 
+            border-radius: 10px
+            }
+    .delete-button{
+            width: 70px; 
+            height: 25px; 
+            font-weight: bolder; 
+            background: skyblue; 
+            border-width: 1px; 
+            border-radius: 10px
+            }
+    .div-style{
+            position: fixed;
+            bottom: 70px;
+            right:90px;
+            }
+    .select-button{
+            width: 60px; 
+            height: 25px; 
+            font-weight: bolder; 
+            background-color: #595959;
+            color: wheat;
+            border-width: 1px; 
+            border-radius: 8px
+        }
+    #ids-column{ 
+            border-right: solid black 1px; 
+            font-weight: bold; 
+            font-style: italic
+     }   
+     #last-column, #lastColumnView {
+             border-left: solid black 1px;
+     }
+     
+     
+     
+     .serachInputTable {
+         width: 80%;
+         margin-top: 20px;
+     }
+     .serachInputTable td{
+         color: darkblue;
+         font-weight: bold;
+         font-size: 14px;
+         border-right:5px solid skyblue;
+     }
+     .serachInputTable td:hover{ background-color: gray; color: whitesmoke}
+     
+     .serachInputTable tr{
+         text-align: center;
+         border:5px solid skyblue;
+         
+     }
+
+</style>
+<div id="here"></div>
+<form id="myForm">
+    <c:set var="allCars" value="${showAll}"/>
+    <table class=" h6 shadow-lg" id="mytable">    
+
+        <thead>
+            <c:set value='style="font-size: 15px; 
+                          margin-bottom: 6px; 
+                          border: 1px solid black; 
+                          border-radius: 6px; "' var="style"/>
+            <c:set value='class="bg-white"' var="c"/>
+            <tr>               
+                    <c:forEach var="p" items="${listOfProperties}">                       
+                        <c:choose>
+                            <c:when test="${p[0].equals('itemNo') || p[0].equals('make')}"> 
+                              <th>
+                                <input type="button" value=&#8593 onclick="changeURL('${p[0]}')" ${style} ${c}/>                                       
+                                <input type="button" value=&#8595 onclick="changeURL('${p[0].concat('-desc')}')" ${style}  ${c}/>                                      
+                                <br>   
+                                <c:if test="${p[0].equals('itemNo')}">Id</c:if>
+                                <c:if test="${p[0].equals('make')}">Make</c:if>
+                              </th>
+                            </c:when>
+                            <c:otherwise>
+                                <th>
+                                    <input type="button" value="&#8595" <c:if test="${noValue.get(p[1])}">onclick="changeURL('${p[0]}')"</c:if>${style} ${c}/>   
+                                    <input type="button" value="&#8593" <c:if test="${noValue.get(p[1])}">onclick="changeURL('${p[0].concat('-desc')}')"</c:if>${style} ${c}/>
+                                    <br>
+                                    <c:choose>                   
+                                        <c:when test="${p[0].equals('datePurchased')}">
+                                            <c:out value="Purchase Date"/>  
+                                        </c:when>
+                                        <c:when test="${p[0].equals('powerTrain')}">
+                                            <c:out value="Power Train"/>
+                                        </c:when>
+                                        <c:when test="${p[0].equals('condn')}">  
+                                            <c:out value="Condition"/>
+                                        </c:when>
+                                        <c:when test="${p[0].equals('horsePower')}"> 
+                                            <c:out value="Horse Power"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:out value="${p[0].substring(0,1).toUpperCase().concat(p[0].substring(1))}"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </th>
+                            </c:otherwise>
+                        </c:choose> 
+                    </c:forEach> 
+                <th style="color: maroon; font-size: 14.5px" id="last-column">
+                    <c:out value="Documnets"/>                        
+                </th>
+                <th colspan="2" style=" width: 15%; padding-left: 15px; text-align: center;">
+                    <input type="button" value="select" onclick="myFunction(this.value)" id="b" class="select-button"/>                        
+                </th>
+            </tr>      
+        </thead>
+        <tbody>
+            <c:set var="unknown" value="Unknown"/>
+            <c:set var="red" value='<span style="color: red">${unknown}</span>'/> 
+            <c:forEach items="${allCars}" var="car">
+                <tr style="font-size: 14px ;"  class="borderTbody">
+                    <td  id ="ids-column">${car.itemNo}</td>
+                    <td>${car.make}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${car.model.isEmpty()}">${red}</c:when>
+                            <c:otherwise>${car.model}</c:otherwise> 
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${car.year==null}">${red}</c:when>
+                            <c:otherwise>${car.year}</c:otherwise> 
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${car.datePurchased==null}">${red}</c:when>
+                            <c:otherwise> ${car.datePurchased} </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${car.price==null}">${red}</c:when>
+                            <c:otherwise> ${car.price} </c:otherwise> 
+                        </c:choose>
+                    </td>
+                    <td>
+                        <!-- In case 'powerTrain' is String we can say : car.powerTrain.isEmpty() -->
+                        <c:choose>
+                            <c:when test="${car.powerTrain==null}">${red}</c:when> 
+                            <c:otherwise> ${car.powerTrain} </c:otherwise> 
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${car.condn.isEmpty()}">${red}</c:when>
+                            <c:otherwise>${car.condn}</c:otherwise> 
+
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${car.horsePower==null}">${red}</c:when>
+                            <c:otherwise>${car.horsePower} </c:otherwise> 
+                        </c:choose>
+                    </td>  
+                    <td id="lastColumnView">
+                         <input type="button" value="view" onclick="showModal('CarModal-'+${car.itemNo})" class="btn bg-dark text-white"/>
+                    </td>
+                    <td>   <!-- 'id' corresponds to CSS starting with '#' : #last-column{border-left: solid black 1px; }  
+                                  If 'class' is used instead of 'id' it will not work with CSS starting with '#'.
+                            -->
+                            <input type="button" value="Edit" 
+                                   onclick="window.location.href = '/cars/allcars/updatepage?id=${car.itemNo}&carFormstate=true'" 
+                                   class="btn btn-info"/>    <!-- Using a custom class for 'button' : class="edit-button" -->                                  
+                    </td>
+                    <td style="padding-right: 10px">
+                        <input type="button" value="Delete" onclick="deletFunc(${car.itemNo})" class="btn btn-danger text-black" /> 
+                        <!-- Using a custom class for 'button' :  class="delete-button" -->
+                    </td>
+                </tr>       
+            </c:forEach>
+        </tbody>
+
+    </table>
+        
+    <c:forEach var="eachCar" items="${allCars}">
+       <div class="modal fade" id="CarModal-${eachCar.itemNo}" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="noteModalLabel">Documents uploaded for Car Id : ${eachCar.itemNo}</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            
+                            <table name="docViewTable">
+                                <c:if test="${eachCar.docs.isEmpty()}">
+                                    <tr>
+                                       <td  style="width: auto"><h5 class="mb-3 text-secondary">No File Uploaded</h5></td>
+                                    </tr> 
+                                </c:if>
+                                <c:forEach var="carDoc" items="${eachCar.docs}">
+                                    <tr style="height: 20px">
+                                        <td colspan="2" style="padding-left: 120px; text-align: left; height: 28px; width: auto">  
+                                            <a href="/document/download?id=${carDoc.id}" >${carDoc.name}</a> 
+                                            <!-- download=".." attribute inside <a> could be used to specify default name of the downloaded file-->
+                                        </td>
+                                        <td id="sizes" style="padding-left: 10px; text-align: center; height: 28px; width: auto">
+                                            ${carDoc.size/1000} (KB)
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+    </c:forEach>
+            
+            <div id="demo" class="div-style"></div>                          
+</form>
+
+<script  type="text/javascript"> 
+    
+ function myFunction(value) {
+
+        const form = document.getElementById("myForm");
+        var table = document.getElementById("mytable");
+        var rows = table.rows;
+        
+        if(value==="select"){
+   
+            for (var i = 1; i < rows.length; i++) {
+
+                    table.rows[i].deleteCell(-1);
+                    table.rows[i].deleteCell(-1);
+                    var x = table.rows[i].insertCell(-1); 
+                    x.style="border-left: solid black 1px; text-align: center; background: lightgrey; width:360px;";
+                  
+                    const check = document.createElement("input");
+                    check.type = "checkbox";
+                    check.value = table.rows[i].cells[0].innerHTML; 
+                    check.name="idxX"; 
+                    check.style="width: 12.5px; height: 25px;";
+                    
+                    x.appendChild(check);   
+                }
+                
+                const btnd = document.createElement("input");
+                btnd.type="button";
+                btnd.value="delete all";
+                btnd.id="deleteAll";
+                btnd.className="btn btn-warning";
+                btnd.style="position: fixed; right : 220px;";
+                //*old approach :  btnd.style="width: 85px; height: 30px; font-weight: bolder; background:red; border-width: 1px; border-radius: 10px";   
+                btnd.onclick=function() {deletFunc(null) ;}
+                
+                const btns = document.createElement("input");
+                btns.type="button";
+                btns.value="select all";
+                btns.id="selectAll";
+                btns.onclick=function() {
+                    checkboxes = document.getElementsByName('idxX');
+                    let b =  btns.value==="select all";
+                        for (let ch of checkboxes) {                          
+                            ch.checked= b ? true: false;
+                            
+                        }
+                        btns.value = b ? "de-select all":"select all";
+                    };  
+                btns.className="btn btn-info";
+                   // *old approach : btns.style="width: 110px; height: 30px; font-weight: bolder; background:yellow; border-width: 1px; border-radius: 10px";
+                
+                //table.rows[0].cells[table.rows[0].cells.length-1].appendChild(btn);
+                document.getElementById("demo").appendChild(btnd);
+                document.getElementById("demo").appendChild(btns);
+                
+                document.getElementById("b").value="cancel";
+                
+
+                for(let element of form.elements){ 
+                    if(element.id==="b"||element.type==="checkbox" 
+                                       || element.value==="delete all" 
+                                       || element.value==="select all"
+                                       || element.id==="viewdocs")
+                    {continue;}
+                    element.disabled=true;
+                }
+                
+                
+            }else if(value==="cancel"){
+                
+                    for (let i = 1; i < rows.length; i++) {
+
+                            table.rows[i].deleteCell(-1);
+
+                            x = table.rows[i].insertCell(-1);
+                            x.style="border-left: solid black 1px;";
+                            var y = table.rows[i].insertCell(-1);
+                            y.style="padding-right: 10px";
+                            
+                            const btn1 = document.createElement("input");
+                            btn1.type = "button";
+                            btn1.value = "Edit";                      
+                            btn1.className="btn btn-info";                                                               
+                            //*old approach :  btn1.style="width: 50px; height: 25px; font-weight: bolder; background:skyblue; border-width: 1px; border-radius: 10px"; 
+                            
+                            const btn2 = document.createElement("input");
+                            btn2.type = "button";
+                            btn2.value = "Delete"; 
+                            btn2.className="btn btn-danger text-black";
+                            //*old approach :  btn2.style="width: 70px; height: 25px; font-weight: bolder; background: skyblue; border-width: 1px; border-radius: 10px";
+
+                            x.appendChild(btn1);
+                            y.appendChild(btn2);
+                            
+                            btn1.onclick = 
+                                    function() { 
+                                        window.location.href=
+                                                '/cars/allcars/updatepage?id='+table.rows[i].cells[0].innerHTML+'&carFormstate=true';
+                            };                
+                            btn2.onclick = 
+                                    function() { 
+                                       deletFunc(table.rows[i].cells[0].innerHTML) ;
+                            };                      
+                    }        
+
+            document.getElementById("b").value="select";
+            
+            document.getElementById("deleteAll").remove();
+            document.getElementById("selectAll").remove();
+            
+            for(let element of form.elements){      
+              element.disabled=false;
+            }
+        }
+    }
+    
+  function deletFunc(id){
+
+      if(id!==null && window.confirm("Are you sure you want to delete car id = "+id+" ?")) {          
+
+          window.location.href = '/cars/allcars/deletepage/'+id;
+          return ;
+      } 
+      
+      if(id===null){
+      
+        let ids = "";
+        
+        for(let ch of document.getElementsByName("idxX")){
+          ids = ch.checked ? ids+ch.value.concat(','): ids;
+        }   
+        
+        if(ids===""){
+            
+            window.window.alert("please select at least one item to delet");
+            
+        }else if(window.confirm("Are you sure you want to delet car id = "+ids+" ?")){
+            
+           window.location.href = '/cars/allcars/deletepage/'+ids.substr(0,ids.length-1);
+        }
+    }
+ }
+ 
+  function changeURL (rdirect) {
+
+    window.location.href = rdirect; 
+
+  }
+  
+  function showModal(modalId) {
+      $('#'+modalId).modal('show');
+    }
+</script> 

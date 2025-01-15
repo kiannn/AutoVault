@@ -1,0 +1,176 @@
+
+<form:form method ="Post" modelAttribute="carForm" enctype="multipart/form-data" id="fo">
+    <style>
+    .general{
+        border-collapse: collapse;
+        margin: auto;
+        margin-bottom:20px;
+        
+    }
+
+    .general td{
+        border:2px solid white;
+        background-color: lightgrey;
+        padding-top: 13px;
+        padding-left: 30px;
+        padding-bottom: 13px;
+        line-height: 8px;
+        text-align: left;
+        font-weight: bold;
+        font-size: 15px;
+       
+    }
+    .general td:hover { 
+        background-color: #45a049; 
+        } 
+                    
+    .fieldsetContent{
+         font-size: 14px; 
+         font-weight: normal;
+         color: black;  
+         margin-right: 12px; 
+         margin-top: 8.5px;
+         border: none;
+     }
+ 
+</style>
+<c:set var="fieldset" value='<fieldset class="fieldsetContent">make/model not in the list ? click <a style="color:black; text-decoration: underline" href="notInDropDownListPage"><b>here</b></a> to add one</fieldset>'/>                           
+    <table class="general">
+        <tr>
+            <td>
+                <form:label path="make" for="makelist">Make:</form:label>
+                <form:select path="make" id="makelist" required="required" cssClass="form-control" style="font-size:13px; width:71%; height: 30%">
+                    <form:option value="" label="Please Select" hidden="true"/>
+                    <form:options items ="${availableMakes}" itemValue="availableMake"  itemLabel ="availableMake" cssClass="alert-link"/>
+                </form:select>
+                ${fieldset} 
+            </td>
+            <td>
+                <form:label path="model" for="modellist">Model:</form:label>
+                <form:select path="model" id="modellist" cssClass="form-control mb-2" style="font-size:13px; width:71%; height: 30%">
+                    <form:option value="" label="Please Select"  hidden="true"/>
+                    <form:option value="" label="Any Model" cssClass="text-danger alert-link"/>
+                    <form:options items ="${availableModels}" itemValue="availableModel" itemLabel="availableModel" cssClass="alert-link"/>
+                </form:select> 
+                <form:errors path="model" cssClass="text-danger" style="font-size:13px;"/>
+                ${fieldset}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form:label path="year">Year:</form:label>
+                <form:select path="year" cssClass="form-control" style="font-size:13px; width:71%; height: 30%">
+                    <form:option value="" label="Please Select"  hidden="true"/>
+                    <form:option value="" label="Any Year" cssClass="text-danger alert-link"/>
+                    <form:options items ="${availableYears}" cssClass="alert-link"/>
+                </form:select>
+            </td>  
+            <td> 
+                <form:label path="powerTrain">Power Train:</form:label>
+                <form:select path="powerTrain" cssClass="form-control" style="font-size:13px; width:71%; height: 30%">
+                    <form:option value="" label="Please Select" hidden="true"/>
+                    <form:option value="" label="Any Power Train" cssClass="text-danger alert-link"/>
+                    <!--
+                    form:option value="AWD" label="AWD" cssClass="alert-link"/>
+                    form:option value="4WD" label="4WD" cssClass="alert-link"/>
+                    form:option value="RWD" label="RWD" cssClass="alert-link"/>
+                    form:option value="FWD" label="FWD" cssClass="alert-link"/>
+                    -->
+                    <form:options items="${availablePowerTrain}"  itemLabel="tr"  cssClass="alert-link"/>
+                </form:select>
+            </td>
+        </tr>
+        <tr>
+            <td>  
+                <form:label path="price">Price:&emsp;</form:label>
+                <form:input path="price" placeholder="only numbers allowed" cssClass="form-control" style="font-size:13px; width:71%; height: 30%"/><br>
+                <form:errors path="price" cssClass="text-danger" style="font-size:13px;"/>
+            </td>
+            <td>
+                <form:label path="datePurchased">Purchased Date:</form:label>
+                <form:input path="datePurchased"   cssClass="form-control" style="font-size:13px; width:71%; height: 30%;" placeholder="Pick a Date"/><br>
+                <form:errors path="datePurchased" cssClass="text-danger" style="font-size:13px; line-height: 15px;"/>
+            </td>
+        </tr>
+        <tr>
+            <td> 
+                <form:label path="condn">Condition:&emsp;</form:label>
+                <form:select cssClass="form-control" path="condn" style="font-size:13px; width:71%; height: 30%">
+                    <form:option value="" label="Please Select" hidden="true"/>
+                    <form:option value="" label="Any Condition" cssClass="text-danger alert-link"/>
+                    <form:option value="Brand New" label="Brand New" cssClass="alert-link"/>
+                    <form:option value="Used" label="Used" cssClass="alert-link"/>
+                    <form:options items="${availableConditions}" itemValue="condn" itemLabel="condn" cssClass="alert-link"/>
+                </form:select>
+            </td>
+            <td> 
+                <form:label path="horsePower">Horse Power:&emsp;</form:label>
+                <form:input path="horsePower" cssClass="form-control" style="font-size:13px; width:71%; height: 30%"/><br>
+                <form:errors path="horsePower" cssClass="text-danger" style="font-size:13px;"/>
+            </td>
+        </tr>
+    </table>
+    <div style="margin-left: 200px;">
+        <input type="submit" id="addbutton" value="${button}" class="btn btn-primary btn-lg mr-2"/>      
+        <input type="button" value="Cancel" onclick="window.location.href='preshow'" style="border: 2px solid blue;" class="btn btn-light btn-lg text-black mr-2"/> <!-- onclick="history.back()" -->
+        <input type="button" value="Clear" onclick="blank()" class="btn btn-info btn-lg"/>
+    </div>
+    <div class="shadow-lg relative" style="margin-left: 200px;">
+        <c:choose>
+            <c:when test="${param.act.equals('add')}">
+                <h5 class="header">Attache Files<span class="ml-2 position-absolute"style="font-size: 16px; margin-top: 3px; font-family: serif;">[Max Size 5MB For Each File]</span></h5>              
+                <table id="tableAdd" class="customT">  
+                    <tbody>
+                        <tr>          
+                            <td>
+                                <input type ="button" value="Upload more file" class="btn btn-dark alert-link" id="uploadmore"  onclick="addOrdelete(this.id)"/>         
+                            </td>
+                            <td>                            
+                                <input type ="file" style="width:280px;" name ="filee" oninput="checkFileSize(this,'tableAdd')" id="upload" class="btn btn-info"/>                       
+                            </td>                                                      <!-- onchange also works fine -->
+                            <td>
+                                <div class="mb-2" name="largeUploadError" style="color: red;"></div>
+                                <div></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </c:when>
+            <c:otherwise>
+                <h5 class="header">Edit Uploaded Files<span class="ml-2 position-absolute"style="font-size: 16px; margin-top: 3px; font-family: serif;">[Max Size 5MB For Each File]</span></h5>  
+                    <table id="tableEdit" class="customT">   
+                        <c:if test="${carForm.docs.isEmpty()}">
+                            <thead>
+                                <tr>
+                                    <th>No file uploaded</th>
+                                </tr>
+                            </thead>
+                        </c:if>
+                        <c:forEach  var="img" items="${carForm.docs}">
+                                <tr>
+                                    <td style="padding-bottom: 10px; padding-left: 5px">
+                                        <a href="/document/download?id=${img.id}" style="text-decoration: underline" download="${img.name}">${img.name}</a>
+                                    </td>
+                                    <td style="text-align: right">                          
+                                        <input type="submit" style="width: 90px;" value="delete" class="p-0 btn btn-danger"  formaction="/document/edite/${img.id}/delete"'/>     
+                                    </td>
+                                </tr>
+                        </c:forEach>
+
+                        <c:forEach var="dl" begin="1" end="${5-carForm.docs.size()}">
+                                <tr>
+                                    <td colspan="2">                            
+                                        <input style="width:350px;" type ="file" name ="filee" id="upload" onchange="checkFileSize(this, 'tableEdit')" class="btn btn-secondary"/>
+                                    </td> 
+                                    <td>
+                                        <div class="mb-2" name = "largeUploadError" style="color: red;"></div>
+                                    </td>
+                                </tr>     
+                        </c:forEach>
+                    </table>
+            </c:otherwise>
+        </c:choose>
+
+    </div>
+</form:form>
+

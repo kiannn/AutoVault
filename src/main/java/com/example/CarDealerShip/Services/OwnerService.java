@@ -115,7 +115,6 @@ public class OwnerService {
         owner.setLastName(owner.getLastName().trim());
 
         Owner findById = OwnerRepository.findById(loggedInUsername).get();
-        System.out.println(findById);
         
         findById.setFirstName(owner.getFirstName());
         findById.setLastName(owner.getLastName());

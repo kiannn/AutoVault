@@ -41,7 +41,7 @@ public class AccountController {
 
     @PostMapping("/userpro")
     public String updateProfile(ModelMap mp, @Valid @ModelAttribute("personalInfo") Owner owner, BindingResult br) {
-
+       
         String name = (String) mp.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(name);
 
@@ -67,6 +67,7 @@ public class AccountController {
         OwnerService.updatePersonalInfo(loggedInUser, owner);
 
         mp.addAttribute("personalInfoUpdateMSG", "User information updated successfully");
+
         return "personalInfo";
 
     }

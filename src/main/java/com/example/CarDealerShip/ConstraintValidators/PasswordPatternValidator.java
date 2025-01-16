@@ -9,8 +9,8 @@ public class PasswordPatternValidator implements ConstraintValidator<PasswordPat
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        System.out.println("Pattern isValid()  ==>\n"+value);
-        if(value==null){return true;}
+        System.out.println("Pattern isValid()  ==>"+value);
+
         boolean matches1 = matches("[\\d]{8,}", value);
         boolean matches2 = matches("[a-z]{8,}", value);
         boolean matches3 = matches("[A-Z]{8,}", value);  

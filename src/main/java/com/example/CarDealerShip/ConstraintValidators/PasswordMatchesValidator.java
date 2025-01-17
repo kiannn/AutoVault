@@ -24,16 +24,12 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
         if (dto) {
             PasswordDTO passwordDTO = (PasswordDTO) obj;
             if (passwordDTO.getNewPass() != null) {
-                return passwordDTO.getNewPass().equals(passwordDTO.getConfirmNewPass());
+                return passwordDTO.getNewPass().equals(passwordDTO.getConfirmPass());// happens when update password
             }
             if (passwordDTO.getCurrentPass() != null) {
-                return ((PasswordDTO) obj).getCurrentPass().equals(((PasswordDTO) obj).getConfirmNewPass());
+                return ((PasswordDTO) obj).getCurrentPass().equals(((PasswordDTO) obj).getConfirmPass()); // happens when delete account
             }
-            return false;
-        } else {
-            return ((Owner) obj).getCredentials() != null && ((Owner) obj).getCredentials().getPassword() != null && ((Owner) obj).getCredentials().getPassword().equals(((Owner) obj).getCredentials().getConfirmPassword());
-
-        }
-
+        } 
+         return false;
     }
 }

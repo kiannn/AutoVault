@@ -84,7 +84,7 @@ public class AccountController {
         String username = (String) mp.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(username);
 
-        boolean passwordMatch = OwnerService.passwordMatch(passDto, username);
+        boolean passwordMatch = OwnerService.verifyPasswordCorrectness(passDto, username);
 
         if (!passwordMatch) {
             br.rejectValue("currentPass", "InvalidPassword !", "Password invalid");
@@ -117,11 +117,11 @@ public class AccountController {
         String attribute = (String) mp.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(attribute);
 
-        boolean passwordMatch = OwnerService.passwordMatch(passwordDTO, attribute);
+        boolean passwordMatch = OwnerService.verifyPasswordCorrectness(passwordDTO, attribute);
         if (!passwordMatch) {
             br.rejectValue("currentPass", "NoMatch", "Password invalid");
         }
-
+        System.out.println("com.example.CarDealerShip.Controllers.AccountController.deleteAccount()\n"+br);
         if (br.hasErrors()) {
 
             mp.addAttribute("deleteAccountMSG", "Delete Account Unsuccessful");

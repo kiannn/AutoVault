@@ -35,10 +35,10 @@
                             <form:errors path="currentPass" cssClass="text-danger font-weight-normal"  style="line-height: 20px;"/>
                         </div>
                     </div>  
-                    <div class="form-row">
+                    <div class="form-row">  
                         <div class="form-group col-md-6">
-                            <form:label path="confirmNewPass" for="idNonfirmNewPass">Confirm Password</form:label>
-                            <form:input  path="confirmNewPass"  type="password" cssClass="form-control" oninput="makeEnable()" id="idCurrentPass" placeholder="Confirm New Password" maxlength="20" required="true"/>
+                            <form:label path="confirmPass" for="idNonfirmNewPass">Confirm Password</form:label>
+                            <form:input  path="confirmPass"  type="password" cssClass="form-control" oninput="makeEnable()" id="idCurrentPass" placeholder="Confirm New Password" maxlength="20" required="true"/>
                             <form:errors  cssClass="text-danger font-weight-normal"  style="line-height: 20px;"/>
                         </div>
                     </div> 

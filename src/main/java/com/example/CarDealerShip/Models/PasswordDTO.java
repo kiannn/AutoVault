@@ -16,6 +16,6 @@ public class PasswordDTO {
     @PasswordPattern
     String newPass;
     
-    String confirmNewPass;
+    String confirmPass;
     
 }

@@ -125,7 +125,7 @@ public class OwnerService {
         OwnerRepository.save(findById);
     }
 
-    public boolean passwordMatch(PasswordDTO passDto, String username) {
+    public boolean verifyPasswordCorrectness(PasswordDTO passDto, String username) {
  
         UserDetails loadUserByUsername = JdbcUserDetailsManager.loadUserByUsername(username);
 

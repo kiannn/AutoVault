@@ -19,8 +19,7 @@ Search and sort functionalities allow efficient vehicles management, while secur
    - Create an account or log in with existing credentials.
    - Passwords are securely managed for data protection.
 2. **User Profile Management:**
-   - Users can update their profile information, including:
-   - Email address, date of birth, first name, last name, and password.
+   - Users can update their profile information, including: Email address, date of birth, first name, last name, and password.
    - Users also have the option to delete their accounts entirely, ensuring full control over their data.
 3. **Dashboard Overview:**
    - Upon logging in, users land on a dashboard displaying their car collection.
@@ -55,7 +54,7 @@ Search and sort functionalities allow efficient vehicles management, while secur
    - Passwords are hashed for security.
 2. **Database Interaction:**
    - Vehicle and user data are stored in a **MySQL database**.
-   - **Hibernate** and **JPQL** are used for efficient database interaction.
+   - **Hibernate** and **JPQL** are used for database interaction.
 3. **File Management:**
    - Documents are stored as a separate entity called `Documents`, with a ManyToOne relationship to the `Car` entity. Each `Car` can have multiple associated documents through a OneToMany relationship.
    - The `Documents` entity stores information such as file name, size, extension, type, and binary data (`@Lob`) in the database, along with the `car_id` foreign key linking it to the associated vehicle.

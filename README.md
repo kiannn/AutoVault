@@ -28,8 +28,11 @@ Search and sort functionalities allow efficient vehicles management, while secur
 4. **Core Functionalities:**
    - **Add a Vehicle:**
      - Click the "Add Vehicle" button to fill out a form with vehicle details like make, model, year, and upload associated documents (e.g., registration, insurance).
-   - **Edit/Delete Vehicle Details:**
+   - **Edit/Delete Vehicle and Documents Details:**
      - Select a vehicle from the list to update its information or delete it. Multiple vehicles could also be selected and deleted at the same time.
+     - Documents associated with each vehicle can be managed:
+         - New documents can be added.
+         - Existing documents can be deleted individually.
    - **Search and Sort:**
      - Use 'Search Vehicle in the navigation bar to filter vehicles by make, model or other attributes
      - Use 'Search Document' to search for cars by document criteria, such as document name, extension, or both. The app also supports case-sensitive searches for document names.

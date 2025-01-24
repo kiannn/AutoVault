@@ -61,6 +61,7 @@ Search and sort functionalities allow efficient vehicles management, while secur
 4. **Frontend-Backend Communication:**
    - The app uses **JSP pages** and **JSTL** for dynamic rendering, connected to backend services via **Spring MVC**.
    - Form submissions for adding/editing vehicles use POST requests with server-side validation.
+   - The frontend is enhanced with JavaScript for interactivity.
 5. **Validation:**
    - Validations are performed at field or object levels using `BindingResult` and `jakarta.validation.Valid` for username, password, email addresses, date of birth, purchase dates, car detail fields and document extensions 
 6. **Containerized Deployment:**

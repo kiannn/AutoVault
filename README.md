@@ -12,9 +12,8 @@ Search and sort functionalities allow efficient vehicles management, while secur
 - Docker
 - MySQL
 
-### Usage
-
-#### User Perspective:
+## Usage
+### User Perspective:
 1. **User Registration and Login:**
    - Create an account or log in with existing credentials.
    - Passwords are securely managed for data protection.
@@ -43,12 +42,8 @@ Search and sort functionalities allow efficient vehicles management, while secur
      - Enforces password strength requirements during signup: passwords must be at least 8 characters long and include at least two of the following—uppercase letters, lowercase letters, numbers, or symbols (`!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~`).
      - If the selected make and model do not match, the app validates the input and provides an error message, ensuring accurate data entry.
      - Documents greater than 5MB will be rejected for upload
-5. **Profile Management:**
-   - Update personal profile details or delete the account from the profile settings page.
 
----
-
-#### Technical Perspective:
+### Technical Perspective:
 1. **Account Creation & Authentication:**
    - User authentication is managed using **Spring Security** with a **JDBC UserDetailsManager**.
    - Passwords are hashed for security.

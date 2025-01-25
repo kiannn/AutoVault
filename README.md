@@ -61,3 +61,8 @@ Search and sort functionalities allow efficient vehicles management, while secur
    - Validations are performed at field or object levels using `BindingResult` and `jakarta.validation.Valid` for username, password, email addresses, date of birth, purchase dates, car detail fields and document extensions 
 6. **Containerized Deployment:**
    - The application is containerized using **Dockerfile** making it easy to deploy in various environments.
+
+### Contact
+ - Email: kpourd@gmail.com
+ - GitHub Profile: https://github.com/kiannn/AutoVault
+ - Live Demo: https://autovault-production.up.railway.app/loginpage

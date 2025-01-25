@@ -62,7 +62,7 @@ Search and sort functionalities allow efficient vehicles management, while secur
 6. **Containerized Deployment:**
    - The application is containerized using **Dockerfile** making it easy to deploy in various environments.
 
-### Contact
+## Contact
  - Email: kpourd@gmail.com
  - GitHub Profile: https://github.com/kiannn/AutoVault
  - Live Demo: https://autovault-production.up.railway.app/loginpage

@@ -39,9 +39,9 @@ Search and sort functionalities allow efficient vehicles management, while secur
    - The app validates input to ensure data accuracy and integrity:
      - Prevents duplicate usernames or email addresses, invalid email patterns, and future date of bith during signup.
      - Displays errors for invalid car detail fields, such as incorrect number formats, future dates for the purchase date, or invalid file extensions for document uploads.
-     - Enforces password strength requirements during signup: passwords must be at least 8 characters long and include at least two of the following—uppercase letters, lowercase letters, numbers, or symbols (`!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~`).
+     - Enforces password strength requirements during signup: passwords must be at least 8 characters long and include at least two of the following—uppercase letters, lowercase. letters, numbers, or symbols (`!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~`).
      - If the selected make and model do not match, the app validates the input and provides an error message, ensuring accurate data entry.
-     - Documents greater than 5MB will be rejected for upload
+     - Documents greater than 5MB will be rejected for upload.
 
 ### Technical Perspective:
 1. **Account Creation & Authentication:**
@@ -58,7 +58,7 @@ Search and sort functionalities allow efficient vehicles management, while secur
    - Form submissions for adding/editing vehicles use POST requests with server-side validation.
    - The frontend is enhanced with JavaScript for interactivity.
 5. **Validation:**
-   - Validations are performed at field or object levels using `BindingResult` and `jakarta.validation.Valid` for username, password, email addresses, date of birth, purchase dates, car detail fields and document extensions 
+   - Validations are performed at field or object levels using `BindingResult` and `jakarta.validation.Valid` for username, password, email addresses, date of birth, purchase dates, car detail fields and document extensions. 
 6. **Containerized Deployment:**
    - The application is containerized using **Dockerfile** making it easy to deploy in various environments.
 

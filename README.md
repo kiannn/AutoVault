@@ -1,8 +1,8 @@
-### About the Project
+## About the Project
 AutoVault provides a platform where users can sign up, log in, and manage their vehicles collections. Users can upload, edit, and delete vehicle details and associated documents. 
 Search and sort functionalities allow efficient vehicles management, while secure authentication ensures data protection.
 
-### Built With
+## Built With
 - Spring Boot
 - Hibernate
 - JDBC UserDetailsManager

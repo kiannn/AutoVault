@@ -15,15 +15,18 @@ public interface DocumentRepository extends JpaRepository<Documents, Integer>{
     
     final String SEARCH_BY_EXTENSION = """
                                      SELECT car from availableCars car join car.docs doc 
-                                     WHERE doc.extension = :extensionName AND car.owner.username = :userName
+                                     WHERE doc.extension = :extensionName 
+                                     AND car.owner.username = :userName
                                      """; 
     final String SEARCH_BY_NAME_EXTENSION = """
                                              SELECT car from availableCars car join car.docs doc 
-                                             WHERE doc.name = :docName AND car.owner.username = :userName
+                                             WHERE doc.name = :docName 
+                                             AND car.owner.username = :userName
                                              """;
     final String SEARCH_BY_NAME_EXTENSION_CASE_INSENSITIVE = """
                                              SELECT car from availableCars car join car.docs doc 
-                                             WHERE LOWER(doc.name) = :docName AND car.owner.username = :userName
+                                             WHERE LOWER(doc.name) = :docName 
+                                             AND car.owner.username = :userName
                                              """;
      
     final String SEARCH_BY_SUB_NAME = """

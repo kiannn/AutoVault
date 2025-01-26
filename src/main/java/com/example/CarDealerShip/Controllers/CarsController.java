@@ -468,19 +468,25 @@ public class CarsController {
         File file = new File("src/main/resources/Car Models List of Car Models.xlsx");
         System.out.println("\n POST "+file.exists()+"\n"+file);
         Resource resource = resourceLoader.getResource("classpath:Car Models List of Car Models.xlsx");
-    /*
-        Using Resource interface :
-        
-         The 'new File("src/main/resources/...")' approach looks for the file in the filesystem relative to 
-         the application’s working directory. When application is packaged into a JAR/WAR, the src/main/resources directory 
-         doesn’t exist as a filesystem path (file.exists() returns false). The file will be placed inside the JAR/WAR and not
-         on the filesystem. Instead, directory contents are bundled inside the JAR/WAR. After packaging, resources under src/main/resources 
-         are included in the JAR/WAR and can still be accessed using classpath.
-         classpath: is a keyword or prefix used to specify that the resource should be loaded from the application's 
-         classpath. It tells Spring to look for the resource inside the directories or archives that are included 
-         in the classpath (e.g., src/main/resources or inside the JAR/WAR).
-         Resource can be used to load files from both local filesystem and when application deployed as a JAR/WAR.
-    */
+        /**
+         *
+         * Using Resource interface :
+         *
+         * The 'new File("src/main/resources/...")' approach looks for the file
+         * in the filesystem relative to the application’s working directory.
+         * When application is packaged into a JAR/WAR, the src/main/resources
+         * directory does not exist as a filesystem path (file.exists() returns
+         * false). The file will be placed inside the JAR/WAR and not on the
+         * filesystem. Instead, directory contents are bundled inside the
+         * JAR/WAR. After packaging, resources under src/main/resources are
+         * included in the JAR/WAR and can still be accessed using classpath.
+         * classpath: is a keyword or prefix used to specify that the resource
+         * should be loaded from the application's classpath. It tells Spring to
+         * look for the resource inside the directories or archives that are
+         * included in the classpath (e.g., src/main/resources or inside the
+         * JAR/WAR). Resource can be used to load files from both local
+         * filesystem and when application deployed as a JAR/WAR.
+         */
         try (InputStream fis = resource.getInputStream();) {
 
 //        try (InputStream fis = new FileInputStream(file);

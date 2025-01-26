@@ -29,7 +29,7 @@ public class Documents {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
-    @Column(name="full name", columnDefinition = "VARCHAR(255)")
+    @Column(name="full name", columnDefinition = "VARCHAR(255) COLLATE utf8_bin")
     String name;
     
     @Enumerated(EnumType.STRING)

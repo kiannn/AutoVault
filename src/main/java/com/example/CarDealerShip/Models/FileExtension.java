@@ -1,10 +1,8 @@
 package com.example.CarDealerShip.Models;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter 
+@Getter
 public enum FileExtension {
 
     ANY("any"),
@@ -15,7 +13,7 @@ public enum FileExtension {
     DOCX(".docx"),
     DOC(".doc"),
     DOCM(".docm"),
-    PPTX(".pptx"),  
+    PPTX(".pptx"),
     PPT(".ppt"),
     XLSX(".xlsx"),
     XLS(".xls"),

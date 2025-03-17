@@ -6,12 +6,14 @@
                  
     }
     tr,td,th{
-
+        
         height: 60px;
         width: 150px;
         text-align: center;
     }
-    .borderTbody{border: solid black 1px;}
+    .borderTbody{
+        border: solid black 1px;
+    }
     th{
          background: lightgray;
          font-size: 14.25px
@@ -81,7 +83,7 @@
 <div id="here"></div>
 <form id="myForm">
     <c:set var="allCars" value="${showAll}"/>
-    <table class=" h6 shadow-lg" id="mytable">    
+    <table class="h5 shadow-lg table-striped" id="mytable">    
 
         <thead>
             <c:set value='style="font-size: 15px; 
@@ -211,7 +213,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="noteModalLabel">Documents uploaded for Car Id : ${eachCar.itemNo}</h5>
+                            <h5 class="modal-title" id="noteModalLabel">Documents uploaded for vehicle Id : ${eachCar.itemNo}</h5>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

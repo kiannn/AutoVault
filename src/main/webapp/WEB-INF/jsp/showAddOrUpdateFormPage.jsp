@@ -1,8 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="/css/bootstrap.min.css"  rel="stylesheet">
         <link href="/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
         <style>

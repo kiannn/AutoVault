@@ -7,22 +7,20 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany; 
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.TableGenerator;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,14 +37,14 @@ import lombok.Setter;
 public class Car {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "seqName"  ) 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqName")
     @SequenceGenerator(name = "seqName", allocationSize = 3, initialValue = 10)
-    Integer itemNo; 
+    Integer itemNo;
 
     @Column(name = "vehivle_make")
     @JsonProperty("Make_Name")
     String make;
-      
+
     @Pattern(regexp = "[\\w\\s/.-]*", message = "invalid value for model, only letters and numbers are accepted")
     @JsonProperty("Model_Name")
     String model;
@@ -60,39 +58,22 @@ public class Car {
 
     @Enumerated(EnumType.STRING)
     Transmissions powerTrain;
-    
+
     @Positive(message = "invalid price, should be a positive value")
     @Column(name = "vehicle value")
     Double price;
 
     String condn;
-    
-    @Column(name = "H.P(watt)")
-    @PositiveOrZero(message = "invalid hp, should be a non-negative value") 
 
-    Double horsePower ;
+    @Column(name = "H.P(watt)")
+    @PositiveOrZero(message = "invalid hp, should be a non-negative value")
+    Double horsePower;
 
     @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "username")
     Owner owner;
-     
-    @OneToMany(mappedBy = "car", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})//, fetch = FetchType.EAGER)//, fetch = FetchType.EAGER) //  CascadeType.MERGE is needed when a Car record is edited so that newly added Documents are persisted   
+
+    @OneToMany(mappedBy = "car", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY)//, fetch = FetchType.EAGER) //  CascadeType.MERGE is needed when a Car record is edited so that newly added Documents are persisted   
     List<Documents> docs;
- 
-    @Override
-    public String toString() {
-        return "Car{" + "itenNo=" + itemNo + 
-                ", make=" + make + 
-                ", model=" + model + 
-                ", year=" + year + 
-                ", datePurchased=" + datePurchased + 
-                ", powerTrain=" + powerTrain+  
-                ", price=" + price + 
-                ", condn=" + condn + 
-                ", horsePower=" + horsePower + 
-                ", owner=" +(owner!=null ? owner.getUsername() : null) + 
-                ", docs=" +docs
-                +" }";
-    }
 
 }

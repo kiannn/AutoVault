@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="/css/bootstrap.min.css"  rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>All Available Vehicles</title>
@@ -22,13 +24,6 @@
                 </c:if>
             </div>
 
-            <!-- sort using SortPage
-            
-               <p style="margin-left: 110px; font-weight: bold; width: 220px; color: darkblue;">
-                    Sort by :&nbsp;&nbsp;  &#60%@include  file = "jspfs/SortPage.jspf"%&#62
-                </p><br> 
-            -->
-            
             <%@include file="jspfs/table.jspf"%>   
            
             <span id="recordNumber" style="font-size:13px; font-weight: bold; font-style: oblique; background-color: yellow; text-align: center">

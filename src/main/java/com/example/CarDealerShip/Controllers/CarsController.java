@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 //import jakarta.validation.constraints.Pattern;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.AccessDeniedException;
@@ -47,6 +46,7 @@ import org.springframework.validation.FieldError;
 import java.util.regex.Pattern;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/cars") 
@@ -134,8 +134,8 @@ public class CarsController {
             throw new AccessDeniedException("Direct Access Denied !");
         }
 
-        referer = referer.contains("?addOrEditMsg")
-                ? referer.substring(0, referer.indexOf("addOrEditMsg") - 1) : referer;
+//        referer = referer.contains("?addOrEditMsg")
+//                ? referer.substring(0, referer.indexOf("addOrEditMsg") - 1) : referer;
 
         Car get = CarService.findCarById(id).get();
         
@@ -157,11 +157,11 @@ public class CarsController {
     @PostMapping({"allcars/addpage", "allcars/updatepage"})
     public String addOrUpdateCars(@Valid @ModelAttribute("carForm") Car car,
             BindingResult br,
-            MultipartFile[] filee, ModelMap mm, HttpServletRequest r)
+            MultipartFile[] filee, ModelMap mm, RedirectAttributes rediAtt, HttpServletRequest r)
             throws IOException {
 
         if (!car.getModel().isEmpty()) {
-            
+
             List<String> verifyMakeAndModel = CarService.verifyMakeAndModelValidity(car.getMake(), car.getModel());
 
             if (verifyMakeAndModel.size() == 1) {
@@ -210,8 +210,7 @@ public class CarsController {
                 Car get = CarService.findCarById(car.getItemNo()).get();
 
                 String msg = "Edit details for car id = %d, Make = %s, Model = %s";
-
-                mm.addAttribute("docdeletAllowed", "");
+ 
                 mm.addAttribute("message", String.format(msg, car.getItemNo(), get.getMake(), get.getModel().isEmpty() ? "unkown" : get.getModel()));
                 mm.addAttribute("button", "Update");
             }
@@ -236,7 +235,8 @@ public class CarsController {
 
         String format = String.format("Car Id: %d  has successfully %s", Car.getItemNo(), itenNo != null ? "updated" : "added");
 
-        return "redirect:/cars/home/showallcars?addOrEditMsg=" + format;
+        rediAtt.addFlashAttribute("addOrEditMsg", format);
+        return "redirect:/cars/home/showallcars";//?addOrEditMsg=" + format;
     }
 
 
@@ -378,7 +378,8 @@ public class CarsController {
     }
 
     @GetMapping("allcars/deletepage/{id}")
-    public String deleteCars(@PathVariable Integer[] id, ModelMap mm, HttpServletRequest r) throws AccessDeniedException {
+    public String deleteCars(@PathVariable Integer[] id, ModelMap mm, 
+                              RedirectAttributes redAtt, HttpServletRequest r) throws AccessDeniedException {
  
         String name = (String) mm.getAttribute("authorizedUser");
         boolean validFileId = CarService.isValidCarIds(name, id);
@@ -398,7 +399,8 @@ public class CarsController {
 
         CarService.deleteSelectedCars(Arrays.asList(id));
 
-        return "redirect:/cars/home/showallcars?addOrEditMsg=Car Id: " + Arrays.toString(id).substring(1, Arrays.toString(id).length() - 1) + " has successfully deleted";
+        redAtt.addFlashAttribute("addOrEditMsg", "Car Id: " + Arrays.toString(id).substring(1, Arrays.toString(id).length() - 1) + " has successfully deleted");
+        return "redirect:/cars/home/showallcars";//?addOrEditMsg=Car Id: " + Arrays.toString(id).substring(1, Arrays.toString(id).length() - 1) + " has successfully deleted";
 
     }
 

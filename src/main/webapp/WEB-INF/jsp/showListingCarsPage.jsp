@@ -17,9 +17,17 @@
                 <h5 style="color:darkgray; font-weight: bolder; text-align: center;">
                     All Available Vehicles
                 </h5>
-                <c:if test="${param.addOrEditMsg!=null}">
+                <!--------------------------------------------------------------
+                Old approach, when 'addOrEditMsg' was included in request parameter:
+                    <c:if test="${param.addOrEditMsg!=null}">
+                        <span style="margin-top:50px ; position: absolute" id="msg"
+                              class="alert ${param.addOrEditMsg.contains('delet')?' alert-warning':' alert-success'}  alert-link">${param.addOrEditMsg}
+                        </span>
+                    </c:if>
+                --------------------------------------------------------------->
+                <c:if test="${addOrEditMsg!=null}">
                     <span style="margin-top:50px ; position: absolute" id="msg"
-                          class="alert ${param.addOrEditMsg.contains('delet')?' alert-warning':' alert-success'}  alert-link">${param.addOrEditMsg}
+                          class="alert ${addOrEditMsg.contains('delet')?' alert-warning':' alert-success'}  alert-link">${addOrEditMsg}
                     </span>
                 </c:if>
             </div>

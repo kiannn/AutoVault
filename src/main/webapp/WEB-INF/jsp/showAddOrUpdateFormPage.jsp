@@ -47,9 +47,13 @@
     <body>
         <%@include file="jspfs/navigationBar.jspf"%>
         <div class="container  mb-5 alert-link">
-            <c:if test="${message.contains('Edit') && param.docdelet!=null && docdeletAllowed==null}">
+            <c:if test="${message.contains('Edit') && docdelet!=null}">
                 <div style="justify-content: center; display: flex; margin-bottom: 45px">               
-                        <span style="position: absolute; height: 40px;" id="msg" class="alert alert-warning pt-2">${param.docdelet}</span>                       
+                    <!---------------------------------------------------------- 
+                    Old approach, when 'docdelet' was included in request parameter:
+                        <span style="position: absolute; height: 40px;" id="msg" class="alert alert-warning pt-2">${param.docdelet}</span> 
+                    ------------------------------------------------------------>        
+                    <span style="position: absolute; height: 40px;" id="msg" class="alert alert-warning pt-2">${docdelet}</span>
                 </div>
             </c:if>  
             <p id="pageHeade" style="color:darkgray; font-weight: bolder; font-size: 20px;text-align: center; margin-top: 40px">${message}</p>

@@ -13,7 +13,6 @@ import java.nio.file.AccessDeniedException;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/document")
@@ -62,20 +62,25 @@ public class DocumentController {
             
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+documnet.getName());
-            /*
-            Some hosting platforms, including Railway might detect file types like .docx, .xlsx, .pptx, and route 
-            requests to external services (such as Microsoft Office Online at view.officeapps.live.com) to enable 
-            file previews.
-            When deployed, The URL https://view.officeapps.live.com/ is triggered before accessing the actual endpoint of your 
-            application when trying to download a file. Instead of downloading the file directly, the browser may 
-            integrate with Microsoft Office Online (via https://view.officeapps.live.com/) to provide document preview.
-            When a .docx file is requested for download, the browser might redirect the request through the Office 
-            Online viewer to display the document before downloading it.
-            The browser uses your endpoint URL as a parameter for Microsoft's viewer.
-            How to Fix This:
-            Ensure the HTTP response header Content-Disposition is set to attachment to enforce the file to 
-            be treated as a direct download, not a preview.
-            */
+            /**
+             *
+             * Some hosting platforms, including Railway might detect file types
+             * like .docx, .xlsx, .pptx, and route requests to external services
+             * (such as Microsoft Office Online at view.officeapps.live.com) to
+             * enable file previews. When deployed, The URL
+             * https://view.officeapps.live.com/ is triggered before accessing
+             * the actual endpoint of your application when trying to download a
+             * file. Instead of downloading the file directly, the browser may
+             * integrate with Microsoft Office Online (via
+             * https://view.officeapps.live.com/) to provide document preview.
+             * When a .docx file is requested for download, the browser might
+             * redirect the request through the Office Online viewer to display
+             * the document before downloading it. The browser uses your
+             * endpoint URL as a parameter for Microsoft's viewer. How to Fix
+             * This: Ensure the HTTP response header Content-Disposition is set
+             * to attachment to enforce the file to be treated as a direct
+             * download, not a preview.
+             */
             ResponseEntity<byte[]> response = ResponseEntity.status(HttpStatus.OK)
                     .contentType(MediaType.valueOf(documnet.getType()))
                     .headers(headers) 
@@ -90,7 +95,7 @@ public class DocumentController {
 
     @PostMapping("/edite/{id}/delete") 
     public String deleteDocument(@PathVariable Integer id, @ModelAttribute("carForm")Car car, 
-                                 ModelMap ModelMap, HttpServletRequest req) {
+                                 ModelMap ModelMap, RedirectAttributes rediAtt, HttpServletRequest req) {
      
             String referer = req.getHeader("Referer");
             
@@ -100,10 +105,12 @@ public class DocumentController {
             List<Documents> docs =DocumentService.getDocumnetsByCar(car.getItemNo());
             car.setDocs(docs); // update form-backing obj (modelAttribute="carForm"), which is used to display docs in the update page, after delete 
             
-            referer = referer.substring(0, referer.indexOf("carFormstate"))+"carFormstate=false";
-            int indexOf = referer.indexOf('?');
+//            referer = referer.substring(0, referer.indexOf("carFormstate"))+"carFormstate=false";
+            referer = referer.replace("true", "false");
+            rediAtt.addFlashAttribute( "docdelet","document "+documnet+" deleted successfully");
+//            int indexOf = referer.indexOf('?');
             
-            referer= referer.substring(0, indexOf+1)+"docdelet=document "+documnet+" deleted successfully&"+referer.substring(indexOf+1);
+//            referer= referer.substring(0, indexOf+1)+"docdelet=document "+documnet+" deleted successfully&"+referer.substring(indexOf+1);
             
             return "redirect:"+referer;
 

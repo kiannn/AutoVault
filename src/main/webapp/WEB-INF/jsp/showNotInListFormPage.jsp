@@ -20,7 +20,7 @@
         <%@include file="jspfs/bootstrapJS_jqueryJS.jspf"%>
     </body>
 </html>
-<script  type="text/javascript">
+<script type="text/javascript">
 
     function resset(){
         document.getElementById("clearMake").value='';

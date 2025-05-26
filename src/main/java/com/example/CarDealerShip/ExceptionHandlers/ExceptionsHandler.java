@@ -6,11 +6,11 @@ import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
@@ -61,6 +61,15 @@ public class ExceptionsHandler {
         m.addAttribute("msg", "Request is not supported");
         return "errorPage";
     }
+    
+    @ExceptionHandler(WebClientResponseException.class)
+    @ResponseStatus(code = HttpStatus.SERVICE_UNAVAILABLE)
+    public String handleException5(Exception exc, Model m) {
+
+        m.addAttribute("msg", "Our vPIC API application is currently undergoing Maintenance," +
+"                                         we are currently unable to complete your request.<br>Please try again at a later time");
+        return "ServiceUnavailable";
+    }
 }
     /**
      *  java.lang.IllegalStateException: 
@@ -85,4 +94,9 @@ public class ExceptionsHandler {
      * org.springframework.web.servlet.resource.NoResourceFoundException: 
      *    Happens when an invalid url is executed, a url that has no endpoints in such case we get :
      *    org.springframework.web.servlet.resource.NoResourceFoundException: No static resource kir/home/kir.
+     * 
+     * org.springframework.web.reactive.function.client.WebClientResponseException :
+     *   Happens when vPIC API application does not response (the API we make request at through WebClient) due to maintenance,
+     *   it throws WebClientResponseException
+     * 
      */

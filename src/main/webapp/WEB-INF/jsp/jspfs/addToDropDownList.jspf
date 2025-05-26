@@ -30,8 +30,6 @@
         <tr>
             <td style="padding-right: 90px; padding-left: 90px" class="text-">
                 <form:label path="make">Make:</form:label>
-                
-               
                 <form:select path="make" size="9" cssClass="form-control" required="required">
                     <form:option value="" label="Please Select" disabled="true" cssClass="alert-primary"/>
                     <form:options items ="${allPossibleMakes}" cssClass="alert-dark alert-link"/>                   
@@ -68,7 +66,7 @@
 /*
  * In JavaScript, selectElement.options refers to the list of <option> elements inside a <select> dropdown.
  * selectElement : here is the reference to the <select> DOM element (e.g., the dropdown list).
- * selectElement.options : is an HTMLCollection (like an array) containing all the <option> elements inside that <select>.
+ * selectElement.options : is an HTML Collection (like an array) containing all the <option> elements inside that <select>.
  * selectElement.options[i] : gives you access to each individual <option> element at index i within the <select>.
  * selectElement.options[i].scrollIntoView() : makes sure the option is scrolled into view, so the user can see it 
  *                                             without needing to manually scroll the dropdown.

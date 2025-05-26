@@ -283,19 +283,20 @@ public class CarServices {
     }
 
     public List<String> verifyMakeAndModelValidity(String make, String model) {
-        
-        ResponseEntity<NHTSAResponse> response  = client
-                .get()
-                .uri(uriBuilder -> uriBuilder
-                .path("api/vehicles/GetModelsForMake/"+make)
-                .queryParam("format", "json")
-                .build()
-                )
-                .retrieve().toEntity(NHTSAResponse.class).block(); 
-        
-        List<String> collectModel = response.getBody()
-                                            .data.stream()
-                                            .map(car -> car.getModel().toLowerCase()).collect(Collectors.toList());
+
+        ResponseEntity<NHTSAResponse> response;
+
+            response = client
+                    .get()
+                    .uri(uriBuilder -> uriBuilder
+                    .path("api/vehicles/GetModelsForMake/" + make)
+                    .queryParam("format", "json")
+                    .build())
+                    .retrieve().toEntity(NHTSAResponse.class).block();
+
+        List<String> collectModel = response.getBody().data.stream()
+                                                            .map(car -> car.getModel().toLowerCase())
+                                                                            .collect(Collectors.toList());
 
         String toLowerCase = model.toLowerCase();
 

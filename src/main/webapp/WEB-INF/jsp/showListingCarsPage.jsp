@@ -9,12 +9,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>All Available Vehicles</title>
     </head>
-    <body>
+    <body style=" background-image: url('/images/wps.jpg');">
         <%@include file="jspfs/navigationBar.jspf"%> 
         
         <div class="container">
             <div style="margin-bottom: 75px; justify-content: center; display: flex">
-                <h5 style="color:darkgray; font-weight: bolder; text-align: center;">
+                <h5 style="color:black; font-weight: bolder; text-align: center;">
                     All Available Vehicles
                 </h5>
                 <!--------------------------------------------------------------
@@ -26,7 +26,7 @@
                     </c:if>
                 --------------------------------------------------------------->
                 <c:if test="${addOrEditMsg!=null}">
-                    <span style="margin-top:50px ; position: absolute" id="msg"
+                    <span style="margin-top:40px ; position: absolute" id="msg"
                           class="alert ${addOrEditMsg.contains('delet')?' alert-warning':' alert-success'}  alert-link">${addOrEditMsg}
                     </span>
                 </c:if>

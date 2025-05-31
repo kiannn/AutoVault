@@ -44,7 +44,7 @@
         </style>
         <title>Add Or Update Page</title>
     </head>
-    <body>
+    <body style=" background-image: url('/images/plain_white_wallpaper.jpg');">
         <%@include file="jspfs/navigationBar.jspf"%>
         <div class="container  mb-5 alert-link">
             <c:if test="${message.contains('Edit') && docdelet!=null}">
@@ -56,7 +56,7 @@
                     <span style="position: absolute; height: 40px;" id="msg" class="alert alert-warning pt-2">${docdelet}</span>
                 </div>
             </c:if>  
-            <p id="pageHeade" style="color:darkgray; font-weight: bolder; font-size: 20px;text-align: center; margin-top: 40px">${message}</p>
+            <p id="pageHeade" style="color:black; font-weight: bolder; font-size: 20px;text-align: center; margin-top: 40px">${message}</p>
             <p style="color:darkcyan; font-size: 16px; text-align: center;">
                 Enter vehicle details and press ${button} button to ${button.toLowerCase()} it
             </p>

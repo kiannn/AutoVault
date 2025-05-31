@@ -11,7 +11,7 @@
         <title>Login-Page</title>
 
         <link href="/css/bootstrap.min.css" type="text/css" media="all" rel="stylesheet">
-        
+        <link href="/css/bgStyles.css" rel="stylesheet">
         <style>
             .custom-w-div1{
                 width: 50%;
@@ -30,11 +30,17 @@
                     width: 100%;
                 }
             }
+            .content{
+                height: 90%;
+                position: absolute;
+                transform: translate(55%, -110%);
+            }
         </style>
     </head>
-    <body class="p-3 mb-2 bg-light text-black">
-        <div class="container custom-w-div1 h-100 p-3 shadow-lg" style="background-color: lightgray; margin-top: 20px;">
-            <div class="container custom-w-div2 custom-w justify-content-center h-75 mt-3 shadow-lg" style="background-color: #eeeeee; line-height: 10px">
+    <body class="text-white">
+        <div class="background"></div>
+        <div class="container custom-w-div1 p-3 shadow-lg content bg-transparent">
+            <div class="container custom-w-div2 justify-content-center h-75 mt-3 shadow-lg bg-transparent" style="line-height: 10px;">
                 <h3 class="display-5 mb-3">Login</h3>
 
                 <c:if test= "${param.error.isEmpty()}">

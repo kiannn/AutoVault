@@ -121,7 +121,7 @@ public class AccountController {
         if (!passwordMatch) {
             br.rejectValue("currentPass", "NoMatch", "Password invalid");
         }
-       
+
         if (br.hasErrors()) {
 
             mp.addAttribute("deleteAccountMSG", "Delete Account Unsuccessful");

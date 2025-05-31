@@ -9,8 +9,8 @@
         border-collapse: collapse;
     }
     td{
-        background-color: #96d4d4;
-        border:5px solid whitesmoke;
+        background-color: #e2e6ea;
+        border:5px solid white;
         
         line-height: 1.4;
         text-align: center;
@@ -28,11 +28,11 @@
 <form:form modelAttribute="car" action="addToDropDownList">
     <table>
         <tr>
-            <td style="padding-right: 90px; padding-left: 90px" class="text-">
+            <td style="padding-right: 90px; padding-left: 90px">
                 <form:label path="make">Make:</form:label>
                 <form:select path="make" size="9" cssClass="form-control" required="required">
                     <form:option value="" label="Please Select" disabled="true" cssClass="alert-primary"/>
-                    <form:options items ="${allPossibleMakes}" cssClass="alert-dark alert-link"/>                   
+                    <form:options items ="${allPossibleMakes}" cssClass="alert-link text-dark"/>                   
                 </form:select> 
                 <form:errors path="make" cssClass="text-danger" style="font-size:13px;"/>
             </td>

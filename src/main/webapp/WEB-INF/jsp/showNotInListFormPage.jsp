@@ -6,10 +6,10 @@
         <link href="/css/bootstrap.min.css"  rel="stylesheet">
         <title>title</title>
     </head>
-    <body>
+    <body style=" background-image: url('/images/cari.jpg'); background-size: cover; background-position-y: 15px">
     <%@include file="jspfs/navigationBar.jspf"%>
     <div class="container">
-        <p style="font-size: 20px; font-weight: bold; color:blue; text-align: center">Add a new Model and Make</p>
+        <p style="font-size: 20px; font-weight: bold; color:black; text-align: center;">Add a new Model and Make</p>
         
         <%@include  file="jspfs/addToDropDownList.jspf" %>   
        <p style="text-align: center"> 

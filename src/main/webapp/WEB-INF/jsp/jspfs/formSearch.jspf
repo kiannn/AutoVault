@@ -1,6 +1,6 @@
 <style>
     table{
-
+        
         height: 70%;
         margin: auto;            
     }
@@ -23,7 +23,7 @@
    tr{
 
        background-color: lightgrey;
-       border:2px solid whitesmoke;
+       border:2px solid white;
    }
 
 </style>  <!-- margin: auto -> this will center the element horizontally -->

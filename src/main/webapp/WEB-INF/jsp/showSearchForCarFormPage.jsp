@@ -8,10 +8,10 @@
 
         <title>title</title>
     </head>
-    <body>
+    <body style=" background-image: url('/images/wps.jpg'); background-size: cover;">
         <%@include file="jspfs/navigationBar.jspf"%>
-        <div class="container justify-content-center p-3 mb-5 mt-4 bg-light text-dark alert-link">
-          <p style="font-weight: bolder; font-size: 20px; color: darkgray; text-align: center;">
+        <div class="container justify-content-center p-3 mb-5 mt-4 bg-transparent">
+          <p style="font-weight: bolder; font-size: 20px; color: black; text-align: center;">
             ${message}
           </p>
           <p style="color: darkcyan; font-size: 16px; text-align: center">Enter car's specification to search for:</p>

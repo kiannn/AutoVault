@@ -8,7 +8,8 @@
 
         <link href="/css/bootstrap.min.css"  rel="stylesheet">
         <link href="/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
-
+        <link href="/css/bgStyles.css" rel="stylesheet" >
+            
         <title>Sign Up Page</title>
         <style>
 
@@ -20,10 +21,16 @@
                     width: 100%;
                 }
             }
+            .content{
+                height: 100%;
+                position: absolute;
+                transform: translate(55%, -107%);
+            }
         </style>
     </head>
-    <body class="p-3 mb-2 bg-light text-dark alert-link" style="font-size: 13.25px">
-        <div class="container justify-content-center custom-w-div1 p-3 shadow-lg" style="background-color: lightgray; margin-top: 0.1em;">
+    <body class="text-white alert-link" style="font-size: 13.25px">
+        <div class="background"></div>
+        <div class="container custom-w-div1 p-3 shadow-lg content bg-transparent">
                 <div class="form-group font-weight-normal mb-0">
                     <label style="text-decoration: underline; color: #006dcc"><a href="/loginpage">Back to Login</a></label>
                     <c:if test="${sigUpErrorGeneralMsg!=null}">
@@ -35,7 +42,7 @@
 
             <h4 class="mb-3 text-dark" style="text-align: center">Create your account</h4> 
             <form:form action="/signup" method="POST" modelAttribute="signupForm">
-                <fieldset class ="p-3 shadow-lg bg-white mb-2" style="border: 1px solid darkgrey; border-radius: 10px; line-height: 10px ">    
+                <fieldset class ="p-3 shadow-lg mb-2 bg-transparent" style="border: 1px solid darkgrey; border-radius: 10px; line-height: 10px;">    
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <form:label path="firstName" for="inputFirstName">First Name </form:label>
@@ -61,7 +68,7 @@
                         </div>
                     </div>
                 </fieldset>    
-                <fieldset class ="p-3 shadow-lg bg-white" style="border: 1px solid darkgrey; border-radius: 10px; line-height: 10px;">
+                <fieldset class ="p-3 shadow-lg bg-transparent" style="border: 1px solid darkgrey; border-radius: 10px; line-height: 10px;">
                     <div class="form-row ">
                         <div class="form-group col-md-6">
                             <form:label path="username" for="inputUsername">Username </form:label>

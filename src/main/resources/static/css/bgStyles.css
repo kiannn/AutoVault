@@ -1,0 +1,7 @@
+.background {
+    background-image: url('/images/dodge-durango_100896836.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 110%;
+    filter: blur(5px);
+}

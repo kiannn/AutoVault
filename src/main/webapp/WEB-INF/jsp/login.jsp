@@ -38,7 +38,7 @@
         </style>
     </head>
     <body class="text-white">
-        <div class="background w-100"></div>
+        <div class="background"></div>
         <div class="container custom-w-div1 p-3 shadow-lg content bg-transparent">
             <div class="container custom-w-div2 justify-content-center h-75 mt-3 shadow-lg bg-transparent" style="line-height: 10px;">
                 <h3 class="display-5 mb-3">Login</h3>

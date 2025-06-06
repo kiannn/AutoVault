@@ -30,9 +30,10 @@
             .datepicker {
                 background-color: black !important; /* datepicker background */
             }
-            .datepicker td.day:hover,  /*datepicker cell*/
+            .datepicker td:hover,  /*datepicker cell*/
             .datepicker th:hover, /*datepicker header*/
-            .datepicker td.focused {
+            .datepicker td.focused,
+            .datepicker th.focused{
                 background-color: white !important;  /* datepicker cell and header background */
                 color: black !important;             /* datepicker cell and header text color */
                 cursor: pointer;

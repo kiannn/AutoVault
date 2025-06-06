@@ -21,7 +21,6 @@
                     width: 100%;
                 }
             }
-
             .custom-w-div2{
                 width: 75%;
             }

@@ -11,7 +11,7 @@
         <title>Login-Page</title>
 
         <link href="/css/bootstrap.min.css" type="text/css" media="all" rel="stylesheet">
-        <link href="/css/bgStyles.css" rel="stylesheet">
+        <link href="/css/bgStyles.css" type="text/css" media="all" rel="stylesheet">
         <style>
             .custom-w-div1{
                 width: 50%;
@@ -33,8 +33,9 @@
             .content{
                 height: 90%;
                 position: absolute;
-                transform: translate(55%, -110%);
+                transform: translate(55%, -140%);
             }
+
         </style>
     </head>
     <body class="text-white">

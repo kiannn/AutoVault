@@ -48,7 +48,7 @@ public class DocumentController {
        String name = (String) ModelMap.getAttribute("authorizedUser");
 
        String referer = r.getHeader("Referer");
-        System.out.println("+++++++++++++++++++viewDocument()\n"+referer);
+
        boolean reject = referer==null || (!referer.contains("home") && 
                                            !referer.contains("updatepage")&& 
                                            !referer.contains("showsearchresult")&& 

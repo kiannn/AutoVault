@@ -29,7 +29,7 @@ public class HomeController {
     OwnerService OwnerService;
     
     @GetMapping("/showallcars")
-    public String homePage(ModelMap mm) {//, @RequestParam(required = false) Boolean findall) {
+    public String homePage(ModelMap mm) {
 
         String name = (String) mm.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(name);
@@ -39,7 +39,7 @@ public class HomeController {
         mm.addAttribute("showAll", findAll);
 
         mm.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(findAll));
-
+        System.out.println("com.example.CarDealerShip.Controllers.HomeController.homePage()");
         return "showListingCarsPage";
 
     }

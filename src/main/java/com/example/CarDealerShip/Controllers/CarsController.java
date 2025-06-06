@@ -223,7 +223,6 @@ public class CarsController {
         Integer itenNo = car.getItemNo();
 
         String name = (String) mm.getAttribute("authorizedUser");
-        System.out.println("---->file = " + Arrays.toString(filee) + "  " + (filee == null));
 
         Car Car = filee != null ? CarService.add_Update(car, name, filee) : 
                                   CarService.add_Update_NoFile(car, name);

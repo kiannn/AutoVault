@@ -8,7 +8,7 @@
 
         <link href="/css/bootstrap.min.css"  rel="stylesheet">
         <link href="/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
-        <link href="/css/bgStyles.css" rel="stylesheet" >
+        <link href="/css/bgStyles.css" type="text/css" media="all" rel="stylesheet">
             
         <title>Sign Up Page</title>
         <style>
@@ -24,7 +24,18 @@
             .content{
                 height: 100%;
                 position: absolute;
-                transform: translate(55%, -107%);
+                transform: translate(52%, -130%);
+            }
+
+            .datepicker {
+                background-color: black !important; /* datepicker background */
+            }
+            .datepicker td.day:hover,  /*datepicker cell*/
+            .datepicker th:hover, /*datepicker header*/
+            .datepicker td.focused {
+                background-color: white !important;  /* datepicker cell and header background */
+                color: black !important;             /* datepicker cell and header text color */
+                cursor: pointer;
             }
         </style>
     </head>
@@ -32,7 +43,7 @@
         <div class="background"></div>
         <div class="container custom-w-div1 p-3 shadow-lg content bg-transparent">
                 <div class="form-group font-weight-normal mb-0">
-                    <label style="text-decoration: underline; color: #006dcc"><a href="/loginpage">Back to Login</a></label>
+                    <label style="text-decoration: underline; color: white"><a style="color: white; font-weight: bold" href="/loginpage">Back to Login</a></label>
                     <c:if test="${sigUpErrorGeneralMsg!=null}">
                         <div class="alert alert-danger alert-link" style="text-align: center">
                             <span>${sigUpErrorGeneralMsg}</span>
@@ -40,7 +51,7 @@
                     </c:if>
                 </div>
 
-            <h4 class="mb-3 text-dark" style="text-align: center">Create your account</h4> 
+            <h4 class="mb-3 text-dark alert-link" style="text-align: center">Create your account</h4> 
             <form:form action="/signup" method="POST" modelAttribute="signupForm">
                 <fieldset class ="p-3 shadow-lg mb-2 bg-transparent" style="border: 1px solid darkgrey; border-radius: 10px; line-height: 10px;">    
                     <div class="form-row">

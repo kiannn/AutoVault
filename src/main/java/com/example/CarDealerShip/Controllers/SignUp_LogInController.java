@@ -40,13 +40,16 @@ public class SignUp_LogInController {
         
         String header = req.getHeader("X-Forwarded-For");
         String remoteAddr = req.getRemoteAddr();
-        System.out.println("X-Forwarded-For = "+header);
+        System.out.println("\nX-Forwarded-For = "+header);
         System.out.println("remote = "+req.getRemoteAddr());
         System.out.println("User = "+req.getRemoteUser());
-        
+      
         ResponseEntity<Map> block = WebClient.get()
-                .uri(r -> r.path(header!=null ? header : remoteAddr)
-                        .build()).retrieve().toEntity(Map.class).block();
+                .uri(r -> r.path(header!=null ? header.split(",")[0] : remoteAddr)
+                .build())
+                .retrieve()
+                .toEntity(Map.class)
+                .block();
         
         System.out.println("USER =\n"+block.getBody());
         System.out.println("sec-ch-ua-mobile: "+req.getHeader("sec-ch-ua-mobile")); 

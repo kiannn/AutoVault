@@ -82,8 +82,8 @@ public class CarsController {
 
         mm.addAttribute("searchUserInput", ""); 
 
-        System.out.println(req.getRequestURI());
-        System.out.println(req.getHeader("Referer"));
+//        System.out.println(req.getRequestURI());
+//        System.out.println(req.getHeader("Referer"));
         String ret = req.getRequestURI().endsWith("showsearchresult/pre") ?"redirect:show":"redirect:/cars/home/showallcars";
 
         return ret;
@@ -133,9 +133,6 @@ public class CarsController {
         if (badRefer) {
             throw new AccessDeniedException("Direct Access Denied !");
         }
-
-//        referer = referer.contains("?addOrEditMsg")
-//                ? referer.substring(0, referer.indexOf("addOrEditMsg") - 1) : referer;
 
         Car get = CarService.findCarById(id).get();
         

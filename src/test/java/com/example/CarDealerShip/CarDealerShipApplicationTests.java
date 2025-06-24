@@ -1,6 +1,5 @@
 package com.example.CarDealerShip;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import java.io.File;
 import java.time.Duration;
 import java.time.LocalDate;

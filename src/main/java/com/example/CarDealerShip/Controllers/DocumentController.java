@@ -105,13 +105,9 @@ public class DocumentController {
             List<Documents> docs =DocumentService.getDocumnetsByCar(car.getItemNo());
             car.setDocs(docs); // update form-backing obj (modelAttribute="carForm"), which is used to display docs in the update page, after delete 
             
-//            referer = referer.substring(0, referer.indexOf("carFormstate"))+"carFormstate=false";
             referer = referer.replace("true", "false");
             rediAtt.addFlashAttribute( "docdelet","document "+documnet+" deleted successfully");
-//            int indexOf = referer.indexOf('?');
-            
-//            referer= referer.substring(0, indexOf+1)+"docdelet=document "+documnet+" deleted successfully&"+referer.substring(indexOf+1);
-            
+                        
             return "redirect:"+referer;
 
     }

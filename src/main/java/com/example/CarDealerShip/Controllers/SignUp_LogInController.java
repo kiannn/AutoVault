@@ -6,16 +6,20 @@ import com.example.CarDealerShip.Services.OwnerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.Arrays;
+import java.util.Map;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Controller
 @RequestMapping
@@ -24,13 +28,28 @@ public class SignUp_LogInController {
 
     @Autowired
     OwnerService OwnerService;
+    
+    @Autowired
+    @Qualifier("userClient")
+    WebClient WebClient;
 
     @GetMapping("/loginpage")
     public String loginView(ModelMap mm, HttpServletRequest req) {
 
         mm.addAttribute("xxx", "");
-        System.out.println("com.example.CarDealerShip.Controllers.OwnerController.loginView()");
-        req.getParameterMap().forEach((k, v) -> System.out.println(k + " -> " + Arrays.toString(v)));
+        
+        String header = req.getHeader("X-Forwarded-For");
+        String remoteAddr = req.getRemoteAddr();
+        System.out.println("X-Forwarded-For = "+header);
+        System.out.println("remote = "+req.getRemoteAddr());
+        System.out.println("User = "+req.getRemoteUser());
+        
+        ResponseEntity<Map> block = WebClient.get()
+                .uri(r -> r.path(header!=null ? header : remoteAddr)
+                        .build()).retrieve().toEntity(Map.class).block();
+        
+        System.out.println("USER =\n"+block);
+        
         return "login";
     }
 

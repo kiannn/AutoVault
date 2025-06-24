@@ -50,6 +50,7 @@ public class CarDealerShipApplication extends SpringBootServletInitializer{
     return WebClient.create(baseURL);
     }
     
+    @Bean
     @Qualifier("userClient")
     @Autowired
     public WebClient clientUser(@Value("${user.data.endpoint}") String baseURL){

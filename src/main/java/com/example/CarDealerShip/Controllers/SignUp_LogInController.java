@@ -48,7 +48,9 @@ public class SignUp_LogInController {
                 .uri(r -> r.path(header!=null ? header : remoteAddr)
                         .build()).retrieve().toEntity(Map.class).block();
         
-        System.out.println("USER =\n"+block);
+        System.out.println("USER =\n"+block.getBody());
+        System.out.println("sec-ch-ua-mobile: "+req.getHeader("sec-ch-ua-mobile")); 
+        System.out.println("sec-ch-ua-platform: "+req.getHeader("sec-ch-ua-platform"));
         
         return "login";
     }

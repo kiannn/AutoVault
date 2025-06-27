@@ -60,7 +60,7 @@ public class SignUp_LogInController {
             log.info("USER = {}", block.getBody());
 
         } catch (WebClientException wce) {
-            log.info("\n {}", wce.getMessage());
+            log.warn("\n {}", wce.getMessage());
 
         }
         log.info("sec-ch-ua-mobile: {}",req.getHeader("sec-ch-ua-mobile")); 

@@ -5,8 +5,9 @@ import com.example.CarDealerShip.Models.Owner;
 import com.example.CarDealerShip.Services.OwnerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import java.util.Arrays;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientException;
 
 @Controller
 @RequestMapping
@@ -33,6 +35,8 @@ public class SignUp_LogInController {
     @Qualifier("userClient")
     WebClient WebClient;
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     @GetMapping("/loginpage")
     public String loginView(ModelMap mm, HttpServletRequest req) {
 
@@ -40,20 +44,27 @@ public class SignUp_LogInController {
         
         String header = req.getHeader("X-Forwarded-For");
         String remoteAddr = req.getRemoteAddr();
-        System.out.println("\nX-Forwarded-For = "+header);
-        System.out.println("remote = "+req.getRemoteAddr());
-        System.out.println("User = "+req.getRemoteUser());
-      
-        ResponseEntity<Map> block = WebClient.get()
-                .uri(r -> r.path(header!=null ? header.split(",")[0] : remoteAddr)
-                .build())
-                .retrieve()
-                .toEntity(Map.class)
-                .block();
         
-        System.out.println("USER =\n"+block.getBody());
-        System.out.println("sec-ch-ua-mobile: "+req.getHeader("sec-ch-ua-mobile")); 
-        System.out.println("sec-ch-ua-platform: "+req.getHeader("sec-ch-ua-platform"));
+        log.info("\nX-Forwarded-For = {}", header);
+        log.info("remote = {}", req.getRemoteAddr());
+        log.info("User = {}",req.getRemoteUser());
+
+        try {
+            ResponseEntity<Map> block = WebClient.get()
+                    .uri(r -> r.path(header != null ? header.split(",")[0] : remoteAddr)
+                    .build())
+                    .retrieve()
+                    .toEntity(Map.class)
+                    .block();
+
+            log.info("USER = {}", block.getBody());
+
+        } catch (WebClientException wce) {
+            log.info("\n {}", wce.getMessage());
+
+        }
+        log.info("sec-ch-ua-mobile: {}",req.getHeader("sec-ch-ua-mobile")); 
+        log.info("sec-ch-ua-platform: {}",req.getHeader("sec-ch-ua-platform"));
         
         return "login";
     }
@@ -66,7 +77,9 @@ public class SignUp_LogInController {
 
     @GetMapping("/signup")
     public String signUpPage(ModelMap mm, HttpServletRequest req) {
-        System.out.println(" *** " + req.getHeader("Referer"));
+        
+        log.info(" *** " + req.getHeader("Referer"));
+        
         if (req.getHeader("Referer") == null) {
             return "redirect:loginpage";
         }

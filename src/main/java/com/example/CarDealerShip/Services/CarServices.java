@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,8 @@ public class CarServices {
                                     "price", "powerTrain",
                                     "condn", "horsePower"};
     
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     public Car add_Update(Car car, String Owner, MultipartFile[] filee) throws IOException {
 
         List<Documents> addDocument = DocumentService.retreiveDocument(filee, car);
@@ -61,9 +65,9 @@ public class CarServices {
         }
 
         Runtime runtime = Runtime.getRuntime();
-        System.out.println("Max Memory: " + (runtime.maxMemory() / (1024 * 1024)) + " MB");
-        System.out.println("Total Memory: " + (runtime.totalMemory() / (1024 * 1024)) + " MB");
-        System.out.println("Free Memory: " + (runtime.freeMemory() / (1024 * 1024)) + " MB");
+        log.info("Max Memory: {}" , (runtime.maxMemory() / (1024 * 1024)) + " MB");
+        log.info("Total Memory: {}" , (runtime.totalMemory() / (1024 * 1024)) + " MB");
+        log.info("Free Memory: {}" , (runtime.freeMemory() / (1024 * 1024)) + " MB");
         
         Car save = CarRepository.save(car);
 
@@ -296,7 +300,7 @@ public class CarServices {
 
         List<String> collectModel = response.getBody().data.stream()
                                                             .map(car -> car.getModel().toLowerCase())
-                                                                            .collect(Collectors.toList());
+                                                                           .collect(Collectors.toList());
 
         String toLowerCase = model.toLowerCase();
 

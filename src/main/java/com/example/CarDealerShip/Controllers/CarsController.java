@@ -49,8 +49,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/cars") 
-@SessionAttributes({"searchQuary", "searchUserInput", "carForm","authorizedUser","listOfProperties","listOfAcceptedfileExts"})
+@RequestMapping("/cars") //searchQuary
+@SessionAttributes({"showAll", "searchUserInput", "carForm","authorizedUser","listOfProperties","listOfAcceptedfileExts"})
 public class CarsController {
     
     @Autowired
@@ -358,8 +358,9 @@ public class CarsController {
         List<Car> cars = new ArrayList<>();
         queryBasedOnSearch.forEach(q -> cars.add((Car)q)); 
                                            
-        mm.addAttribute("searchQuary", actualSearchInput); // 'searchQuary' is needed when user performs sort cars
-
+//        mm.addAttribute("searchQuary", actualSearchInput); // 'searchQuary' is needed when user performs sort cars
+//        mm.addAttribute("carRecords", cars); 
+        
         String msg = "";
 
         msg =  actualSearchInput.getPrice() > actualSearchInput.getPriceTo() ?  msg.concat("invalid input for price : Price From > Price To-"):msg;
@@ -420,29 +421,34 @@ public class CarsController {
             return refer.contains("home") ? "showListingCarsPage" : "showSearchResultPage";
         }
 
-        if (refer.contains("home")) {
+        List<Car> listOFCarsToBeSorted = (List<Car>) mm.getAttribute("showAll");
+        
+//        if (refer.contains("home")) {
 
-            List<Car> findAllOrderby = CarService.getAllCarsSortBy(name, by);
+//            List<Car> findAllOrderby = CarService.getAllCarsSortBy(name, by);
+            List<Car> findAllOrderby = CarService.getCarsSortBy(listOFCarsToBeSorted, by);
 
-            List<Car> findAll = CarService.getAllCars(name);
+//            List<Car> findAll = CarService.getAllCars(name);
 
-            mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(findAll));
+//            mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(findAll));
+            mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(findAllOrderby));
             mm.addAttribute("showAll", findAllOrderby);
-
+            
+        if (refer.contains("home")) {
             return "showListingCarsPage";
         }
 
-        if (refer.contains("showsearchresult")) {
+//        if (refer.contains("showsearchresult")) {
+             return "showSearchResultPage";
+//            CarSearchDTO q = (CarSearchDTO) mm.getAttribute("searchQuary");
+//
+//            List<Car> searchForCarsOrderBy = CarService.searchForCarsOrderBy(q, by, name);
+//
+//            mm.addAttribute("showAll", searchForCarsOrderBy);
+//            mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(searchForCarsOrderBy));
 
-            CarSearchDTO q = (CarSearchDTO) mm.getAttribute("searchQuary");
-
-            List<Car> searchForCarsOrderBy = CarService.searchForCarsOrderBy(q, by, name);
-
-            mm.addAttribute("showAll", searchForCarsOrderBy);
-            mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(searchForCarsOrderBy));
-
-        }
-        return "showSearchResultPage";
+//        }
+//        return "showSearchResultPage";
     }
 
     public void populateDropDownList(ModelMap mm) {

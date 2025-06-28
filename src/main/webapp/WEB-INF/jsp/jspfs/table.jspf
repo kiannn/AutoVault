@@ -96,8 +96,8 @@
                         <c:choose>
                             <c:when test="${p[0].equals('itemNo') || p[0].equals('make')}"> 
                               <th>
-                                <input type="button" value=&#8593 onclick="changeURL('${p[0]}')" ${style} ${c}/>                                       
-                                <input type="button" value=&#8595 onclick="changeURL('${p[0].concat('-desc')}')" ${style}  ${c}/>                                      
+                                <input type="button" value=&#8595 onclick="changeURL('${p[0]}')" ${style} ${c}/>                                       
+                                <input type="button" value=&#8593 onclick="changeURL('${p[0].concat('-desc')}')" ${style}  ${c}/>                                      
                                 <br>   
                                 <c:if test="${p[0].equals('itemNo')}">Id</c:if>
                                 <c:if test="${p[0].equals('make')}">Make</c:if>

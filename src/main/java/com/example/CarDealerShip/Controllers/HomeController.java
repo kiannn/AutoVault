@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 @RequestMapping("/cars/home")
-@SessionAttributes({"authorizedUser", "listOfProperties", "listOfAcceptedfileExts"})
+@SessionAttributes({"authorizedUser", "listOfProperties", "listOfAcceptedfileExts","showAll"})
 public class HomeController {
 
     @Autowired
@@ -37,7 +37,7 @@ public class HomeController {
         List<Car> findAll = CarServices.getAllCars(name);
 
         mm.addAttribute("showAll", findAll);
-
+//        mm.addAttribute("carRecords", findAll);
         mm.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(findAll));
         System.out.println("com.example.CarDealerShip.Controllers.HomeController.homePage()");
         return "showListingCarsPage";

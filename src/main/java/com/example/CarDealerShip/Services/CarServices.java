@@ -6,6 +6,7 @@ import com.example.CarDealerShip.Models.Documents;
 import com.example.CarDealerShip.Models.Owner;
 import com.example.CarDealerShip.Models.CarSearchDTO;
 import com.example.CarDealerShip.Models.MakeAndModel;
+import com.example.CarDealerShip.Models.Transmissions;
 import com.example.CarDealerShip.Repository.CarRepository;
 import com.example.CarDealerShip.Repository.OwnerRepository;
 import jakarta.transaction.Transactional;
@@ -15,7 +16,9 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,6 +52,42 @@ public class CarServices {
     
     private final Logger log = LoggerFactory.getLogger(getClass());
     
+    class carComparator implements Comparator<Car> {
+
+        public String by;
+
+        public carComparator(String s) {
+
+            by = s;
+        }
+
+        @Override
+        public int compare(Car o1, Car o2) {
+
+            return switch (by) {
+                case "itemNo" ->
+                    o1.getItemNo().compareTo(o2.getItemNo());
+                case "make" ->
+                    o1.getMake().compareTo(o2.getMake());
+                case "model" ->
+                    o1.getModel().compareTo(o2.getModel());
+                case "year" ->
+                    o1.getYear().compareTo(o2.getYear());
+                case "datePurchased" ->
+                    o1.getDatePurchased().compareTo(o2.getDatePurchased());
+                case "price" ->
+                    o1.getPrice().compareTo(o2.getPrice());
+                case "powerTrain" ->
+                    o1.getPowerTrain().compareTo(o2.getPowerTrain());
+                case "condn" ->
+                    o1.getCondn().compareTo(o2.getCondn());
+                default ->
+                    o1.getHorsePower().compareTo(o2.getHorsePower());
+            };
+        }
+
+    }
+
     public Car add_Update(Car car, String Owner, MultipartFile[] filee) throws IOException {
 
         List<Documents> addDocument = DocumentService.retreiveDocument(filee, car);
@@ -106,18 +145,132 @@ public class CarServices {
         return collect;
     }
   
-    public List<Car> getAllCarsSortBy(String username,String by) {
+//    public List<Car> getAllCarsSortBy(String username,String by) {
+    public List<Car> getCarsSortBy(List<Car> car, String by) {
 
-        String suby = by.substring(0, by.indexOf('-') == -1 ? by.length() : by.indexOf('-'));
+        boolean descending = by.contains("-");
+        String suby = by.substring(0, !descending ? by.length() : by.indexOf('-'));
 
-        List<Car> findAllOrderby = CarRepository.findAllOrderby(username,Sort.by(suby));
+//        List<Car> findAllOrderby = CarRepository.findAllOrderby(username,Sort.by(suby));
+        List<Car> nullKeeper = new ArrayList<>();
+        List<Car> copy = new ArrayList<>(Arrays.asList(new Car[car.size()]));
+       
+        
+        Collections.copy(copy, car);
 
+            switch (suby) {
+                case "itemNo" -> {
+                    List<Integer> collect = car.stream().map(c -> c.getItemNo()).collect(Collectors.toList());
+                    boolean equals = alreadySort(collect, descending);
+                    if (equals) {
+                        return car;
+                    }
+                }
+                case "make" -> {
+                    List<String> collect = car.stream().map(c -> c.getMake()).collect(Collectors.toList());
+                    boolean equals = alreadySort(collect, descending);
+                    if (equals) {
+                        return car;
+                    }
+                }
+                case "year" -> {
+                    List<Integer> collect = car.stream().map(c -> c.getYear()).collect(Collectors.toList());
+                    boolean equals = alreadySort(collect, descending);
+                    if (equals) {
+                        return car;
+                    }
+                    car.stream().forEach(e -> {
+                        if (e.getYear() == null) {
+                            nullKeeper.add(e);
+                        }
+                    });
+                    copy.removeIf(e -> e.getYear() == null);
+                }
+                case "datePurchased" -> {
+                    List<LocalDate> collect = car.stream().map(c -> c.getDatePurchased()).collect(Collectors.toList());
+                    boolean equals = alreadySort(collect, descending);
+                    if (equals) {
+                        return car;
+                    }
+                    car.stream().forEach(e -> {
+                        if (e.getDatePurchased() == null) {
+                            nullKeeper.add(e);
+                        }
+                    });
+                    copy.removeIf(e -> e.getDatePurchased() == null);
+                }
+                case "price" -> {
+                    List<Double> collect = car.stream().map(c -> c.getPrice()).collect(Collectors.toList());
+                    boolean equals = alreadySort(collect, descending);
+                    if (equals) {
+                        return car;
+                    }
+                    car.stream().forEach(e -> {
+                        if (e.getPrice() == null) {
+                            nullKeeper.add(e);
+                        }
+                    });
+                    copy.removeIf(e -> e.getPrice() == null);
+                }
+                case "powerTrain" -> {
+                    List<Transmissions> collect = car.stream().map(c -> c.getPowerTrain()).collect(Collectors.toList());
+                    boolean equals = alreadySort(collect, descending);
+                    if (equals) {
+                        return car;
+                    }
+                    car.stream().forEach(e -> {
+                        if (e.getPowerTrain() == null) {
+                            nullKeeper.add(e);
+                        }
+                    });
+                    copy.removeIf(e -> e.getPowerTrain() == null);
+                }
+                case "condn" -> {
+                    List<String> collect = car.stream().map(c -> c.getCondn()).collect(Collectors.toList());
+                    boolean equals = alreadySort(collect, descending);
+                    if (equals) {
+                        return car;
+                    }
+                    car.stream().forEach(e -> {
+                        if (e.getCondn() == null) {
+                            nullKeeper.add(e);
+                        }
+                    });
+                    copy.removeIf(e -> e.getCondn() == null);
+                }
+                case "horsePower" -> {
+                    List<Double> collect = car.stream().map(c -> c.getHorsePower()).collect(Collectors.toList());
+                    boolean equals = alreadySort(collect, descending);
+                    if (equals) {
+                        return car;
+                    }
+                    car.stream().forEach(e -> {
+                        if (e.getHorsePower() == null) {
+                            nullKeeper.add(e);
+                        }
+                    });
+                    copy.removeIf(e -> e.getHorsePower() == null);
+                }
+            }
+   
+        carComparator com = new carComparator(suby);
+        Collections.sort(copy, com);
+        nullKeeper.addAll(copy);
         if (by.endsWith("desc")) {
 
-            Collections.reverse(findAllOrderby);
+            Collections.reverse(nullKeeper);
         }
 
-        return findAllOrderby;
+        return nullKeeper;
+    }
+
+    public boolean alreadySort(List<? extends Comparable> collect, boolean descending) {
+        
+        List<Comparable> copyElement = new ArrayList<>(Arrays.asList(new Comparable[collect.size()]));
+        Collections.copy(copyElement, collect);
+        collect.sort(descending ? Comparator.nullsLast(Comparator.reverseOrder()) : Comparator.nullsFirst(Comparator.naturalOrder()));
+        boolean equals = collect.equals(copyElement);
+        return equals;
     }
 
     public List<Object> searchForCars(CarSearchDTO carFrom, String name) {
@@ -163,34 +316,34 @@ public class CarServices {
 
     }
     
-    public List<Car> searchForCarsOrderBy(CarSearchDTO q, String by, String name) {
-  
-     String suby = by.substring(0, by.indexOf('-') == -1 ? by.length() : by.indexOf('-'));
-         
-     List<Car> queryBasedOnSearchOrderBy = q.getModelList()
-                                               .isEmpty()?
-                                                         CarRepository.queryBasedOnSearchNoModelOrderBy(
-                                                        name,q.getMake(),
-                                                        q.getPrice(), q.getPriceTo(),
-                                                        q.getYear(), q.getYearTo(),
-                                                        q.getDatePurchased(),q.getDatePurchasedTo(), 
-                                                                               Sort.by(suby))
-                                                        : CarRepository.queryBasedOnSearchOrderBy(
-                                                        name, q.getMake(),
-                                                        q.getModelList(),
-                                                        q.getPrice(), q.getPriceTo(),
-                                                        q.getYear(), q.getYearTo(),
-                                                        q.getDatePurchased(), 
-                                                        q.getDatePurchasedTo(),
-                                                        Sort.by(suby));
-
-            if (by.endsWith("desc")) {
-               
-                Collections.reverse(queryBasedOnSearchOrderBy);
-            }
-            
-            return queryBasedOnSearchOrderBy;
-    }
+//    public List<Car> searchForCarsOrderBy(CarSearchDTO q, String by, String name) {
+//  
+//     String suby = by.substring(0, by.indexOf('-') == -1 ? by.length() : by.indexOf('-'));
+//         
+//     List<Car> queryBasedOnSearchOrderBy = q.getModelList()
+//                                               .isEmpty()?
+//                                                         CarRepository.queryBasedOnSearchNoModelOrderBy(
+//                                                        name,q.getMake(),
+//                                                        q.getPrice(), q.getPriceTo(),
+//                                                        q.getYear(), q.getYearTo(),
+//                                                        q.getDatePurchased(),q.getDatePurchasedTo(), 
+//                                                                               Sort.by(suby))
+//                                                        : CarRepository.queryBasedOnSearchOrderBy(
+//                                                        name, q.getMake(),
+//                                                        q.getModelList(),
+//                                                        q.getPrice(), q.getPriceTo(),
+//                                                        q.getYear(), q.getYearTo(),
+//                                                        q.getDatePurchased(), 
+//                                                        q.getDatePurchasedTo(),
+//                                                        Sort.by(suby));
+//
+//            if (by.endsWith("desc")) {
+//               
+//                Collections.reverse(queryBasedOnSearchOrderBy);
+//            }
+//            
+//            return queryBasedOnSearchOrderBy;
+//    }
 
     public List<Boolean> columnEntirelyHasNoValueSort(List<Car> findAll) {
 

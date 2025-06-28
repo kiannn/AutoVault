@@ -30,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/document")
-@SessionAttributes({"authorizedUser","carForm","docSearchInput"})
+@SessionAttributes({"authorizedUser","carForm","docSearchInput", "showAll"})
 public class DocumentController {
 
     @Autowired
@@ -167,25 +167,29 @@ public class DocumentController {
         if (CarServices.numberOfRecors() == 0) {
             return "showSearchResultPage";
         }
-        String suby = by.substring(0, by.indexOf('-') == -1 ? by.length() : by.indexOf('-'));
         
-        DocumentDTO DocumentDTO = (DocumentDTO) mp.getAttribute("docSearchInput");
- 
-        String fileName = DocumentDTO.getName();
-        String isSensitive = DocumentDTO.getCaseSensitive();
-        FileExtension extension = DocumentDTO.getExtension();
+        List<Car> listOFCarsToBeSorted = (List<Car>) mp.getAttribute("showAll");
         
-        String username = (String) mp.getAttribute("authorizedUser");
-         
-        List<Car> searchForDocument = DocumentService.searchForDocumentOrderBy(fileName, extension, isSensitive, username, suby);
+        List<Car> findAllOrderby = CarServices.getCarsSortBy(listOFCarsToBeSorted, by);
+//        String suby = by.substring(0, by.indexOf('-') == -1 ? by.length() : by.indexOf('-'));
+//        
+//        DocumentDTO DocumentDTO = (DocumentDTO) mp.getAttribute("docSearchInput");
+// 
+//        String fileName = DocumentDTO.getName();
+//        String isSensitive = DocumentDTO.getCaseSensitive();
+//        FileExtension extension = DocumentDTO.getExtension();
+//        
+//        String username = (String) mp.getAttribute("authorizedUser");
+//         
+//        List<Car> searchForDocument = DocumentService.searchForDocumentOrderBy(fileName, extension, isSensitive, username, suby);
+//        
+//        if (by.endsWith("desc")) {
+//
+//            Collections.reverse(searchForDocument);
+//        }
         
-        if (by.endsWith("desc")) {
-
-            Collections.reverse(searchForDocument);
-        }
-        
-        mp.addAttribute("showAll", searchForDocument);
-        mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(searchForDocument)); 
+        mp.addAttribute("showAll", findAllOrderby);
+        mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(findAllOrderby)); 
         mp.addAttribute("allExten", EnumSet.range(FileExtension.PDF, FileExtension.ICS));
         mp.addAttribute("any", FileExtension.ANY);
         mp.addAttribute("showTable", "");

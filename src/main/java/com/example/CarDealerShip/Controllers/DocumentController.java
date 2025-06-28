@@ -187,7 +187,7 @@ public class DocumentController {
 //
 //            Collections.reverse(searchForDocument);
 //        }
-        
+        mp.addAttribute("sortMsg", "Sorted by " + by + (!by.contains("-") ? "-ascend" : ""));
         mp.addAttribute("showAll", findAllOrderby);
         mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(findAllOrderby)); 
         mp.addAttribute("allExten", EnumSet.range(FileExtension.PDF, FileExtension.ICS));

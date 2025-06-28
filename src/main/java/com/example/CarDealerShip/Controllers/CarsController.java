@@ -431,6 +431,12 @@ public class CarsController {
 //            List<Car> findAll = CarService.getAllCars(name);
 
 //            mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(findAll));
+//            by.replace("condn", "Condition")
+//              .replace("horsePower", "Horse Power")
+//              .replace("datePurchased", "Purchase Date")
+//              .replace("powerTrain", "Power Train");
+            
+            mm.addAttribute("sortMsg", "Sorted by " + by + (!by.contains("-") ? "-ascend" : ""));
             mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(findAllOrderby));
             mm.addAttribute("showAll", findAllOrderby);
             

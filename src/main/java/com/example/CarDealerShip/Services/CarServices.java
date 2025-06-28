@@ -18,14 +18,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -171,6 +169,19 @@ public class CarServices {
                     if (equals) {
                         return car;
                     }
+                }
+                case "model" -> {
+                    List<String> collect = car.stream().map(c -> c.getModel()).collect(Collectors.toList());
+                    boolean equals = alreadySort(collect, descending);
+                    if (equals) {
+                        return car;
+                    }
+                    car.stream().forEach(e -> {
+                        if (e.getYear() == null) {
+                            nullKeeper.add(e);
+                        }
+                    });
+                    copy.removeIf(e -> e.getYear() == null);
                 }
                 case "year" -> {
                     List<Integer> collect = car.stream().map(c -> c.getYear()).collect(Collectors.toList());

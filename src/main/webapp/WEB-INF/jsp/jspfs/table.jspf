@@ -83,6 +83,11 @@
 <div id="here"></div>
 <form id="myForm">
     <c:set var="allCars" value="${showAll}"/>
+    <c:if test="${sortMsg!=null}"><p style="font-weight: bold; background-color: yellow">${sortMsg.replace("-", " - ")
+                                                                                                  .replace("condn", "Condition")
+                                                                                                  .replace("horsePower", "Horse Power")
+                                                                                                  .replace("datePurchased", "Purchase Date")
+                                                                                                  .replace("powerTrain", "Power Train")}</p></c:if>
     <table class="h5 shadow-lg table-striped" id="mytable">    
 
         <thead>

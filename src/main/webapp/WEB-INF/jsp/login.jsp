@@ -22,7 +22,7 @@
                 }
             }
             .custom-w-div2{
-                width: 75%;
+                width: 60%;
             }
             @media(max-width:768px){
                 .custom-w-div2{

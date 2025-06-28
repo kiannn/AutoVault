@@ -73,18 +73,18 @@ public interface DocumentRepository extends JpaRepository<Documents, Integer>{
       *****************************
     */
     
-    @Query(SEARCH_BY_EXTENSION)
-    public List<Car> searchByExtensionOrderBy(FileExtension extensionName, String userName, Sort sort);
-
-    @Query(SEARCH_BY_NAME_EXTENSION)
-    public  List<Car> searchByNameAndExtensionOrderBy(String docName, String userName, Sort sort);
-    
-    @Query(SEARCH_BY_NAME_EXTENSION_CASE_INSENSITIVE)
-    public  List<Car> searchByNameAndExtensionCaseInSensitiveOrderBy(String docName, String userName, Sort sort);
-
-    @Query(SEARCH_BY_SUB_NAME)
-    public List<Car> searchBySubNameOrderBy(String docName, String userName, Sort sort);
-    
-    @Query(SEARCH_BY_SUB_NAME_CASE_INSENSITIVE)
-    public List<Car> searchBySubNameCaseInSensitiveOrderBy(String docName, String userName, Sort sort);
+//    @Query(SEARCH_BY_EXTENSION)
+//    public List<Car> searchByExtensionOrderBy(FileExtension extensionName, String userName, Sort sort);
+//
+//    @Query(SEARCH_BY_NAME_EXTENSION)
+//    public  List<Car> searchByNameAndExtensionOrderBy(String docName, String userName, Sort sort);
+//    
+//    @Query(SEARCH_BY_NAME_EXTENSION_CASE_INSENSITIVE)
+//    public  List<Car> searchByNameAndExtensionCaseInSensitiveOrderBy(String docName, String userName, Sort sort);
+//
+//    @Query(SEARCH_BY_SUB_NAME)
+//    public List<Car> searchBySubNameOrderBy(String docName, String userName, Sort sort);
+//    
+//    @Query(SEARCH_BY_SUB_NAME_CASE_INSENSITIVE)
+//    public List<Car> searchBySubNameCaseInSensitiveOrderBy(String docName, String userName, Sort sort);
 }

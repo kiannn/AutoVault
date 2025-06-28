@@ -114,29 +114,29 @@ public class DocumentService {
         
         return cars;
     }
-
-    public List<Car> searchForDocumentOrderBy(String name, FileExtension extension, String caseSensitive, String userName, String suby) {
-
-        Sort by = Sort.by(suby);
-        List<Car> cars;
-
-        if (name.trim().isEmpty()) {
-            cars = DocumentRepository.searchByExtensionOrderBy(extension, userName, by);
-            return cars;
-
-        } 
-        else if (extension != null && extension!=FileExtension.ANY) {
-
-            String fileFullName = name.concat(extension.getEx());
-
-            cars = caseSensitive != null ? DocumentRepository.searchByNameAndExtensionOrderBy(fileFullName, userName, by)
-                    : DocumentRepository.searchByNameAndExtensionCaseInSensitiveOrderBy(fileFullName.toLowerCase(), userName, by);
-            return cars;
-        }
-        
-        cars = caseSensitive != null ? DocumentRepository.searchBySubNameOrderBy(name, userName,by)
-                    : DocumentRepository.searchBySubNameCaseInSensitiveOrderBy(name, userName, by);
-        
-        return cars;
-    }
+//
+//    public List<Car> searchForDocumentOrderBy(String name, FileExtension extension, String caseSensitive, String userName, String suby) {
+//
+//        Sort by = Sort.by(suby);
+//        List<Car> cars;
+//
+//        if (name.trim().isEmpty()) {
+//            cars = DocumentRepository.searchByExtensionOrderBy(extension, userName, by);
+//            return cars;
+//
+//        } 
+//        else if (extension != null && extension!=FileExtension.ANY) {
+//
+//            String fileFullName = name.concat(extension.getEx());
+//
+//            cars = caseSensitive != null ? DocumentRepository.searchByNameAndExtensionOrderBy(fileFullName, userName, by)
+//                    : DocumentRepository.searchByNameAndExtensionCaseInSensitiveOrderBy(fileFullName.toLowerCase(), userName, by);
+//            return cars;
+//        }
+//        
+//        cars = caseSensitive != null ? DocumentRepository.searchBySubNameOrderBy(name, userName,by)
+//                    : DocumentRepository.searchBySubNameCaseInSensitiveOrderBy(name, userName, by);
+//        
+//        return cars;
+//    }
 }

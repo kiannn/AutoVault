@@ -154,8 +154,7 @@ public class CarServices {
 //        List<Car> findAllOrderby = CarRepository.findAllOrderby(username,Sort.by(suby));
         List<Car> nullKeeper = new ArrayList<>();
         List<Car> copy = new ArrayList<>(Arrays.asList(new Car[car.size()]));
-       
-        
+
         Collections.copy(copy, car);
 
             switch (suby) {

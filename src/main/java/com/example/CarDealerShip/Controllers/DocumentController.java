@@ -52,7 +52,7 @@ public class DocumentController {
        boolean reject = referer==null || (!referer.contains("home") && 
                                            !referer.contains("updatepage")&& 
                                            !referer.contains("showsearchresult")&& 
-                                           !referer.contains("document/searchdocs"));
+                                           !referer.contains("document"));
        
        boolean validFileId = DocumentService.isValidDocumentId(name, id);
   

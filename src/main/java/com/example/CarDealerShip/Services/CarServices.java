@@ -177,11 +177,11 @@ public class CarServices {
                         return car;
                     }
                     car.stream().forEach(e -> {
-                        if (e.getYear() == null) {
+                        if (e.getModel() == null) {
                             nullKeeper.add(e);
                         }
                     });
-                    copy.removeIf(e -> e.getYear() == null);
+                    copy.removeIf(e -> e.getModel() == null);
                 }
                 case "year" -> {
                     List<Integer> collect = car.stream().map(c -> c.getYear()).collect(Collectors.toList());

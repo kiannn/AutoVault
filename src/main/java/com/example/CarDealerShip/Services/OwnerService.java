@@ -29,9 +29,6 @@ public class OwnerService {
     @Autowired
     OwnerRepository OwnerRepository;
 
-    @Autowired
-    AuthoritiesRepository AuthoritiesRepository;
-
     public void createNewUSer(Owner Owner) {
         String encode = new BCryptPasswordEncoder().encode(Owner.getCredentials().getPassword());
 

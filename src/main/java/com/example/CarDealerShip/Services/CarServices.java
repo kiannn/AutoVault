@@ -44,10 +44,6 @@ public class CarServices {
     @Autowired
     WebClient client;
 
-    String[] att = new String[]{"model", "year", "datePurchased",
-                                    "price", "powerTrain",
-                                    "condn", "horsePower"};
-    
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     class carComparator implements Comparator<Car> {
@@ -324,37 +320,12 @@ public class CarServices {
 
     }
     
-//    public List<Car> searchForCarsOrderBy(CarSearchDTO q, String by, String name) {
-//  
-//     String suby = by.substring(0, by.indexOf('-') == -1 ? by.length() : by.indexOf('-'));
-//         
-//     List<Car> queryBasedOnSearchOrderBy = q.getModelList()
-//                                               .isEmpty()?
-//                                                         CarRepository.queryBasedOnSearchNoModelOrderBy(
-//                                                        name,q.getMake(),
-//                                                        q.getPrice(), q.getPriceTo(),
-//                                                        q.getYear(), q.getYearTo(),
-//                                                        q.getDatePurchased(),q.getDatePurchasedTo(), 
-//                                                                               Sort.by(suby))
-//                                                        : CarRepository.queryBasedOnSearchOrderBy(
-//                                                        name, q.getMake(),
-//                                                        q.getModelList(),
-//                                                        q.getPrice(), q.getPriceTo(),
-//                                                        q.getYear(), q.getYearTo(),
-//                                                        q.getDatePurchased(), 
-//                                                        q.getDatePurchasedTo(),
-//                                                        Sort.by(suby));
-//
-//            if (by.endsWith("desc")) {
-//               
-//                Collections.reverse(queryBasedOnSearchOrderBy);
-//            }
-//            
-//            return queryBasedOnSearchOrderBy;
-//    }
-
     public List<Boolean> columnEntirelyHasNoValueSort(List<Car> findAll) {
-
+        
+        String[] att = new String[]{"model", "year", "datePurchased",
+            "price", "powerTrain",
+            "condn", "horsePower"};
+        
         if (findAll.isEmpty()) {
             return Collections.nCopies(att.length, false);
         }
@@ -461,7 +432,7 @@ public class CarServices {
 
         List<String> collectModel = response.getBody().data.stream()
                                                             .map(car -> car.getModel().toLowerCase())
-                                                                           .collect(Collectors.toList());
+                                                               .collect(Collectors.toList());
 
         String toLowerCase = model.toLowerCase();
 

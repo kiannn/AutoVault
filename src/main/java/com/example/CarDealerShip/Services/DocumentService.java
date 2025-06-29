@@ -6,13 +6,11 @@ import com.example.CarDealerShip.Models.Documents;
 import com.example.CarDealerShip.Models.FileExtension;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.CarDealerShip.Repository.DocumentRepository;
 import java.util.ArrayList;
-import org.springframework.data.domain.Sort;
 
 @Service
 public class DocumentService {

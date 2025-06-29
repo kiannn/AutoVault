@@ -142,14 +142,12 @@ public class CarServices {
         }
         return collect;
     }
-  
-//    public List<Car> getAllCarsSortBy(String username,String by) {
+
     public List<Car> getCarsSortBy(List<Car> car, String by) {
 
         boolean descending = by.contains("-");
         String suby = by.substring(0, !descending ? by.length() : by.indexOf('-'));
 
-//        List<Car> findAllOrderby = CarRepository.findAllOrderby(username,Sort.by(suby));
         List<Car> nullKeeper = new ArrayList<>();
         List<Car> copy = new ArrayList<>(Arrays.asList(new Car[car.size()]));
 

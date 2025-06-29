@@ -4,14 +4,11 @@ import com.example.CarDealerShip.Models.Car;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface CarRepository extends JpaRepository<Car, Integer> {
-
-    final String QUARYALL ="SELECT car FROM availableCars car WHERE car.owner.username = :username";
     
     final String QUARY =  """
                              SELECT car FROM availableCars car WHERE car.owner.username = :username 
@@ -21,7 +18,6 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
                              AND (car.year IS NULL OR car.year BETWEEN :yearFrom and :yearTo)
                              AND (car.datePurchased IS NULL OR car.datePurchased BETWEEN :dateFrom and :dateTo)
                         """;
-
     
     final String QUARY_NO_MODEL = """
                                      SELECT car FROM availableCars car WHERE car.owner.username = :username 
@@ -30,7 +26,6 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
                                      AND (car.year is null OR car.year BETWEEN :yearFrom and :yearTo)
                                      AND (car.datePurchased is null OR car.datePurchased BETWEEN :dateFrom and :dateTo)
                                 """; 
-    
     
     @Query("SELECT min(price) FROM availableCars")
     public Double findPriceMin();
@@ -49,30 +44,12 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 
     @Query("SELECT max(datePurchased) FROM availableCars")
     public LocalDate findDateMax();
-
-    
-    @Query(QUARYALL)  
-    public List<Car> findAllOrderby(String username, Sort sort);
      
     @Query(QUARY)
     public List<Car> queryBasedOnSearch(@Param("username")String user, String make, List<String> modelList,
                                         Double priceFrom, Double priceTo,
                                         Integer yearFrom, Integer yearTo,
                                         LocalDate dateFrom, LocalDate dateTo);
-
-    @Query(QUARY)
-    public List<Car> queryBasedOnSearchOrderBy(@Param("username")String user, String make, List<String> modelList,
-                                               Double priceFrom, Double priceTo,
-                                               Integer yearFrom, Integer yearTo,
-                                               LocalDate dateFrom, LocalDate dateTo,
-                                               Sort sort);
-
-    @Query(QUARY_NO_MODEL)
-    public List<Car> queryBasedOnSearchNoModelOrderBy(@Param("username")String user,String make, 
-                                                      Double priceFrom, Double priceTo, 
-                                                      Integer yearFrom, Integer yearTo, 
-                                                      LocalDate dateFrom, LocalDate dateTo, 
-                                                      Sort by);
     
     @Query(QUARY_NO_MODEL)
     public List<Car> queryBasedOnSearchNoModel(@Param("username")String user,String make, 

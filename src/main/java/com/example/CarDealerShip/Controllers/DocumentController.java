@@ -10,7 +10,6 @@ import com.example.CarDealerShip.Services.DocumentService;
 import com.example.CarDealerShip.Services.OwnerService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/document")
-@SessionAttributes({"authorizedUser","carForm","docSearchInput", "showAll"})
+@SessionAttributes({"authorizedUser","carForm","docSearchInput", "showAll","listOfProperties"})
 public class DocumentController {
 
     @Autowired
@@ -142,7 +141,7 @@ public class DocumentController {
         String username = (String) mp.getAttribute("authorizedUser");
            
         List<Car> searchForDocumentResult = DocumentService.searchForDocument(name, extension,isIsSensitive ,username);
-
+System.out.println("-->\n"+mp.containsAttribute("listOfProperties"));
         mp.addAttribute("showAll", searchForDocumentResult);
         mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(searchForDocumentResult)); 
         mp.addAttribute("showTable", "");
@@ -171,22 +170,7 @@ public class DocumentController {
         List<Car> listOFCarsToBeSorted = (List<Car>) mp.getAttribute("showAll");
         
         List<Car> findAllOrderby = CarServices.getCarsSortBy(listOFCarsToBeSorted, by);
-//        String suby = by.substring(0, by.indexOf('-') == -1 ? by.length() : by.indexOf('-'));
-//        
-//        DocumentDTO DocumentDTO = (DocumentDTO) mp.getAttribute("docSearchInput");
-// 
-//        String fileName = DocumentDTO.getName();
-//        String isSensitive = DocumentDTO.getCaseSensitive();
-//        FileExtension extension = DocumentDTO.getExtension();
-//        
-//        String username = (String) mp.getAttribute("authorizedUser");
-//         
-//        List<Car> searchForDocument = DocumentService.searchForDocumentOrderBy(fileName, extension, isSensitive, username, suby);
-//        
-//        if (by.endsWith("desc")) {
-//
-//            Collections.reverse(searchForDocument);
-//        }
+
         mp.addAttribute("sortMsg", "Sorted by " + by + (!by.contains("-") ? "-ascend" : ""));
         mp.addAttribute("showAll", findAllOrderby);
         mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(findAllOrderby)); 

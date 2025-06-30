@@ -141,9 +141,10 @@ public class DocumentController {
         String username = (String) mp.getAttribute("authorizedUser");
            
         List<Car> searchForDocumentResult = DocumentService.searchForDocument(name, extension,isIsSensitive ,username);
-System.out.println("-->\n"+mp.containsAttribute("listOfProperties"));
+
         mp.addAttribute("showAll", searchForDocumentResult);
-        mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(searchForDocumentResult)); 
+        List<String[]> listOfProperties = (List<String[]>) mp.getAttribute("listOfProperties");
+        mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(searchForDocumentResult, listOfProperties)); 
         mp.addAttribute("showTable", "");
         
         return "documnetSearchPage";
@@ -173,7 +174,10 @@ System.out.println("-->\n"+mp.containsAttribute("listOfProperties"));
 
         mp.addAttribute("sortMsg", "Sorted by " + by + (!by.contains("-") ? "-ascend" : ""));
         mp.addAttribute("showAll", findAllOrderby);
-        mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(findAllOrderby)); 
+        
+        List<String[]> listOfProperties = (List<String[]>) mp.getAttribute("listOfProperties");
+        
+        mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(findAllOrderby, listOfProperties)); 
         mp.addAttribute("allExten", EnumSet.range(FileExtension.PDF, FileExtension.ICS));
         mp.addAttribute("any", FileExtension.ANY);
         mp.addAttribute("showTable", "");

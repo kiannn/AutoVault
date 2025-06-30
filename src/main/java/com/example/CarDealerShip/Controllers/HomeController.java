@@ -37,8 +37,11 @@ public class HomeController {
         List<Car> findAll = CarServices.getAllCars(name);
 
         mm.addAttribute("showAll", findAll);
-
-        mm.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(findAll));
+        
+        List<String[]> listOfProperties = (List<String[]>) mm.getAttribute("listOfProperties");
+        
+        mm.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(findAll, listOfProperties));
+        
         System.out.println("com.example.CarDealerShip.Controllers.HomeController.homePage()");
         return "showListingCarsPage";
 
@@ -55,14 +58,14 @@ public class HomeController {
     public List<String[]> listOfProperties(){
     
      List<String[]>listOfProperties = List.of(new String[]{"itemNo"},
-                                             new String[]{"make"},
-                                             new String[]{"model","0"}, 
-                                             new String[]{"year","1"},
-                                             new String[]{"datePurchased","2"},
-                                             new String[]{"price","3"},
-                                             new String[]{"powerTrain","4"},
-                                             new String[]{"condn","5"},
-                                             new String[]{"horsePower","6"}
+                                             new String[]{"make","0"},
+                                             new String[]{"model","1"}, 
+                                             new String[]{"year","2"},
+                                             new String[]{"datePurchased","3"},
+                                             new String[]{"price","4"},
+                                             new String[]{"powerTrain","5"},
+                                             new String[]{"condn","6"},
+                                             new String[]{"horsePower","7"}
                                            );
     
         return listOfProperties;

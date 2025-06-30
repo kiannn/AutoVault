@@ -168,6 +168,7 @@ public class CarServices {
                     List<String> collect = car.stream().map(c -> c.getModel()).collect(Collectors.toList());
                     boolean equals = alreadySort(collect, descending);
                     if (equals) {
+                        System.out.println("equals = "+equals);
                         return car;
                     }
                     car.stream().forEach(e -> {
@@ -319,41 +320,39 @@ public class CarServices {
         return resultAndsearchInput;
 
     }
-    
-    public List<Boolean> columnEntirelyHasNoValueSort(List<Car> findAll) {
-        
-        String[] att = new String[]{"model", "year", "datePurchased",
-            "price", "powerTrain",
-            "condn", "horsePower"};
-        
-        if (findAll.isEmpty()) {
-            return Collections.nCopies(att.length, false);
+
+    public List<Boolean> columnEntirelyHasNoValueSort(List<Car> findAll, List<String[]> listOfProperties) {
+
+        if (findAll.size() < 2) {
+            return Collections.nCopies(listOfProperties.size(), false);
         }
-        Stream<Car> stream;
+        Stream<Car> stream = null;
 
         List<? extends Comparable> map = null;
         List<Boolean> noValue = new ArrayList<>();
+        List<String[]> ptoperties = listOfProperties.subList(1, listOfProperties.size());
 
-        for (String suby : att) {
-
+        for (String[] suby : ptoperties) {
             stream = findAll.stream();
 
-            switch (suby) {
+            switch (suby[0]) {
 
+                case "make" ->
+                    map = stream.map(a -> a.getMake()).collect(Collectors.toList());
                 case "model" ->
-                    map = stream.map(a -> a.getModel()).toList();
+                    map = stream.map(a -> a.getModel()).collect(Collectors.toList());
                 case "year" ->
-                    map = stream.map(a -> a.getYear()).toList();
+                    map = stream.map(a -> a.getYear()).collect(Collectors.toList());
                 case "datePurchased" ->
-                    map = stream.map(a -> a.getDatePurchased()).toList();
+                    map = stream.map(a -> a.getDatePurchased()).collect(Collectors.toList());
                 case "price" ->
-                    map = stream.map(a -> a.getPrice()).toList();
+                    map = stream.map(a -> a.getPrice()).collect(Collectors.toList());
                 case "powerTrain" ->
-                    map = stream.map(a -> a.getPowerTrain()).toList();
+                    map = stream.map(a -> a.getPowerTrain()).collect(Collectors.toList());
                 case "condn" ->
-                    map = stream.map(a -> a.getCondn()).toList();
+                    map = stream.map(a -> a.getCondn()).collect(Collectors.toList());
                 case "horsePower" ->
-                    map = stream.map(a -> a.getHorsePower()).toList();
+                    map = stream.map(a -> a.getHorsePower()).collect(Collectors.toList());
 
             }
 

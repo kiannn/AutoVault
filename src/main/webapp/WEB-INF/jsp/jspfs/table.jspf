@@ -99,21 +99,23 @@
             <tr>               
                     <c:forEach var="p" items="${listOfProperties}">                       
                         <c:choose>
-                            <c:when test="${p[0].equals('itemNo') || p[0].equals('make')}"> 
+                            <c:when test="${p[0].equals('itemNo')}"> 
                               <th>
                                 <input type="button" value=&#8595 onclick="changeURL('${p[0]}')" ${style} ${c}/>                                       
                                 <input type="button" value=&#8593 onclick="changeURL('${p[0].concat('-desc')}')" ${style}  ${c}/>                                      
                                 <br>   
-                                <c:if test="${p[0].equals('itemNo')}">Id</c:if>
-                                <c:if test="${p[0].equals('make')}">Make</c:if>
+                                 Id
                               </th>
                             </c:when>
                             <c:otherwise>
                                 <th>
-                                    <input type="button" value="&#8595" <c:if test="${noValue.get(p[1])}">onclick="changeURL('${p[0]}')"</c:if>${style} ${c}/>   
-                                    <input type="button" value="&#8593" <c:if test="${noValue.get(p[1])}">onclick="changeURL('${p[0].concat('-desc')}')"</c:if>${style} ${c}/>
+                                    <input type="button" value="&#8595" <c:if test="${noValue.get(p[1])}">onclick="changeURL('${p[0]}')"</c:if> ${style} ${c}/>   
+                                    <input type="button" value="&#8593" <c:if test="${noValue.get(p[1])}">onclick="changeURL('${p[0].concat('-desc')}')" </c:if> ${style} ${c}/>
                                     <br>
-                                    <c:choose>                   
+                                    <c:choose>   
+                                        <c:when test="${p[0].equals('make')}">
+                                            <c:out value="Make"/>  
+                                        </c:when>
                                         <c:when test="${p[0].equals('datePurchased')}">
                                             <c:out value="Purchase Date"/>  
                                         </c:when>

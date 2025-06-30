@@ -365,7 +365,10 @@ public class CarsController {
 
         mm.addAttribute("resultMsg", msg);
         mm.addAttribute("showAll", cars);
-        mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(cars));
+        
+        List<String[]> listOfProperties = (List<String[]>) mm.getAttribute("listOfProperties");
+        
+        mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(cars, listOfProperties));
         
         return "showSearchResultPage";
     }
@@ -420,8 +423,9 @@ public class CarsController {
 
         List<Car> findAllOrderby = CarService.getCarsSortBy(listOFCarsToBeSorted, by);
 
+        List<String[]> listOfProperties = (List<String[]>) mm.getAttribute("listOfProperties");
         mm.addAttribute("sortMsg", "Sorted by " + by + (!by.contains("-") ? "-ascend" : ""));
-        mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(findAllOrderby));
+        mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(findAllOrderby, listOfProperties));
         mm.addAttribute("showAll", findAllOrderby);
 
         if (refer.contains("home")) {

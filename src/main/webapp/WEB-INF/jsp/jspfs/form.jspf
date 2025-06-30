@@ -1,4 +1,3 @@
-
 <form:form method ="Post" modelAttribute="carForm" enctype="multipart/form-data" id="fo">
     <style>
     .general{

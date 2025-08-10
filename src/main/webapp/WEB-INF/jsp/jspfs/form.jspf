@@ -145,7 +145,8 @@
                                 </tr>
                             </thead>
                         </c:if>
-                        <c:forEach  var="img" items="${carFormDocs.getFirst().docId  == null? null :carFormDocs}">
+                        <c:set var="noDocs" value="${carFormDocs.getFirst().docId  == null}"/>
+                        <c:forEach  var="img" items="${noDocs ? null :carFormDocs}">
                                 <tr>
                                     <td style="padding-bottom: 10px; padding-left: 5px">
                                         <a href="/document/download?id=${img.docId}" style="text-decoration: underline" download="${img.docName}">${img.docName}</a>
@@ -156,7 +157,7 @@
                                 </tr>
                         </c:forEach>
 
-                        <c:forEach var="dl" begin="1" end="${5-carFormDocs.size()}">
+                        <c:forEach var="dl" begin="1" end="${5-(carFormDocs.size()==1 && noDocs ? 0 : carFormDocs.size())}">
                                 <tr>
                                     <td colspan="2">                            
                                         <input style="width:350px;" type ="file" name ="filee" id="upload" onchange="checkFileSize(this, 'tableEdit')" class="btn btn-secondary"/>

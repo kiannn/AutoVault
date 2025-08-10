@@ -2,9 +2,11 @@ package com.example.CarDealerShip.Services;
 
 import com.example.CarDealerShip.Models.NHTSAResponse;
 import com.example.CarDealerShip.Models.Car;
+import com.example.CarDealerShip.Models.CarMakeModelDTO;
+import com.example.CarDealerShip.Models.CarWithDocsDTO;
 import com.example.CarDealerShip.Models.Documents;
-import com.example.CarDealerShip.Models.Owner;
 import com.example.CarDealerShip.Models.CarSearchDTO;
+import com.example.CarDealerShip.Models.CarStatsDTO;
 import com.example.CarDealerShip.Models.MakeAndModel;
 import com.example.CarDealerShip.Models.Transmissions;
 import com.example.CarDealerShip.Repository.CarRepository;
@@ -15,10 +17,11 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -46,17 +49,17 @@ public class CarServices {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    class carComparator implements Comparator<Car> {
+    class CarComparator implements Comparator<CarWithDocsDTO> {
 
         public String by;
 
-        public carComparator(String s) {
+        public CarComparator(String s) {
 
             by = s;
         }
 
         @Override
-        public int compare(Car o1, Car o2) {
+        public int compare(CarWithDocsDTO o1, CarWithDocsDTO o2) {
 
             return switch (by) {
                 case "itemNo" ->
@@ -81,71 +84,83 @@ public class CarServices {
         }
 
     }
+ 
+    @Transactional // MUST be present, otherwise at line CarServices.java:112 when we addAll the newly uploaded documents we get: org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: com.example.CarDealerShip.Models.Car.docs: could not initialize proxy - no Session
+    public Integer add_Update(CarWithDocsDTO carDTO, String Owner, MultipartFile[] filee) throws IOException {
 
-    public Car add_Update(Car car, String Owner, MultipartFile[] filee) throws IOException {
-
-        List<Documents> addDocument = DocumentService.retreiveDocument(filee, car);
-
-        if (car.getItemNo() == null) {
-
-            Owner findById = OwnerRepository.findById(Owner).get();
-            car.setOwner(findById);
-            car.setDocs(addDocument);
-
-        } else {
-
-            car.getDocs().addAll(addDocument);
-        }
-
-        Runtime runtime = Runtime.getRuntime();
-        log.info("Max Memory: {}" , (runtime.maxMemory() / (1024 * 1024)) + " MB");
-        log.info("Total Memory: {}" , (runtime.totalMemory() / (1024 * 1024)) + " MB");
-        log.info("Free Memory: {}" , (runtime.freeMemory() / (1024 * 1024)) + " MB");
+        Car car = Car.builder()
+                        .make(carDTO.getMake())
+                        .model(carDTO.getModel())
+                        .year(carDTO.getYear())
+                        .datePurchased(carDTO.getDatePurchased())
+                        .price(carDTO.getPrice())
+                        .powerTrain(carDTO.getPowerTrain())
+                        .condn(carDTO.getCondn())
+                        .horsePower(carDTO.getHorsePower())
+                        .build();    
         
+        car.setOwner(OwnerRepository.findById(Owner).get());
+        
+        List<Documents> addDocument = DocumentService.retreiveDocument(filee, car); 
+        
+        Integer id = carDTO.getItemNo();
+        if (id == null) {
+            car.setDocs(addDocument);
+        } else {
+            car.setItemNo(id); 
+            List<Documents> docs = CarRepository.findById(id).get().getDocs();
+            docs.addAll(addDocument);
+            car.setDocs(docs);
+        }
         Car save = CarRepository.save(car);
+        
+        Runtime runtime = Runtime.getRuntime();
+        log.info("Max Memory: {}", (runtime.maxMemory() / (1024 * 1024)) + " MB");
+        log.info("Total Memory: {}", (runtime.totalMemory() / (1024 * 1024)) + " MB");
+        log.info("Free Memory: {}", (runtime.freeMemory() / (1024 * 1024)) + " MB");
 
-        return save;
-    }
-
-    public Car add_Update_NoFile(Car car, String Owner) throws IOException {
-
-        Owner findById = OwnerRepository.findById(Owner).get();
-        car.setOwner(findById);
-
-        Car save = CarRepository.save(car);
-
-        return save;
+        return save.getItemNo();
     }
 
     public void deleteSelectedCars(List<Integer> asList) {
 
        CarRepository.deleteAllById(asList); 
     }
-
-    public Optional<Car> findCarById(int id) {
-        Optional<Car> findById = CarRepository.findById(id);
-        
+    
+    public List<CarWithDocsDTO> findCarById(int id) {
+        List<CarWithDocsDTO> findById = CarRepository.findCarById(id);
+        return findById;
+    }
+    
+    public CarMakeModelDTO findCar_MakeAndModel_ById(int id) {
+        CarMakeModelDTO findById = CarRepository.findCar_MakeAndModel_ById(id);
+        return findById;
+    }
+    
+    public CarStatsDTO findCar_Stats_ById(int id) {
+        CarStatsDTO findById = CarRepository.findCar_Stats_ById(id);
         return findById;
     }
     
     @Transactional
-    public List<Car> getAllCars(String authorizedUser) {
+    public List<CarWithDocsDTO> getAllCars(String authorizedUser) {
 
-        List<Car> collect = null;
-        try (Stream<Car> findByOwnerUsername = CarRepository.findByOwnerUsername(authorizedUser)) {
+        List<CarWithDocsDTO> collect = null;
+        try (Stream<CarWithDocsDTO> findByOwnerUsername = CarRepository.findByOwnerUsername(authorizedUser)) {
             collect = findByOwnerUsername.collect(Collectors.toList());
         } catch (Exception e) {
+            System.out.println("catch -> "+collect);
         }
         return collect;
     }
 
-    public List<Car> getCarsSortBy(List<Car> car, String by) {
+    public List<CarWithDocsDTO> getCarsSortBy(List<CarWithDocsDTO> car, String by) {
 
         boolean descending = by.contains("-");
         String suby = by.substring(0, !descending ? by.length() : by.indexOf('-'));
 
-        List<Car> nullKeeper = new ArrayList<>();
-        List<Car> copy = new ArrayList<>(Arrays.asList(new Car[car.size()]));
+        List<CarWithDocsDTO> nullKeeper = new ArrayList<>();
+        List<CarWithDocsDTO> copy = new ArrayList<>(Arrays.asList(new CarWithDocsDTO[car.size()]));
 
         Collections.copy(copy, car);
 
@@ -168,7 +183,6 @@ public class CarServices {
                     List<String> collect = car.stream().map(c -> c.getModel()).collect(Collectors.toList());
                     boolean equals = alreadySort(collect, descending);
                     if (equals) {
-                        System.out.println("equals = "+equals);
                         return car;
                     }
                     car.stream().forEach(e -> {
@@ -258,7 +272,7 @@ public class CarServices {
                 }
             }
    
-        carComparator com = new carComparator(suby);
+        CarComparator com = new CarComparator(suby);
         Collections.sort(copy, com);
         nullKeeper.addAll(copy);
         if (by.endsWith("desc")) {
@@ -292,7 +306,7 @@ public class CarServices {
         LocalDate dateFrom = carFrom.getDatePurchased() == null || carFrom.getDatePurchased().isBefore(of) ? of : carFrom.getDatePurchased();
         LocalDate dateTo = carFrom.getDatePurchasedTo() == null || carFrom.getDatePurchasedTo().isAfter(plus)? plus : carFrom.getDatePurchasedTo();
 
-        List<Car> result = carFrom.getModelList().isEmpty() ? CarRepository.queryBasedOnSearchNoModel(name,carFrom.getMake(),                                                    
+        List<CarWithDocsDTO> result = carFrom.getModelList().isEmpty() ? CarRepository.queryBasedOnSearchNoModel(name,carFrom.getMake(),                                                    
                                                                                                 priceFrom, priceTo,
                                                                                                 yearFrom, yearTo,
                                                                                                 dateFrom, dateTo)
@@ -302,7 +316,7 @@ public class CarServices {
                                                                                 priceFrom, priceTo,
                                                                                 yearFrom, yearTo,
                                                                                 dateFrom, dateTo);
-
+        
         CarSearchDTO actualSearchInput = CarSearchDTO.builder()
                 .make(carFrom.getMake())
                 .modelList(carFrom.getModelList())
@@ -321,12 +335,12 @@ public class CarServices {
 
     }
 
-    public List<Boolean> columnEntirelyHasNoValueSort(List<Car> findAll, List<String[]> listOfProperties) {
+    public List<Boolean> columnEntirelyHasNoValueSort(List<CarWithDocsDTO> findAll, List<String[]> listOfProperties) {
 
         if (findAll.size() < 2) {
             return Collections.nCopies(listOfProperties.size(), false);
         }
-        Stream<Car> stream = null;
+        Stream<CarWithDocsDTO> stream = null;
 
         List<? extends Comparable> map = null;
         List<Boolean> noValue = new ArrayList<>();
@@ -363,21 +377,21 @@ public class CarServices {
         return noValue;
     }
 
-    public void adjustModelMakeList(List<MakeAndModel> availableMakesAndModels, Car car) {
+    public void adjustModelMakeList(List<MakeAndModel> availableMakesAndModels, CarWithDocsDTO carDTO) {
 
         List<String> keysLowerCaseMake = availableMakesAndModels.stream().map(a -> a.getAvailableMake().toLowerCase()).toList();
-        String toLowerCaseMake = car.getMake().trim().toLowerCase();
+        String toLowerCaseMake = carDTO.getMake().trim().toLowerCase();
 
         List<String> keysLowerCaseModel = availableMakesAndModels.stream().map(a -> a.getAvailableModel().toLowerCase()).toList();
-        String toLowerCaseModel = car.getModel().trim().toLowerCase();
+        String toLowerCaseModel = carDTO.getModel().trim().toLowerCase();
 
         boolean containsModel = keysLowerCaseModel.contains(toLowerCaseModel);
         boolean containsMake = keysLowerCaseMake.contains(toLowerCaseMake);
 
         if (containsModel && containsMake) {
 
-            car.setMake(availableMakesAndModels.get(keysLowerCaseMake.indexOf(toLowerCaseMake)).getAvailableMake());
-            car.setModel(availableMakesAndModels.get(keysLowerCaseModel.indexOf(toLowerCaseModel)).getAvailableModel());
+            carDTO.setMake(availableMakesAndModels.get(keysLowerCaseMake.indexOf(toLowerCaseMake)).getAvailableMake());
+            carDTO.setModel(availableMakesAndModels.get(keysLowerCaseModel.indexOf(toLowerCaseModel)).getAvailableModel());
 
         } else if (containsMake && !containsModel) {
 
@@ -386,18 +400,18 @@ public class CarServices {
             int lastIdx = keysLowerCaseMake.lastIndexOf(toLowerCaseMake);
 
             c.setAvailableMake(availableMakesAndModels.get(lastIdx).getAvailableMake());
-            c.setAvailableModel(car.getModel().trim());
+            c.setAvailableModel(carDTO.getModel().trim());
 
-            car.setMake(availableMakesAndModels.get(lastIdx).getAvailableMake());
-            car.setModel(car.getModel().trim());
+            carDTO.setMake(availableMakesAndModels.get(lastIdx).getAvailableMake());
+            carDTO.setModel(carDTO.getModel().trim());
 
             availableMakesAndModels.add(lastIdx + 1, c);
 
         } else {
 
             MakeAndModel c = new MakeAndModel();
-            c.setAvailableMake(car.getMake().trim());
-            c.setAvailableModel(car.getModel().trim());
+            c.setAvailableMake(carDTO.getMake().trim());
+            c.setAvailableModel(carDTO.getModel().trim());
 
             availableMakesAndModels.add(c);
         }
@@ -439,7 +453,7 @@ public class CarServices {
 
             if (s.contains(toLowerCase)) {
 
-                List<Car> cars = response.getBody().data;
+                List<CarMakeModelDTO> cars = response.getBody().data;
                 int i = collectModel.indexOf(s);
 
                 return List.of(cars.getFirst().getMake(), cars.get(i).getModel());
@@ -449,6 +463,15 @@ public class CarServices {
         return List.of(make);
 
     }
-    
+
+    public Collection<List<CarWithDocsDTO>> arrangDataForView(List<CarWithDocsDTO> cars) {
+        
+        Collection<List<CarWithDocsDTO>> values = cars.stream()
+                .collect(Collectors.groupingBy(c -> c.getItemNo(), () -> new LinkedHashMap<>(), Collectors.toList()))
+                .values();
+        
+        return values;
+    }
+
 
 }

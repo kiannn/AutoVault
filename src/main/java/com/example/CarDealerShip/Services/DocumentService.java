@@ -2,6 +2,7 @@
 package com.example.CarDealerShip.Services;
 
 import com.example.CarDealerShip.Models.Car;
+import com.example.CarDealerShip.Models.CarWithDocsDTO;
 import com.example.CarDealerShip.Models.Documents;
 import com.example.CarDealerShip.Models.FileExtension;
 import java.io.IOException;
@@ -22,7 +23,11 @@ public class DocumentService {
     CompressionService CompressionService;
             
     public List<Documents> retreiveDocument(MultipartFile[] documents, Car car) throws IOException {
+
         List<Documents> DocsList = new ArrayList<>();
+        if (documents == null) {
+            return DocsList;
+        }
         
         for (MultipartFile file : documents) {
  
@@ -92,22 +97,22 @@ public class DocumentService {
         return findByCarItemNo;
     }
 
-    public List<Car> searchForDocument(String name, FileExtension extension, String caseSensitive, String username) {
+    public List<CarWithDocsDTO> searchForDocument(String name, FileExtension extension, String caseSensitive, String username) {
 
         if (name.trim().isEmpty()) {
-            List<Car> cars = DocumentRepository.searchByExtension(extension, username);
+            List<CarWithDocsDTO> cars = DocumentRepository.searchByExtension(extension, username);
 
             return cars;
         } 
         if(extension!=null && extension!=FileExtension.ANY) {
 
             String fileFullName = name.concat(extension.getEx());
-            List<Car> cars = caseSensitive != null ? DocumentRepository.searchByNameAndExtension(fileFullName, username)
+            List<CarWithDocsDTO> cars = caseSensitive != null ? DocumentRepository.searchByNameAndExtension(fileFullName, username)
                     : DocumentRepository.searchByNameAndExtensionCaseInSensitive(fileFullName.toLowerCase(), username);
             return cars;
         }
 
-        List<Car> cars = caseSensitive != null ? DocumentRepository.searchBySubName(name, username)
+        List<CarWithDocsDTO> cars = caseSensitive != null ? DocumentRepository.searchBySubName(name, username)
                     : DocumentRepository.searchBySubNameCaseInSensitive(name, username);
         
         return cars;

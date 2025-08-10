@@ -148,65 +148,66 @@
             <c:set var="unknown" value="Unknown"/>
             <c:set var="red" value='<span style="color: red">${unknown}</span>'/> 
             <c:forEach items="${allCars}" var="car">
+                <c:set var="carFirst" value="${car.getFirst()}"/>
                 <tr style="font-size: 14px ;"  class="borderTbody">
-                    <td  id ="ids-column">${car.itemNo}</td>
-                    <td>${car.make}</td>
+                    <td  id ="ids-column">${carFirst.itemNo}</td>
+                    <td>${carFirst.make}</td>
                     <td>
                         <c:choose>
-                            <c:when test="${car.model.isEmpty()}">${red}</c:when>
-                            <c:otherwise>${car.model}</c:otherwise> 
+                            <c:when test="${carFirst.model.isEmpty()}">${red}</c:when>
+                            <c:otherwise>${carFirst.model}</c:otherwise> 
                         </c:choose>
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${car.year==null}">${red}</c:when>
-                            <c:otherwise>${car.year}</c:otherwise> 
+                            <c:when test="${carFirst.year==null}">${red}</c:when>
+                            <c:otherwise>${carFirst.year}</c:otherwise> 
                         </c:choose>
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${car.datePurchased==null}">${red}</c:when>
-                            <c:otherwise> ${car.datePurchased} </c:otherwise>
+                            <c:when test="${carFirst.datePurchased==null}">${red}</c:when>
+                            <c:otherwise> ${carFirst.datePurchased} </c:otherwise>
                         </c:choose>
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${car.price==null}">${red}</c:when>
-                            <c:otherwise> ${car.price} </c:otherwise> 
+                            <c:when test="${carFirst.price==null}">${red}</c:when>
+                            <c:otherwise> ${carFirst.price} </c:otherwise> 
                         </c:choose>
                     </td>
                     <td>
-                        <!-- In case 'powerTrain' is String we can say : car.powerTrain.isEmpty() -->
+                        <!-- In case 'powerTrain' is String we can say : carFirst.powerTrain.isEmpty() -->
                         <c:choose>
-                            <c:when test="${car.powerTrain==null}">${red}</c:when> 
-                            <c:otherwise> ${car.powerTrain} </c:otherwise> 
+                            <c:when test="${carFirst.powerTrain==null}">${red}</c:when> 
+                            <c:otherwise> ${carFirst.powerTrain} </c:otherwise> 
                         </c:choose>
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${car.condn.isEmpty()}">${red}</c:when>
-                            <c:otherwise>${car.condn}</c:otherwise> 
+                            <c:when test="${carFirst.condn.isEmpty()}">${red}</c:when>
+                            <c:otherwise>${carFirst.condn}</c:otherwise> 
 
                         </c:choose>
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${car.horsePower==null}">${red}</c:when>
-                            <c:otherwise>${car.horsePower} </c:otherwise> 
+                            <c:when test="${carFirst.horsePower==null}">${red}</c:when>
+                            <c:otherwise>${carFirst.horsePower} </c:otherwise> 
                         </c:choose>
                     </td>  
                     <td id="lastColumnView">
-                         <input type="button" value="view" onclick="showModal('CarModal-'+${car.itemNo})" class="btn bg-dark text-white"/>
+                         <input type="button" value="view" onclick="showModal('CarModal-'+${carFirst.itemNo})" class="btn bg-dark text-white"/>
                     </td>
                     <td>   <!-- 'id' corresponds to CSS starting with '#' : #last-column{border-left: solid black 1px; }  
                                   If 'class' is used instead of 'id' it will not work with CSS starting with '#'.
                             -->
                             <input type="button" value="Edit" 
-                                   onclick="window.location.href = '/cars/allcars/updatepage?id=${car.itemNo}&carFormstate=true'" 
+                                   onclick="window.location.href = '/cars/allcars/updatepage?id=${carFirst.itemNo}&carFormstate=true'" 
                                    class="btn btn-info"/>    <!-- Using a custom class for 'button' : class="edit-button" -->                                  
                     </td>
                     <td style="padding-right: 10px">
-                        <input type="button" value="Delete" onclick="deletFunc(${car.itemNo})" class="btn btn-danger text-black" /> 
+                        <input type="button" value="Delete" onclick="deletFunc(${carFirst.itemNo})" class="btn btn-danger text-black" /> 
                         <!-- Using a custom class for 'button' :  class="delete-button" -->
                     </td>
                 </tr>       
@@ -216,11 +217,11 @@
     </table>
         
     <c:forEach var="eachCar" items="${allCars}">
-       <div class="modal fade" id="CarModal-${eachCar.itemNo}" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
+       <div class="modal fade" id="CarModal-${eachCar.getFirst().itemNo}" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="noteModalLabel">Documents uploaded for vehicle Id : ${eachCar.itemNo}</h5>
+                            <h5 class="modal-title" id="noteModalLabel">Documents uploaded for vehicle Id : ${eachCar.getFirst().itemNo}</h5>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -228,22 +229,26 @@
                         <div class="modal-body">
                             
                             <table name="docViewTable">
-                                <c:if test="${eachCar.docs.isEmpty()}">
-                                    <tr>
-                                       <td  style="width: auto"><h5 class="mb-3 text-secondary">No File Uploaded</h5></td>
-                                    </tr> 
-                                </c:if>
-                                <c:forEach var="carDoc" items="${eachCar.docs}">
-                                    <tr style="height: 20px">
-                                        <td colspan="2" style="padding-left: 120px; text-align: left; height: 28px; width: auto">  
-                                            <a href="/document/download?id=${carDoc.id}" >${carDoc.name}</a> 
-                                            <!-- download=".." attribute inside <a> could be used to specify default name of the downloaded file-->
-                                        </td>
-                                        <td id="sizes" style="padding-left: 10px; text-align: center; height: 28px; width: auto">
-                                            ${carDoc.size/1000} (KB)
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${eachCar.getFirst().docId == null}">
+                                            <tr>
+                                               <td  style="width: auto"><h5 class="mb-3 text-secondary">No File Uploaded</h5></td>
+                                            </tr> 
+                                    </c:when>  
+                                    <c:otherwise>        
+                                        <c:forEach var="carDoc" items="${eachCar}">
+                                            <tr style="height: 20px">
+                                                <td colspan="2" style="padding-left: 120px; text-align: left; height: 28px; width: auto">  
+                                                    <a href="/document/download?id=${carDoc.docId}" >${carDoc.docName}</a> 
+                                                    <!-- download=".." attribute inside <a> could be used to specify default name of the downloaded file-->
+                                                </td>
+                                                <td id="sizes" style="padding-left: 10px; text-align: center; height: 28px; width: auto">
+                                                    ${carDoc.docSize/1000} (KB)
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:otherwise> 
+                                </c:choose>            
                             </table>
                         </div>
                         <div class="modal-footer">

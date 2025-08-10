@@ -1,7 +1,5 @@
 package com.example.CarDealerShip.Models;
 
-import com.example.CarDealerShip.ConstraintValidators.DateConstraint;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,10 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -42,31 +36,31 @@ public class Car {
     Integer itemNo;
 
     @Column(name = "vehivle_make")
-    @JsonProperty("Make_Name")
+//    @JsonProperty("Make_Name")
     String make;
 
-    @Pattern(regexp = "[\\w\\s/.-]*", message = "invalid value for model, only letters and numbers are accepted")
-    @JsonProperty("Model_Name")
+//    @Pattern(regexp = "[\\w\\s/.-]*", message = "invalid value for model, only letters and numbers are accepted")
+//    @JsonProperty("Model_Name")
     String model;
 
     @Column(name = "Generation")
     Integer year;
 
-    @DateConstraint
-    @Past
+//    @DateConstraint
+//    @Past
     LocalDate datePurchased;
 
     @Enumerated(EnumType.STRING)
     Transmissions powerTrain;
 
-    @Positive(message = "invalid price, should be a positive value")
+//    @Positive(message = "invalid price, should be a positive value")
     @Column(name = "vehicle value")
     Double price;
 
     String condn;
 
     @Column(name = "H.P(watt)")
-    @PositiveOrZero(message = "invalid hp, should be a non-negative value")
+//    @PositiveOrZero(message = "invalid hp, should be a non-negative value")
     Double horsePower;
 
     @ManyToOne

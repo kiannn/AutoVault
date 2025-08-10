@@ -4,6 +4,7 @@ import com.example.CarDealerShip.ConstraintValidators.PasswordMatches;
 import com.example.CarDealerShip.ConstraintValidators.PasswordPattern;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
@@ -32,7 +33,7 @@ public class Credentials {
 
     boolean enabled;
 
-    @OneToMany(mappedBy = "carOwner", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "carOwner", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     List<Authorities> authorities;
 
 }

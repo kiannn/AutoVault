@@ -1,7 +1,9 @@
 package com.example.CarDealerShip.Controllers;
 
-import com.example.CarDealerShip.Models.Car;
+import com.example.CarDealerShip.Models.CarMakeModelDTO;
 import com.example.CarDealerShip.Models.CarSearchDTO;
+import com.example.CarDealerShip.Models.CarStatsDTO;
+import com.example.CarDealerShip.Models.CarWithDocsDTO;
 import com.example.CarDealerShip.Models.MakeAndModel;
 import com.example.CarDealerShip.Models.Transmissions;
 import com.example.CarDealerShip.Services.CarServices;
@@ -16,6 +18,7 @@ import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -48,8 +51,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/cars") //searchQuary
-@SessionAttributes({"showAll", "searchUserInput", "carForm","authorizedUser","listOfAcceptedfileExts","listOfProperties"})
+@RequestMapping("/cars")
+@SessionAttributes({"showAll", "searchUserInput", "carFormData","carFormDocs","authorizedUser","listOfAcceptedfileExts","listOfProperties"})
 public class CarsController {
     
     @Autowired
@@ -69,27 +72,24 @@ public class CarsController {
 
     @GetMapping("allcars/preshow")
     public String preShow(ModelMap mm, HttpServletRequest req) {
-        
+
         String name = (String) mm.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(name);
-        
+
         return "redirect:" + referer.replace("false", "true");
-    }  
+    }
 
     @GetMapping({"allcars/preshownav", "showsearchresult/pre"})
     public String preShowNav(ModelMap mm, HttpServletRequest req) {
 
         mm.addAttribute("searchUserInput", ""); 
-
-//        System.out.println(req.getRequestURI());
-//        System.out.println(req.getHeader("Referer"));
         String ret = req.getRequestURI().endsWith("showsearchresult/pre") ?"redirect:show":"redirect:/cars/home/showallcars";
 
         return ret;
     } 
 
     @GetMapping("allcars/addpage")
-    public String showAddPage(ModelMap mm, Car car, @RequestParam boolean carFormstate) {
+    public String showAddPage(ModelMap mm, CarWithDocsDTO car, @RequestParam boolean carFormstate) {
 
         String name = (String) mm.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(name);
@@ -98,7 +98,7 @@ public class CarsController {
         mm.addAttribute("button", "Add");
         mm.addAttribute("availablePowerTrain", Transmissions.values());
         if (carFormstate) {
-            mm.addAttribute("carForm", car);
+            mm.addAttribute("carFormData", car);
         }
         
         referer = "/cars/home/showallcars";
@@ -112,7 +112,6 @@ public class CarsController {
                                  @RequestParam boolean carFormstate, HttpServletRequest rqst) throws AccessDeniedException {
   
         String name = (String) mm.getAttribute("authorizedUser");
-        System.out.println("com.example.CarDealerShip.Controllers.CarsController.showUpdatePage() = "+ name);
  
         OwnerService.userSessionValidity(name);
          
@@ -122,7 +121,7 @@ public class CarsController {
         }
          
         referer = rqst.getHeader("Referer");
-        
+       
         boolean badRefer = referer == null || (!referer.contains("notInDropDownListPage")
                                             && !referer.contains("home")
                                             && !referer.contains("showsearchresult")
@@ -133,14 +132,15 @@ public class CarsController {
             throw new AccessDeniedException("Direct Access Denied !");
         }
 
-        Car get = CarService.findCarById(id).get();
-        
+        List<CarWithDocsDTO> get = CarService.findCarById(id);
+        CarWithDocsDTO first = get.getFirst();
         if (carFormstate) { 
-            mm.addAttribute("carForm", get);
+            mm.addAttribute("carFormData", first);
+            mm.addAttribute("carFormDocs", get);
         }
 
         String msg = "Edit details for car id = %d, Make = %s, Model = %s";
-        mm.addAttribute("message",String.format(msg,id, get.getMake(), get.getModel().isEmpty() ? "unkown" : get.getModel()));
+        mm.addAttribute("message",String.format(msg,id, first.getMake(), first.getModel().isEmpty() ? "unkown" : first.getModel()));
         mm.addAttribute("button", "Update");
         mm.addAttribute("availablePowerTrain", Transmissions.values());
         refererAddUpdatePage = referer.contains("home") || referer.contains("showsearchresult")||referer.contains("document")? referer : refererAddUpdatePage;
@@ -151,27 +151,29 @@ public class CarsController {
     }
 
     @PostMapping({"allcars/addpage", "allcars/updatepage"})
-    public String addOrUpdateCars(@Valid @ModelAttribute("carForm") Car car,
-            BindingResult br,
-            MultipartFile[] filee, ModelMap mm, RedirectAttributes rediAtt, HttpServletRequest r)
-            throws IOException {
+    public String addOrUpdateCars(@Valid @ModelAttribute("carFormData") CarWithDocsDTO carDTO,
+                                                            BindingResult br,
+                                                            MultipartFile[] filee, ModelMap mm, RedirectAttributes rediAtt, HttpServletRequest r)
+                                                            throws IOException {
 
-        if (!car.getModel().isEmpty()) {
+        if (!carDTO.getModel().isEmpty()) {
 
-            List<String> verifyMakeAndModel = CarService.verifyMakeAndModelValidity(car.getMake(), car.getModel());
+            List<String> verifyMakeAndModel = CarService.verifyMakeAndModelValidity(carDTO.getMake(), carDTO.getModel());
 
             if (verifyMakeAndModel.size() == 1) {
 
-                br.rejectValue("model", "invalidModel", car.getModel() + " does not match vehicle make");
+                br.rejectValue("model", "invalidModel", carDTO.getModel() + " does not match vehicle make");
             }
         }
         
         if (br.hasErrors()) {
 
-            List<FieldError> collect = br.getFieldErrors().stream()
-                    .filter(a -> !a.getDefaultMessage().contains("Failed to convert property value")).collect(Collectors.toList());
+            List<FieldError> collect = br.getFieldErrors()
+                                         .stream()
+                                         .filter(a -> !a.getDefaultMessage().contains("Failed to convert property value"))
+                                         .collect(Collectors.toList());
 
-            BindingResult tempBindingResult = new BeanPropertyBindingResult(car, "--"); 
+            BindingResult tempBindingResult = new BeanPropertyBindingResult(carDTO, "--"); 
             collect.forEach(e -> tempBindingResult.addError(e));
 
             List<String> erroneousProperties = List.of("datePurchased", "horsePower", "price");
@@ -190,24 +192,24 @@ public class CarsController {
                         case "price" ->
                             defMsg = "Invalid Price, not a valid number";
                     }
-
-                    br.rejectValue(fe.getField(), "typeMismatch", defMsg);
                     tempBindingResult.addError(new FieldError("??", fe.getField(), fe.getRejectedValue(), true, new String[]{"typeMismatch"}, null, defMsg));
                 }
             }
-            mm.replace("org.springframework.validation.BindingResult.carForm", tempBindingResult);
+            mm.replace("org.springframework.validation.BindingResult.carFormData", tempBindingResult);
 
+            Integer itemNo = carDTO.getItemNo();
+            
             if (r.getParameter("act") != null) {
 
                 mm.addAttribute("message", "Add a New Car");
                 mm.addAttribute("button", "Add");
             } else {
 
-                Car get = CarService.findCarById(car.getItemNo()).get();
+                CarMakeModelDTO get = CarService.findCar_MakeAndModel_ById(itemNo);
 
                 String msg = "Edit details for car id = %d, Make = %s, Model = %s";
  
-                mm.addAttribute("message", String.format(msg, car.getItemNo(), get.getMake(), get.getModel().isEmpty() ? "unkown" : get.getModel()));
+                mm.addAttribute("message", String.format(msg, itemNo, get.getMake(), get.getModel().isEmpty() ? "unkown" : get.getModel()));
                 mm.addAttribute("button", "Update");
             }
 
@@ -216,27 +218,19 @@ public class CarsController {
             return "showAddOrUpdateFormPage";
         }
 
-        Integer itenNo = car.getItemNo();
-
         String name = (String) mm.getAttribute("authorizedUser");
 
-        Car Car = filee != null ? CarService.add_Update(car, name, filee) : 
-                                  CarService.add_Update_NoFile(car, name);
-        /*
-        add_Update_NoFile(car, name);
-          In the case of editing, the 'car' object might contain 5 files. Therefore, the edit form
-          does not include any <input> tag with a 'type' attribute set to 'file,' resulting in the 'filee' object 
-          being null.*/
+        Integer id = CarService.add_Update(carDTO, name, filee) ;
 
-        String format = String.format("Car Id: %d  has successfully %s", Car.getItemNo(), itenNo != null ? "updated" : "added");
+        String format = String.format("Car Id: %d  has successfully %s", id, carDTO.getItemNo() != null ? "updated" : "added");
 
         rediAtt.addFlashAttribute("addOrEditMsg", format);
-        return "redirect:/cars/home/showallcars";//?addOrEditMsg=" + format;
+        return "redirect:/cars/home/showallcars";
     }
 
 
     @GetMapping("allcars/notInDropDownListPage")
-    public ModelAndView showNotInDropDownListPage(ModelMap mm, Car car, HttpServletRequest req) throws AccessDeniedException {
+    public ModelAndView showNotInDropDownListPage(ModelMap mm, CarMakeModelDTO car, HttpServletRequest req) throws AccessDeniedException {
          
         String name = (String) mm.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(name);
@@ -265,10 +259,10 @@ public class CarsController {
  
         return mAv;
     }
-   
+    
     @PostMapping("allcars/addToDropDownList")
-    public String addNewItemInDropDownList(@Valid @ModelAttribute("carForm") Car car, BindingResult brc, //Resolved [org.springframework.web.HttpSessionRequiredException: Expected session attribute 'carForm']
-                                           @Valid Car carL, BindingResult br, 
+    public String addNewItemInDropDownList(@Valid @ModelAttribute("carFormData") CarWithDocsDTO car, BindingResult brc, //Resolved [org.springframework.web.HttpSessionRequiredException: Expected session attribute 'carForm']
+                                           @Valid CarMakeModelDTO carL, BindingResult br, 
                                            ModelMap mm) {
 
         if (!carL.getModel().isEmpty()) {
@@ -288,22 +282,23 @@ public class CarsController {
             car.setModel(verifyMakeAndModel.get(1));
         }
 
-        boolean contId = referer.contains("id");
+        boolean contId = referer.contains("id"); // Check if the request is reffered from Edit page so values of possible erroneous fields (price, horsePower, datePurchased) are brought back to their original ones
 
-        Car get = null;
+        CarStatsDTO get = null;
         
         if (contId) {
-            get = CarService.findCarById(Integer.parseInt(referer
-                                                    .substring(referer
-                                                    .indexOf('=') + 1, referer
-                                                    .indexOf('&')))).get(); 
+            get = CarService.findCar_Stats_ById(Integer.parseInt(referer
+                                                            .substring(referer
+                                                            .indexOf('=') + 1, referer
+                                                            .indexOf('&')))); 
         }
+
         if (brc.getFieldErrorCount("price") != 0) {
 
-            car.setPrice(contId ? get.getPrice() : null);
+            car.setPrice(contId ? get.getPrice() : null);// When contId==false the request is referred from Add page.
         }
         if (brc.getFieldErrorCount("horsePower") != 0) {
-            car.setHorsePower(contId ? get.getHorsePower() : null);
+            car.setHorsePower(contId ? get.getHp() : null);
         }
         if (brc.getFieldErrorCount("datePurchased") != 0) {
 
@@ -354,9 +349,9 @@ public class CarsController {
         List<Object> queryBasedOnSearch = CarService.searchForCars(carFrom, name); 
         CarSearchDTO actualSearchInput = (CarSearchDTO) queryBasedOnSearch.removeLast();
          
-        List<Car> cars = new ArrayList<>();
-        queryBasedOnSearch.forEach(q -> cars.add((Car)q)); 
-        
+        List<CarWithDocsDTO> cars = new ArrayList<>();
+        queryBasedOnSearch.forEach(q -> cars.add((CarWithDocsDTO)q)); 
+         
         String msg = "";
 
         msg =  actualSearchInput.getPrice() > actualSearchInput.getPriceTo() ?  msg.concat("invalid input for price : Price From > Price To-"):msg;
@@ -364,7 +359,8 @@ public class CarsController {
         msg = actualSearchInput.getDatePurchased().isAfter(actualSearchInput.getDatePurchasedTo()) ? msg.concat("invalid input for date : Date From > Date To-" ): msg;
 
         mm.addAttribute("resultMsg", msg);
-        mm.addAttribute("showAll", cars);
+        Collection<List<CarWithDocsDTO>> values = CarService.arrangDataForView(cars); 
+        mm.addAttribute("showAll", values);
         
         List<String[]> listOfProperties = (List<String[]>) mm.getAttribute("listOfProperties");
         
@@ -395,7 +391,7 @@ public class CarsController {
         CarService.deleteSelectedCars(Arrays.asList(id));
 
         redAtt.addFlashAttribute("addOrEditMsg", "Car Id: " + Arrays.toString(id).substring(1, Arrays.toString(id).length() - 1) + " has successfully deleted");
-        return "redirect:/cars/home/showallcars";//?addOrEditMsg=Car Id: " + Arrays.toString(id).substring(1, Arrays.toString(id).length() - 1) + " has successfully deleted";
+        return "redirect:/cars/home/showallcars";
 
     }
 
@@ -408,7 +404,8 @@ public class CarsController {
         String refer = request.getHeader("Referer");
 
         boolean badRefer = refer == null || (!refer.contains("showsearchresult")&& 
-                                             !refer.contains("home"));
+                                             !refer.contains("home") && 
+                                             !refer.contains("updatepage")); // !refer.contains("updatepage") -> in case after user orders recordes (either in Home or Search page), user tries to edite a record but then presses the 'cancel' button in the update page (showAddOrUpdateFormPage), hence the refferer becomes the update page URL
         
          if (badRefer) {
             throw new AccessDeniedException("Invalid Data Or Direct Access Denied !");
@@ -419,19 +416,24 @@ public class CarsController {
             return refer.contains("home") ? "showListingCarsPage" : "showSearchResultPage";
         }
 
-        List<Car> listOFCarsToBeSorted = (List<Car>) mm.getAttribute("showAll");
-
-        List<Car> findAllOrderby = CarService.getCarsSortBy(listOFCarsToBeSorted, by);
-
+        Collection<List<CarWithDocsDTO>> listOFCars = (Collection<List<CarWithDocsDTO>>) mm.getAttribute("showAll");
+        List<CarWithDocsDTO> listOFCarsToBeSorted = new ArrayList<>();
+        listOFCars.forEach(c -> listOFCarsToBeSorted.addAll(c));
+        List<CarWithDocsDTO> findAllOrderby = CarService.getCarsSortBy(listOFCarsToBeSorted, by);
+        
+        Collection<List<CarWithDocsDTO>> arrangDataForView = CarService.arrangDataForView(findAllOrderby);
+        
         List<String[]> listOfProperties = (List<String[]>) mm.getAttribute("listOfProperties");
         mm.addAttribute("sortMsg", "Sorted by " + by + (!by.contains("-") ? "-ascend" : ""));
         mm.addAttribute("noValue", CarService.columnEntirelyHasNoValueSort(findAllOrderby, listOfProperties));
-        mm.addAttribute("showAll", findAllOrderby);
-
+        mm.addAttribute("showAll", arrangDataForView);
+ 
         if (refer.contains("home")) {
             return "showListingCarsPage";
         }
-
+        if (refer.contains("updatepage")) {
+            return request.getRequestURL().toString().contains("home") ? "showListingCarsPage" : "showSearchResultPage";
+        }
         return "showSearchResultPage";
     }
 

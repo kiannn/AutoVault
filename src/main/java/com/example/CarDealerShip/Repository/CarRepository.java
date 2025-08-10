@@ -1,6 +1,9 @@
 package com.example.CarDealerShip.Repository;
 
 import com.example.CarDealerShip.Models.Car;
+import com.example.CarDealerShip.Models.CarMakeModelDTO;
+import com.example.CarDealerShip.Models.CarStatsDTO;
+import com.example.CarDealerShip.Models.CarWithDocsDTO;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
@@ -9,24 +12,36 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface CarRepository extends JpaRepository<Car, Integer> {
+
+    final String SELECT = """
+                            SELECT new com.example.CarDealerShip.Models.CarWithDocsDTO(car.itemNo, car.make, car.model, car.year, car.datePurchased, car.powerTrain, car.price, car.condn ,car.horsePower ,doc.id ,doc.name ,doc.size)  
+                          """;
+    final String QUARY = SELECT + """
+                                    FROM availableCars car LEFT JOIN car.docs doc
+                                    WHERE car.owner.username = :username 
+                                    AND car.make= :make 
+                                    AND car.model IN :modelList
+                                    AND (car.price IS NULL OR car.price BETWEEN :priceFrom and :priceTo)
+                                    AND (car.year IS NULL OR car.year BETWEEN :yearFrom and :yearTo)
+                                    AND (car.datePurchased IS NULL OR car.datePurchased BETWEEN :dateFrom and :dateTo)
+                                 """;
     
-    final String QUARY =  """
-                             SELECT car FROM availableCars car WHERE car.owner.username = :username 
-                             AND car.make= :make 
-                             AND car.model IN :modelList
-                             AND (car.price IS NULL OR car.price BETWEEN :priceFrom and :priceTo)
-                             AND (car.year IS NULL OR car.year BETWEEN :yearFrom and :yearTo)
-                             AND (car.datePurchased IS NULL OR car.datePurchased BETWEEN :dateFrom and :dateTo)
-                        """;
-    
-    final String QUARY_NO_MODEL = """
-                                     SELECT car FROM availableCars car WHERE car.owner.username = :username 
-                                     AND car.make= :make 
-                                     AND (car.price is null OR car.price BETWEEN :priceFrom and :priceTo)
-                                     AND (car.year is null OR car.year BETWEEN :yearFrom and :yearTo)
-                                     AND (car.datePurchased is null OR car.datePurchased BETWEEN :dateFrom and :dateTo)
-                                """; 
-    
+    final String QUARY_NO_MODEL = SELECT + """
+                                            FROM availableCars car LEFT JOIN car.docs doc 
+                                            WHERE car.owner.username = :username 
+                                            AND car.make= :make 
+                                            AND (car.price is null OR car.price BETWEEN :priceFrom and :priceTo)
+                                            AND (car.year is null OR car.year BETWEEN :yearFrom and :yearTo)
+                                            AND (car.datePurchased is null OR car.datePurchased BETWEEN :dateFrom and :dateTo)
+                                           """; 
+    final String FIND_BY_OWNER =SELECT + """
+                                          FROM availableCars car LEFT JOIN car.docs doc WHERE car.owner.username= :username
+                                         """;
+
+    final String FIND_BY_CARID = SELECT + """
+                                            FROM availableCars car LEFT JOIN car.docs doc WHERE car.itemNo= :id
+                                          """;
+            
     @Query("SELECT min(price) FROM availableCars")
     public Double findPriceMin();
 
@@ -46,13 +61,13 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     public LocalDate findDateMax();
      
     @Query(QUARY)
-    public List<Car> queryBasedOnSearch(@Param("username")String user, String make, List<String> modelList,
+    public List<CarWithDocsDTO> queryBasedOnSearch(@Param("username")String user, String make, List<String> modelList,
                                         Double priceFrom, Double priceTo,
                                         Integer yearFrom, Integer yearTo,
                                         LocalDate dateFrom, LocalDate dateTo);
     
     @Query(QUARY_NO_MODEL)
-    public List<Car> queryBasedOnSearchNoModel(@Param("username")String user,String make, 
+    public List<CarWithDocsDTO> queryBasedOnSearchNoModel(@Param("username")String user,String make, 
                                                Double priceFrom, Double priceTo, 
                                                Integer yearFrom, Integer yearTo, 
                                                LocalDate dateFrom, LocalDate dateTo);
@@ -61,10 +76,26 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
      * org.springframework.dao.InvalidDataAccessApiUsageException: 
      * You're trying to execute a streaming query method without a surrounding transaction that
      * keeps the connection open so that the Stream can actually be consumed; Make sure the code consuming
-     * the stream uses @Transactional or any other way of declaring a (read-only) transaction] with root cause
+     * the Stream uses @Transactional or any other way of declaring a (read-only) transaction] with root cause
      */
-    public Stream<Car> findByOwnerUsername(String username);
-    
+    @Query(FIND_BY_OWNER)
+    public Stream<CarWithDocsDTO> findByOwnerUsername(String username);
+
+    @Query(FIND_BY_CARID)
+    public List<CarWithDocsDTO> findCarById(int id);
+
+    @Query("""
+             SELECT new com.example.CarDealerShip.Models.CarMakeModelDTO(car.make, car.model) 
+             FROM availableCars car WHERE car.itemNo= :id
+           """)
+    public CarMakeModelDTO findCar_MakeAndModel_ById(int id);
+
+    @Query("""
+             SELECT new com.example.CarDealerShip.Models.CarStatsDTO(car.datePurchased, car.price, car.horsePower) 
+             FROM availableCars car WHERE car.itemNo= :id
+           """)
+    public CarStatsDTO findCar_Stats_ById(int id);
+
     @Query("SELECT car.itemNo FROM availableCars car WHERE car.owner.username = :username")
     public List<Integer> findCarIdsByOwnerUsername(String username);
 

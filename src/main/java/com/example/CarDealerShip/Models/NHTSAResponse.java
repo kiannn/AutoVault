@@ -9,5 +9,5 @@ public class NHTSAResponse {
     public int Count;
 
     @JsonProperty("Results")
-    public List<Car> data;
+    public List<CarMakeModelDTO> data;
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -57,7 +58,7 @@ public class Owner {
     @CollectionTable(name = "availableMakeAndModels", joinColumns = @JoinColumn(name = "Owner username", referencedColumnName = "username"))
     List<MakeAndModel> MakeAndModel;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     List<Car> cars;
 
     public boolean isAccountNonExpired() {

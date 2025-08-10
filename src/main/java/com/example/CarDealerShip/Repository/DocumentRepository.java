@@ -1,6 +1,6 @@
 package com.example.CarDealerShip.Repository;
 
-import com.example.CarDealerShip.Models.Car;
+import com.example.CarDealerShip.Models.CarWithDocsDTO;
 import com.example.CarDealerShip.Models.Documents;
 import com.example.CarDealerShip.Models.FileExtension;
 import jakarta.transaction.Transactional;
@@ -10,35 +10,39 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 @Transactional
-public interface DocumentRepository extends JpaRepository<Documents, Integer>{
-    
-    final String SEARCH_BY_EXTENSION = """
-                                     SELECT car from availableCars car JOIN car.docs doc 
-                                     WHERE doc.extension = :extensionName 
-                                     AND car.owner.username = :userName
-                                     """; 
-    final String SEARCH_BY_NAME_EXTENSION = """
-                                             SELECT car from availableCars car JOIN car.docs doc 
-                                             WHERE doc.name = :docName 
-                                             AND car.owner.username = :userName
+public interface DocumentRepository extends JpaRepository<Documents, Integer> {
+
+    final String SELECT = """
+                          SELECT new com.example.CarDealerShip.Models.CarWithDocsDTO(car.itemNo, car.make, car.model, car.year, car.datePurchased, car.powerTrain, car.price, car.condn ,car.horsePower ,doc.id ,doc.name ,doc.size) 
+                          """;
+
+    final String SEARCH_BY_EXTENSION = SELECT + """
+                                                 FROM availableCars car JOIN car.docs doc 
+                                                 WHERE doc.extension = :extensionName 
+                                                 AND car.owner.username = :userName
+                                                 """;
+    final String SEARCH_BY_NAME_EXTENSION = SELECT + """
+                                                     FROM availableCars car JOIN car.docs doc 
+                                                     WHERE doc.name = :docName 
+                                                     AND car.owner.username = :userName
+                                                     """;
+    final String SEARCH_BY_NAME_EXTENSION_CASE_INSENSITIVE = SELECT + """
+                                                                     FROM availableCars car JOIN car.docs doc 
+                                                                     WHERE LOWER(doc.name) = :docName 
+                                                                     AND car.owner.username = :userName
+                                                                     """;
+
+    final String SEARCH_BY_SUB_NAME = SELECT + """
+                                               FROM availableCars car JOIN car.docs doc 
+                                               WHERE doc.name LIKE CONCAT(:docName,'.','%')  
+                                               AND car.owner.username = :userName
                                              """;
-    final String SEARCH_BY_NAME_EXTENSION_CASE_INSENSITIVE = """
-                                             SELECT car from availableCars car JOIN car.docs doc 
-                                             WHERE LOWER(doc.name) = :docName 
-                                             AND car.owner.username = :userName
-                                             """;
-     
-    final String SEARCH_BY_SUB_NAME = """
-                                       SELECT car from availableCars car JOIN car.docs doc 
-                                       WHERE doc.name LIKE CONCAT(:docName,'.','%')  
-                                       AND car.owner.username = :userName
-                                     """;
-    
-    final String SEARCH_BY_SUB_NAME_CASE_INSENSITIVE = """
-                                                       SELECT car from availableCars car JOIN car.docs doc 
-                                                       WHERE LOWER(doc.name) LIKE LOWER(CONCAT(:docName,'.','%'))  
-                                                       AND car.owner.username = :userName
-                                                       """;
+
+    final String SEARCH_BY_SUB_NAME_CASE_INSENSITIVE = SELECT + """
+                                                               FROM availableCars car JOIN car.docs doc 
+                                                               WHERE LOWER(doc.name) LIKE LOWER(CONCAT(:docName,'.','%'))  
+                                                               AND car.owner.username = :userName
+                                                               """;
 
     @Query("SELECT doc.id from documnets doc WHERE doc.car.owner.username = :username")
     List<Integer> findByCarOwnerUsername(String username);
@@ -52,19 +56,19 @@ public interface DocumentRepository extends JpaRepository<Documents, Integer>{
     void deleteAllByCarItenN(List<Integer> carIds);
 
     @Query(SEARCH_BY_EXTENSION)
-    public List<Car> searchByExtension(FileExtension extensionName, String userName);
+    public List<CarWithDocsDTO> searchByExtension(FileExtension extensionName, String userName);
 
     @Query(SEARCH_BY_NAME_EXTENSION)
-    public  List<Car> searchByNameAndExtension(String docName, String userName);
+    public  List<CarWithDocsDTO> searchByNameAndExtension(String docName, String userName);
     
     @Query(SEARCH_BY_NAME_EXTENSION_CASE_INSENSITIVE)
-    public  List<Car> searchByNameAndExtensionCaseInSensitive(String docName, String userName);
+    public  List<CarWithDocsDTO> searchByNameAndExtensionCaseInSensitive(String docName, String userName);
     
     @Query(SEARCH_BY_SUB_NAME)
-    public List<Car> searchBySubName(String docName, String userName);
+    public List<CarWithDocsDTO> searchBySubName(String docName, String userName);
     
     @Query(SEARCH_BY_SUB_NAME_CASE_INSENSITIVE)
-    public List<Car> searchBySubNameCaseInSensitive(String docName, String userName);
+    public List<CarWithDocsDTO> searchBySubNameCaseInSensitive(String docName, String userName);
  
     /*
       *****************************

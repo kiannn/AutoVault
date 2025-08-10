@@ -1,7 +1,7 @@
 
 package com.example.CarDealerShip.Controllers;
 
-import com.example.CarDealerShip.Models.Car;
+import com.example.CarDealerShip.Models.CarWithDocsDTO;
 import com.example.CarDealerShip.Models.DocumentDTO;
 import com.example.CarDealerShip.Models.Documents;
 import com.example.CarDealerShip.Models.FileExtension;
@@ -10,8 +10,11 @@ import com.example.CarDealerShip.Services.DocumentService;
 import com.example.CarDealerShip.Services.OwnerService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,13 +33,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/document")
-@SessionAttributes({"authorizedUser","carForm","docSearchInput", "showAll","listOfProperties"})
+@SessionAttributes({"authorizedUser","carFormData","carFormDocs", "docSearchInput", "showAll","listOfProperties"})
 public class DocumentController {
 
     @Autowired
     DocumentService DocumentService;
     
-    @Autowired
+    @Autowired 
     CarServices CarServices;
     
     @Autowired
@@ -93,16 +97,23 @@ public class DocumentController {
     }
 
     @PostMapping("/edite/{id}/delete") 
-    public String deleteDocument(@PathVariable Integer id, @ModelAttribute("carForm")Car car, 
+    public String deleteDocument(@PathVariable Integer id, @ModelAttribute("carFormData")CarWithDocsDTO car, BindingResult br, 
                                  ModelMap ModelMap, RedirectAttributes rediAtt, HttpServletRequest req) {
-     
+
             String referer = req.getHeader("Referer");
             
             String documnet = DocumentService.getDocumnetById(id).getName();
             DocumentService.deletSingleDocument(id);
             
-            List<Documents> docs =DocumentService.getDocumnetsByCar(car.getItemNo());
-            car.setDocs(docs); // update form-backing obj (modelAttribute="carForm"), which is used to display docs in the update page, after delete 
+            List<CarWithDocsDTO> CarWithDocsDTO = (List<CarWithDocsDTO>) ModelMap.getAttribute("carFormDocs");
+            CarWithDocsDTO.stream().forEach(c -> {
+                if (Objects.equals(c.getDocId(), id)) {
+                    c.setDocId(null);
+                }
+            });
+            CarWithDocsDTO.removeIf( c -> CarWithDocsDTO.size()>1 && Objects.equals(c.getDocId(), null));
+//            List<Documents> docs =DocumentService.getDocumnetsByCar(car.getItemNo());
+//            car.setDocs(docs); // update form-backing obj (modelAttribute="carFormData"), which is used to display docs in the update page, after delete 
             
             referer = referer.replace("true", "false");
             rediAtt.addFlashAttribute( "docdelet","document "+documnet+" deleted successfully");
@@ -140,13 +151,15 @@ public class DocumentController {
         
         String username = (String) mp.getAttribute("authorizedUser");
            
-        List<Car> searchForDocumentResult = DocumentService.searchForDocument(name, extension,isIsSensitive ,username);
-
-        mp.addAttribute("showAll", searchForDocumentResult);
+        List<CarWithDocsDTO> searchForDocumentResult = DocumentService.searchForDocument(name, extension,isIsSensitive ,username);
+        
+        Collection<List<CarWithDocsDTO>> values = CarServices.arrangDataForView(searchForDocumentResult); 
+         
+        mp.addAttribute("showAll", values);
         List<String[]> listOfProperties = (List<String[]>) mp.getAttribute("listOfProperties");
         mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(searchForDocumentResult, listOfProperties)); 
         mp.addAttribute("showTable", "");
-        
+ 
         return "documnetSearchPage";
     }
 
@@ -158,7 +171,7 @@ public class DocumentController {
 
         String refer = request.getHeader("Referer");
 
-        boolean badRefer = refer == null || !refer.contains("document");
+        boolean badRefer = refer == null || (!refer.contains("document")&&!refer.contains("updatepage"));
         
         if (badRefer) {
             throw new AccessDeniedException("Requested Resources Access Denied");
@@ -168,12 +181,16 @@ public class DocumentController {
             return "showSearchResultPage";
         }
         
-        List<Car> listOFCarsToBeSorted = (List<Car>) mp.getAttribute("showAll");
+        Collection<List<CarWithDocsDTO>> listOFCars = (Collection<List<CarWithDocsDTO>>) mp.getAttribute("showAll");
+        List<CarWithDocsDTO> listOFCarsToBeSorted = new ArrayList<>();
+        listOFCars.forEach(c -> listOFCarsToBeSorted.addAll(c));
         
-        List<Car> findAllOrderby = CarServices.getCarsSortBy(listOFCarsToBeSorted, by);
+        List<CarWithDocsDTO> findAllOrderby = CarServices.getCarsSortBy(listOFCarsToBeSorted, by);
+        
+        Collection<List<CarWithDocsDTO>> values = CarServices.arrangDataForView(findAllOrderby); 
 
         mp.addAttribute("sortMsg", "Sorted by " + by + (!by.contains("-") ? "-ascend" : ""));
-        mp.addAttribute("showAll", findAllOrderby);
+        mp.addAttribute("showAll", values);
         
         List<String[]> listOfProperties = (List<String[]>) mp.getAttribute("listOfProperties");
         

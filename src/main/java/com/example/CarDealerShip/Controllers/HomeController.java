@@ -2,9 +2,11 @@
 package com.example.CarDealerShip.Controllers;
 
 import com.example.CarDealerShip.Models.Car;
+import com.example.CarDealerShip.Models.CarWithDocsDTO;
 import com.example.CarDealerShip.Models.FileExtension;
 import com.example.CarDealerShip.Services.CarServices;
 import com.example.CarDealerShip.Services.OwnerService;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,9 +36,10 @@ public class HomeController {
         String name = (String) mm.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(name);
 
-        List<Car> findAll = CarServices.getAllCars(name);
-
-        mm.addAttribute("showAll", findAll);
+        List<CarWithDocsDTO> findAll = CarServices.getAllCars(name);
+ 
+        Collection<List<CarWithDocsDTO>> values = CarServices.arrangDataForView(findAll);
+        mm.addAttribute("showAll", values);
         
         List<String[]> listOfProperties = (List<String[]>) mm.getAttribute("listOfProperties");
         
@@ -56,7 +59,7 @@ public class HomeController {
     
     @ModelAttribute("listOfProperties")
     public List<String[]> listOfProperties(){
-    
+        
      List<String[]>listOfProperties = List.of(new String[]{"itemNo"},
                                              new String[]{"make","0"},
                                              new String[]{"model","1"}, 
@@ -73,7 +76,7 @@ public class HomeController {
 
     @ModelAttribute("listOfAcceptedfileExts")
     public List<String> listOfAcceptedfileExts() {
-
+        
         EnumSet<FileExtension> range = EnumSet.range(FileExtension.PDF, FileExtension.AVI);
         List<String> collect = range.stream().map(ext -> ext.getEx()).collect(Collectors.toList());
 

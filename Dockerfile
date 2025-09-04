@@ -3,6 +3,6 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:22-jdk-slim
-COPY --from=build /target/AutoVault-copy-3.3.1.war demo.war
+COPY --from=build /target/AutoVault-copy-1.1.1.war demo.war
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "demo.war"]

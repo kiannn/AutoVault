@@ -27,7 +27,6 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-
 public class Car {
 
     @Id
@@ -36,31 +35,24 @@ public class Car {
     Integer itemNo;
 
     @Column(name = "vehivle_make")
-//    @JsonProperty("Make_Name")
     String make;
 
-//    @Pattern(regexp = "[\\w\\s/.-]*", message = "invalid value for model, only letters and numbers are accepted")
-//    @JsonProperty("Model_Name")
     String model;
 
     @Column(name = "Generation")
     Integer year;
 
-//    @DateConstraint
-//    @Past
     LocalDate datePurchased;
 
     @Enumerated(EnumType.STRING)
     Transmissions powerTrain;
 
-//    @Positive(message = "invalid price, should be a positive value")
     @Column(name = "vehicle value")
     Double price;
 
     String condn;
 
     @Column(name = "H.P(watt)")
-//    @PositiveOrZero(message = "invalid hp, should be a non-negative value")
     Double horsePower;
 
     @ManyToOne

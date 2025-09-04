@@ -151,7 +151,7 @@ public class DocumentController {
         String username = (String) mp.getAttribute("authorizedUser");
            
         List<CarWithDocsDTO> searchForDocumentResult = DocumentService.searchForDocument(name, extension,isIsSensitive ,username);
-        System.out.println("\npeformSearchDocument()\n"+searchForDocumentResult+"\n");
+
         Collection<List<CarWithDocsDTO>> values = CarServices.arrangDataForView(searchForDocumentResult); 
           
         mp.addAttribute("showAll", values);

@@ -177,11 +177,7 @@ public class OwnerService {
     public void updateMakeAndModelList(String name, List<MakeAndModel> availableMakesAndModels) {
 
         Owner owner = OwnerRepository.findById(name).get();
-
         owner.setMakeAndModel(availableMakesAndModels);
-
         OwnerRepository.save(owner);
-
     }
-
 }

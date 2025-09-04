@@ -15,31 +15,32 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 
     final String SELECT = """
                             SELECT new com.example.CarDealerShip.Models.CarWithDocsDTO(car.itemNo, car.make, car.model, car.year, car.datePurchased, car.powerTrain, car.price, car.condn ,car.horsePower ,doc.id ,doc.name ,doc.size)  
-                          """;
-    final String QUARY = SELECT + """
-                                    FROM availableCars car LEFT JOIN car.docs doc
-                                    WHERE car.owner.username = :username 
-                                    AND car.make= :make 
-                                    AND car.model IN :modelList
-                                    AND (car.price IS NULL OR car.price BETWEEN :priceFrom and :priceTo)
-                                    AND (car.year IS NULL OR car.year BETWEEN :yearFrom and :yearTo)
-                                    AND (car.datePurchased IS NULL OR car.datePurchased BETWEEN :dateFrom and :dateTo)
-                                 """;
-    
-    final String QUARY_NO_MODEL = SELECT + """
-                                            FROM availableCars car LEFT JOIN car.docs doc 
-                                            WHERE car.owner.username = :username 
-                                            AND car.make= :make 
-                                            AND (car.price is null OR car.price BETWEEN :priceFrom and :priceTo)
-                                            AND (car.year is null OR car.year BETWEEN :yearFrom and :yearTo)
-                                            AND (car.datePurchased is null OR car.datePurchased BETWEEN :dateFrom and :dateTo)
-                                           """; 
+                           """;   
+    final String CONDITIONS_TO_FILTER = """
+                                          AND (car.price IS NULL OR car.price BETWEEN :priceFrom and :priceTo)
+                                          AND (car.year IS NULL OR car.year BETWEEN :yearFrom and :yearTo)
+                                          AND (car.datePurchased IS NULL OR car.datePurchased BETWEEN :dateFrom and :dateTo)
+                                        """;
+    final String SEARCH_WITH_MODEL = SELECT + """
+                                                FROM availableCars car LEFT JOIN car.docs doc
+                                                WHERE car.owner.username = :username 
+                                                AND car.make= :make 
+                                                AND car.model IN :modelList
+                                               """ + CONDITIONS_TO_FILTER;
+ 
+    final String SEARCH_WITHOUT_MODEL = SELECT + """
+                                                    FROM availableCars car LEFT JOIN car.docs doc 
+                                                    WHERE car.owner.username = :username 
+                                                    AND car.make= :make 
+                                                  """ +CONDITIONS_TO_FILTER; 
     final String FIND_BY_OWNER =SELECT + """
-                                          FROM availableCars car LEFT JOIN car.docs doc WHERE car.owner.username= :username
+                                          FROM availableCars car LEFT JOIN car.docs doc 
+                                          WHERE car.owner.username= :username
                                          """;
 
     final String FIND_BY_CARID = SELECT + """
-                                            FROM availableCars car LEFT JOIN car.docs doc WHERE car.itemNo= :id
+                                            FROM availableCars car LEFT JOIN car.docs doc 
+                                            WHERE car.itemNo= :id
                                           """;
             
     @Query("SELECT min(price) FROM availableCars")
@@ -60,13 +61,13 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     @Query("SELECT max(datePurchased) FROM availableCars")
     public LocalDate findDateMax();
      
-    @Query(QUARY)
+    @Query(SEARCH_WITH_MODEL)
     public List<CarWithDocsDTO> queryBasedOnSearch(@Param("username")String user, String make, List<String> modelList,
                                         Double priceFrom, Double priceTo,
                                         Integer yearFrom, Integer yearTo,
                                         LocalDate dateFrom, LocalDate dateTo);
     
-    @Query(QUARY_NO_MODEL)
+    @Query(SEARCH_WITHOUT_MODEL)
     public List<CarWithDocsDTO> queryBasedOnSearchNoModel(@Param("username")String user,String make, 
                                                Double priceFrom, Double priceTo, 
                                                Integer yearFrom, Integer yearTo, 

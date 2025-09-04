@@ -1,10 +1,12 @@
 package com.example.CarDealerShip.Services;
 
-import com.example.CarDealerShip.Models.Authorities;
-import com.example.CarDealerShip.Models.MakeAndModel;
 import com.example.CarDealerShip.Models.Owner;
+import com.example.CarDealerShip.Models.Authorities;
+import com.example.CarDealerShip.Models.Credentials;
+import com.example.CarDealerShip.Models.MakeAndModel;
+import com.example.CarDealerShip.Models.OwnerSignUpDTO;
+import com.example.CarDealerShip.Models.OwnerStatDTO;
 import com.example.CarDealerShip.Models.PasswordDTO;
-import com.example.CarDealerShip.Repository.AuthoritiesRepository;
 import com.example.CarDealerShip.Repository.OwnerRepository;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,22 +31,28 @@ public class OwnerService {
     @Autowired
     OwnerRepository OwnerRepository;
 
-    public void createNewUSer(Owner Owner) {
-        String encode = new BCryptPasswordEncoder().encode(Owner.getCredentials().getPassword());
+    public void createNewUSer(OwnerSignUpDTO OwnerDTO) {
+        String encode = new BCryptPasswordEncoder().encode(OwnerDTO.getCredentials().getPassword());
 
-        Owner.getCredentials().setPassword(encode);
-        Owner.getCredentials().setConfirmPassword(encode);
-
-        Owner.getCredentials().setEnabled(true);
-        Owner.setFirstName(Owner.getFirstName().trim());
-        Owner.setLastName(Owner.getLastName().trim());
-
+        Owner ownerPersist = Owner.builder()
+                                    .firstName(OwnerDTO.getFirstName().trim())
+                                    .lastName(OwnerDTO.getLastName().trim())
+                                    .dob(OwnerDTO.getDob())
+                                    .email(OwnerDTO.getEmail())
+                                    .username(OwnerDTO.getUsername())
+                                    .credentials(Credentials.builder()
+                                                            .password(encode)
+                                                            .confirmPassword(encode)
+                                                            .enabled(true)
+                                                            .build())
+                                    .build();
+        
         Authorities build = Authorities.builder()
                 .authority("ROLE_USER")
-                .carOwner(Owner)
+                .carOwner(ownerPersist)
                 .build();
 
-        Owner.getCredentials().setAuthorities(List.of(build));
+        ownerPersist.getCredentials().setAuthorities(List.of(build));
  
         Map<String, List<String>> modelmake = new HashMap<>();
 
@@ -65,9 +73,9 @@ public class OwnerService {
             }
         }
         
-        Owner.setMakeAndModel(MakeAndMode);
+        ownerPersist.setMakeAndModel(MakeAndMode);
         
-        OwnerRepository.save(Owner);
+        OwnerRepository.save(ownerPersist);
 
 
     }
@@ -78,12 +86,12 @@ public class OwnerService {
 
     }
 
-    public Owner findUserById(String usernane) {
+    public OwnerStatDTO findUserById(String usernane) {
 
-        return OwnerRepository.findById(usernane).get();
+        return OwnerRepository.findByIdDTO(usernane).orElseThrow(NoSuchElementException::new);
     }
 
-    public boolean emailUniquenessForSignUp(Owner Owner) {
+    public boolean emailUniquenessForSignUp(OwnerSignUpDTO Owner) {
 
         if (Owner.getEmail().isBlank()) {
             return true;
@@ -95,7 +103,7 @@ public class OwnerService {
 
     }
 
-    public boolean emailUniquenessForUpdate(Owner owner, String logedInUser) {
+    public boolean emailUniquenessForUpdate(OwnerStatDTO owner, String logedInUser) {
 
         if (owner.getEmail().isBlank()) {
             return true;
@@ -106,15 +114,12 @@ public class OwnerService {
         return uniqueEmailUpdate == null;
     }
 
-    public void updatePersonalInfo(String loggedInUsername, Owner owner) {
-
-        owner.setFirstName(owner.getFirstName().trim());
-        owner.setLastName(owner.getLastName().trim());
+    public void updatePersonalInfo(String loggedInUsername, OwnerStatDTO owner) {
 
         Owner findById = OwnerRepository.findById(loggedInUsername).get();
         
-        findById.setFirstName(owner.getFirstName());
-        findById.setLastName(owner.getLastName());
+        findById.setFirstName(owner.getFirstName().trim());
+        findById.setLastName(owner.getLastName().trim());
         findById.setDob(owner.getDob());
         findById.setEmail(owner.getEmail());
         
@@ -137,14 +142,14 @@ public class OwnerService {
 
         UserDetails loadUserByUsername = JdbcUserDetailsManager.loadUserByUsername(username);
         Collection<? extends GrantedAuthority> authorities = loadUserByUsername.getAuthorities();
-
+        String[] roles = authorities.stream().map(a -> a.getAuthority().replace("ROLE_", "")).toArray(size -> new String[size]);
         String encode = new BCryptPasswordEncoder().encode(passDto.getNewPass());
-
+ 
         UserDetails newUser = User.builder().password(encode)
                 .username(username)
-                .authorities(authorities)
+                .roles(roles)
                 .build();
-
+  
         JdbcUserDetailsManager.updateUser(newUser);
 
         Owner Owner = OwnerRepository.findById(username).get();

@@ -1,4 +1,3 @@
-
 package com.example.CarDealerShip.Controllers;
 
 import com.example.CarDealerShip.Models.CarWithDocsDTO;
@@ -152,9 +151,9 @@ public class DocumentController {
         String username = (String) mp.getAttribute("authorizedUser");
            
         List<CarWithDocsDTO> searchForDocumentResult = DocumentService.searchForDocument(name, extension,isIsSensitive ,username);
-        
+        System.out.println("\npeformSearchDocument()\n"+searchForDocumentResult+"\n");
         Collection<List<CarWithDocsDTO>> values = CarServices.arrangDataForView(searchForDocumentResult); 
-         
+          
         mp.addAttribute("showAll", values);
         List<String[]> listOfProperties = (List<String[]>) mp.getAttribute("listOfProperties");
         mp.addAttribute("noValue", CarServices.columnEntirelyHasNoValueSort(searchForDocumentResult, listOfProperties)); 

@@ -14,36 +14,17 @@ public interface DocumentRepository extends JpaRepository<Documents, Integer> {
 
     final String SELECT = """
                           SELECT new com.example.CarDealerShip.Models.CarWithDocsDTO(car.itemNo, car.make, car.model, car.year, car.datePurchased, car.powerTrain, car.price, car.condn ,car.horsePower ,doc.id ,doc.name ,doc.size) 
+                          FROM availableCars car JOIN car.docs doc 
+                          WHERE car.itemNo IN (SELECT c.itemNo FROM availableCars c JOIN c.docs d
                           """;
-
-    final String SEARCH_BY_EXTENSION = SELECT + """
-                                                 FROM availableCars car JOIN car.docs doc 
-                                                 WHERE doc.extension = :extensionName 
-                                                 AND car.owner.username = :userName
-                                                 """;
-    final String SEARCH_BY_NAME_EXTENSION = SELECT + """
-                                                     FROM availableCars car JOIN car.docs doc 
-                                                     WHERE doc.name = :docName 
-                                                     AND car.owner.username = :userName
-                                                     """;
-    final String SEARCH_BY_NAME_EXTENSION_CASE_INSENSITIVE = SELECT + """
-                                                                     FROM availableCars car JOIN car.docs doc 
-                                                                     WHERE LOWER(doc.name) = :docName 
-                                                                     AND car.owner.username = :userName
-                                                                     """;
-
-    final String SEARCH_BY_SUB_NAME = SELECT + """
-                                               FROM availableCars car JOIN car.docs doc 
-                                               WHERE doc.name LIKE CONCAT(:docName,'.','%')  
-                                               AND car.owner.username = :userName
-                                             """;
-
-    final String SEARCH_BY_SUB_NAME_CASE_INSENSITIVE = SELECT + """
-                                                               FROM availableCars car JOIN car.docs doc 
-                                                               WHERE LOWER(doc.name) LIKE LOWER(CONCAT(:docName,'.','%'))  
-                                                               AND car.owner.username = :userName
-                                                               """;
-
+    final String OWNER_USERNAME = "AND c.owner.username = :userName)";
+    
+    final String SEARCH_BY_EXTENSION = SELECT + " WHERE d.extension = :extensionName "+OWNER_USERNAME;
+    final String SEARCH_BY_NAME_EXTENSION = SELECT + " WHERE d.name = :docName "+OWNER_USERNAME;
+    final String SEARCH_BY_NAME_EXTENSION_CASE_INSENSITIVE = SELECT + " WHERE LOWER(d.name) = :docName "+OWNER_USERNAME;
+    final String SEARCH_BY_SUB_NAME = SELECT + " WHERE d.name LIKE CONCAT(:docName,'.','%') "+OWNER_USERNAME;
+    final String SEARCH_BY_SUB_NAME_CASE_INSENSITIVE = SELECT + " WHERE LOWER(d.name) LIKE LOWER(CONCAT(:docName,'.','%')) "+OWNER_USERNAME;
+    
     @Query("SELECT doc.id from documnets doc WHERE doc.car.owner.username = :username")
     List<Integer> findByCarOwnerUsername(String username);
     

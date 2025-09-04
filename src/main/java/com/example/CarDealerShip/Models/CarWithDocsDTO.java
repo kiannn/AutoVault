@@ -2,7 +2,6 @@ package com.example.CarDealerShip.Models;
 
 import com.example.CarDealerShip.ConstraintValidators.DateConstraint;
 import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
@@ -40,8 +39,4 @@ public class CarWithDocsDTO {
     Integer docId;
     String docName;
     Long docSize;
-
-    
-    
-
 }

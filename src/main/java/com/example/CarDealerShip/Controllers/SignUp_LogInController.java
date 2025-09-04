@@ -1,7 +1,7 @@
 package com.example.CarDealerShip.Controllers;
 
 import com.example.CarDealerShip.Models.Credentials;
-import com.example.CarDealerShip.Models.Owner;
+import com.example.CarDealerShip.Models.OwnerSignUpDTO;
 import com.example.CarDealerShip.Services.OwnerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -83,16 +82,17 @@ public class SignUp_LogInController {
         if (req.getHeader("Referer") == null) {
             return "redirect:loginpage";
         }
-        Owner build = Owner.builder()
-                .firstName(null)
-                .lastName(null)
-                .dob(null)
-                .email(null)
-                .credentials(Credentials.builder()
-                        .password(null)
-                        .confirmPassword(null)
-                        .build())
-                .build();
+        OwnerSignUpDTO build = OwnerSignUpDTO.builder()
+                                    .firstName(null)
+                                    .lastName(null)
+                                    .dob(null)
+                                    .email(null)
+                                    .username(null)
+                                    .credentials(Credentials.builder()
+                                            .password(null)
+                                            .confirmPassword(null)
+                                            .build())
+                                    .build();
 
         mm.addAttribute("signupForm", build);
 
@@ -101,18 +101,20 @@ public class SignUp_LogInController {
     }
 
     @PostMapping("/signup")
-    public String signUpProcess(@Valid @ModelAttribute("signupForm") Owner Owner, BindingResult br, ModelMap ModelMap) {
-
-        boolean userExists = OwnerService.userExists(Owner.getUsername());
+    public String signUpProcess(@Valid @ModelAttribute("signupForm") OwnerSignUpDTO Owner, BindingResult br, ModelMap ModelMap) {
+        
+        final String username = Owner.getUsername();
+       
+        boolean userExists = OwnerService.userExists(username);
         boolean emailUniqueness = OwnerService.emailUniquenessForSignUp(Owner);
 
         if (!emailUniqueness) {
-            br.rejectValue("email", "XXX", "Someone already has this email address. Try another name");
+            br.rejectValue("email", "emailBadFormat", "Someone already has this email address. Try another name");
 
         }
 
         if (userExists) {
-            br.rejectValue("username", "XXX", "Username '" + Owner.getUsername() + "' already exists");
+            br.rejectValue("username", "repeatedUsername", "Username '" + username + "' already exists");
         }
 
         if (!br.hasErrors() && !userExists) {

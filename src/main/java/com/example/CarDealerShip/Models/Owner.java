@@ -22,35 +22,29 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 @Builder
 public class Owner {
 
-    @NotBlank(message = "First name can not be empty")
     String firstName;
 
-    @NotBlank(message = "Last name can not be empty")
     String lastName;
 
-    @Email(message = "Enter the email address in the format someone@example.com.")
-    @NotNull
     String email;
 
-    @Past(message = "Invalid date of bith, can not be in future.")
     LocalDate dob;
 
     @Id
-    @NotBlank(message = "Username can not be empty")
-    @Pattern(regexp = "[^\\s]+.*", message = "Username can not start with spaces")
     String username;
 
     @Embedded
-    @Valid
     Credentials credentials;
 
     @Embedded

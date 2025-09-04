@@ -123,11 +123,12 @@ public class CarsController {
         referer = rqst.getHeader("Referer");
        
         boolean badRefer = referer == null || (!referer.contains("notInDropDownListPage")
+                                            && !referer.contains("addToDropDownList") // At the URL /cars/allcars/notInDropDownListPage, the user enters mismatched values for make and model and submits the form. This redirects them to http://localhost:8080/cars/allcars/addToDropDownList. If the user then clicks the Cancel button, the referrer becomes http://localhost:8080/cars/allcars/addToDropDownList
                                             && !referer.contains("home")
                                             && !referer.contains("showsearchresult")
                                             && !referer.contains("updatepage")
                                             && !referer.contains("document"));
-                           
+                               
         if (badRefer) {
             throw new AccessDeniedException("Direct Access Denied !");
         }
@@ -236,10 +237,10 @@ public class CarsController {
         OwnerService.userSessionValidity(name);
         
         referer = req.getHeader("Referer"); 
+     
         boolean badRefer = referer == null || (!referer.contains("addpage")
-                                                 && !referer.contains("updatepage") 
-                                                 && !referer.contains("document"));
- 
+                                                 && !referer.contains("updatepage"));
+  
         if (badRefer) {
             throw new AccessDeniedException("Direct Access Denied !");
         }
@@ -287,10 +288,7 @@ public class CarsController {
         CarStatsDTO get = null;
         
         if (contId) {
-            get = CarService.findCar_Stats_ById(Integer.parseInt(referer
-                                                            .substring(referer
-                                                            .indexOf('=') + 1, referer
-                                                            .indexOf('&')))); 
+            get = CarService.findCar_Stats_ById(Integer.parseInt(referer.substring(referer.indexOf('=') + 1, referer.indexOf('&')))); 
         }
 
         if (brc.getFieldErrorCount("price") != 0) {

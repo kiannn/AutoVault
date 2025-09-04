@@ -1,6 +1,6 @@
 package com.example.CarDealerShip.Controllers;
 
-import com.example.CarDealerShip.Models.Owner;
+import com.example.CarDealerShip.Models.OwnerStatDTO;
 import com.example.CarDealerShip.Models.PasswordDTO;
 import com.example.CarDealerShip.Services.OwnerService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,15 +32,15 @@ public class AccountController {
     public String showProfile(ModelMap mp) {
 
         String attribute = (String) mp.getAttribute("authorizedUser");
-        Owner findUserById = OwnerService.findUserById(attribute);
+        OwnerStatDTO findUserById = OwnerService.findUserById(attribute);
         mp.addAttribute("personalInfo", findUserById);
-
+  
         return "personalInfo";
 
     }
 
     @PostMapping("/userpro")
-    public String updateProfile(ModelMap mp, @Valid @ModelAttribute("personalInfo") Owner owner, BindingResult br) {
+    public String updateProfile(ModelMap mp, @Valid @ModelAttribute("personalInfo") OwnerStatDTO owner, BindingResult br) {
        
         String name = (String) mp.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(name);
@@ -56,14 +56,14 @@ public class AccountController {
         boolean emailUniqueness = OwnerService.emailUniquenessForUpdate(owner, loggedInUser);
 
         if (!emailUniqueness) {
-            brNew.rejectValue("email", "XXX", "Repetitive email address! Try another one");
+            brNew.rejectValue("email", "emailFormatInvalid", "Repetitive email address! Try another one");
 
         }
 
         if (brNew.hasErrors()) {
             mp.addAttribute("personalInfoUpdateMSG", "User Information Update Unsuccessful");
             return "personalInfo";
-        }
+        }  
         OwnerService.updatePersonalInfo(loggedInUser, owner);
 
         mp.addAttribute("personalInfoUpdateMSG", "User information updated successfully");
@@ -75,15 +75,18 @@ public class AccountController {
     @GetMapping("/userpass")
     public String showPasswordPage(ModelMap mp, @ModelAttribute("passObj") PasswordDTO passDto) {
 
+        String username = (String) mp.getAttribute("authorizedUser");
+        OwnerService.userSessionValidity(username);
+        
         return "password";
-    }
+    } 
 
     @PostMapping("/userpass")
     public String updatePasswordPage(ModelMap mp, @Valid @ModelAttribute("passObj") PasswordDTO passDto, BindingResult br) {
 
         String username = (String) mp.getAttribute("authorizedUser");
         OwnerService.userSessionValidity(username);
-
+ 
         boolean passwordMatch = OwnerService.verifyPasswordCorrectness(passDto, username);
 
         if (!passwordMatch) {
@@ -108,7 +111,7 @@ public class AccountController {
         mp.addAttribute("showPassF", false);
 
         return "deleteAccountPage";
-
+ 
     }
 
     @PostMapping("/deletaccount")

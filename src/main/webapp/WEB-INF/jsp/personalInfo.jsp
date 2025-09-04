@@ -30,7 +30,7 @@
                             <form:input  path="firstName" cssClass="form-control" oninput="makeEnable()" id="inputFirstName" placeholder="Enter New First Name" maxlength="20" required="true"/>
                             <form:errors path="firstName" cssClass="text-danger font-weight-normal"  style="line-height: 20px;"/>
                         </div> 
-                    </div>
+                    </div>     
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <form:label path="lastName" for="inputLastName">Last Name </form:label>

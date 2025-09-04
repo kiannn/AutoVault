@@ -3,6 +3,7 @@ package com.example.CarDealerShip.Repository;
 
 import com.example.CarDealerShip.Models.MakeAndModel;
 import com.example.CarDealerShip.Models.Owner;
+import com.example.CarDealerShip.Models.OwnerStatDTO;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +19,9 @@ public interface OwnerRepository extends JpaRepository<Owner, String>{
 
     @Query("SELECT u.username FROM users u WHERE u.username = :username")
     public Optional<String> findByID(String username);
+                                                                            
+    @Query("SELECT new com.example.CarDealerShip.Models.OwnerStatDTO(u.firstName ,u.lastName ,u.dob ,u.email) FROM users u WHERE u.username = :username")
+    public Optional<OwnerStatDTO> findByIdDTO(String username);
     
     @Query("SELECT o.MakeAndModel FROM users o WHERE o.username = :username")
     public List<MakeAndModel> getAvailableMakesAndModels(String username);

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Past;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -17,6 +18,7 @@ public class OwnerStatDTO {
     @NotBlank(message = "Last name can not be empty")
     String lastName;
 
+    @DateTimeFormat(pattern = "yyyy-MMM-dd", fallbackPatterns ={"yyyy-MM-dd","dd/MMM/yyyy","dd.MM.yyyy","MM/dd/yyyy","dd/MM/yyyy","yyyy/MM/dd","yyyy/dd/MM"})
     @Past(message = "Invalid date of bith, can not be in future")
     LocalDate dob;
 

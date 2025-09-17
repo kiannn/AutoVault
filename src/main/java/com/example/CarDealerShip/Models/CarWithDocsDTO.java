@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter // CarWithDocsDTO is used as a parameter in the controller method when binding form data to the controller. It must have setters to allow values from the form to be assigned to its properties.
@@ -26,6 +27,7 @@ public class CarWithDocsDTO {
     
     @DateConstraint
     @Past
+    @DateTimeFormat(pattern = "yyyy-MMM-dd", fallbackPatterns ={"yyyy-MM-dd","dd/MMM/yyyy","dd.MM.yyyy","MM/dd/yyyy","dd/MM/yyyy","yyyy/MM/dd","yyyy/dd/MM"})
     LocalDate datePurchased;
     
     Transmissions powerTrain;

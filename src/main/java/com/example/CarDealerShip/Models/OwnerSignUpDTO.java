@@ -11,11 +11,10 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Builder
 public class OwnerSignUpDTO {
     
@@ -29,6 +28,7 @@ public class OwnerSignUpDTO {
 //    @NotNull // This annotation is not required here, because if the user leaves 'email' empty, its value will be set to an empty string, not null.
     String email;
 
+    @DateTimeFormat(pattern = "yyyy-MMM-dd", fallbackPatterns ={"yyyy-MM-dd","dd/MMM/yyyy","dd.MM.yyyy","MM/dd/yyyy","dd/MM/yyyy","yyyy/MM/dd","yyyy/dd/MM"})
     @Past(message = "Invalid date of bith, can not be in future.")
     LocalDate dob;
 

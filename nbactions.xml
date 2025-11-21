@@ -40,4 +40,14 @@
             <exec.executable>java</exec.executable>
         </properties>
     </action>
+    <action>
+            <actionName>CUSTOM-War</actionName>
+            <displayName>War</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+                <goal>-DskipTests</goal>
+                
+            </goals>
+        </action>
 </actions>

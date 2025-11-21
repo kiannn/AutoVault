@@ -28,16 +28,18 @@ public class ExceptionsHandler {
 
     @ExceptionHandler({NoSuchElementException.class, IllegalStateException.class})
     @ResponseStatus(code = HttpStatus.FOUND) 
-    /** 
-     * response status applied on @ExceptionHandler method (HttpStatus.REQUEST_TIMEOUT) should be compatible with
-     * 'redirect' statement in the @ExceptionHandler method 'return', which results in a 302 Found. 
-     * In case of using HttpStatus.REQUEST_TIMEOUT while IllegalStateException is being thrown 
-     * the @ExceptionHandler method returns a Whitelabel Error Page
-     * with a status code of type=Forbidden, status=403, and does NOT redirect. 
-     * If application throws NoSuchElementException,
-     * the "redirect:/loginpage?sessionTimedOut" in return statement is performed but the
-     * query parameter 'sessionTimedOut' is not shown and ignored.
-    */ 
+    /**
+     * The @ResponseStatus applied on @ExceptionHandler method (like
+     * HttpStatus.REQUEST_TIMEOUT) should be compatible with the 'redirect'
+     * statement in the @ExceptionHandler method's 'return' which results in a 302
+     * Found. In case of using HttpStatus.REQUEST_TIMEOUT while
+     * IllegalStateException is being thrown the @ExceptionHandler method
+     * returns a Whitelabel Error Page with a status code of type=Forbidden,
+     * status=403, and does NOT redirect. If application throws
+     * NoSuchElementException, the "redirect:/loginpage?sessionTimedOut" in
+     * return statement is performed but the query parameter 'sessionTimedOut'
+     * is not shown and ignored.
+     */ 
     public String handleException2(Exception exc, Model m, HttpServletRequest h) {
 
         h.getSession(false).invalidate();
@@ -73,8 +75,8 @@ public class ExceptionsHandler {
 }
     /**
      *  java.lang.IllegalStateException: 
-     *    Happens when application is restated and as such all session attributes of the app
-     *    are gone.In this case make requests to a handler method having a @ModelAttribute parameter, 
+     *    Happens when application is re-started and as such all session attributes of the app
+     *    are gone.In this case making requests to a handler method having a @ModelAttribute parameter, 
      *    like @ModelAttribute("carForm"), gets :
      *    java.lang.IllegalStateException: Expected session attribute 'carForm'
      * 

@@ -457,22 +457,38 @@ public class CarsController {
         System.out.println("\n POST "+file.exists()+"\n"+file);
         Resource resource = resourceLoader.getResource("classpath:Car Models List of Car Models.xlsx");
         /**
-         *
          * Using Resource interface :
          *
          * The 'new File("src/main/resources/...")' approach looks for the file
          * in the filesystem relative to the application’s working directory.
          * When application is packaged into a JAR/WAR, the src/main/resources
-         * directory does not exist as a filesystem path (file.exists() returns
-         * false). The file will be placed inside the JAR/WAR and not on the
-         * filesystem. Instead, directory contents are bundled inside the
-         * JAR/WAR. After packaging, resources under src/main/resources are
-         * included in the JAR/WAR and can still be accessed using classpath.
-         * classpath: is a keyword or prefix used to specify that the resource
-         * should be loaded from the application's classpath. It tells Spring to
-         * look for the resource inside the directories or archives that are
-         * included in the classpath (e.g., src/main/resources or inside the
-         * JAR/WAR). Resource can be used to load files from both local
+         * directory does not exist as a filesystem path inside that JAR/WAR
+         * (file.exists() returns false).After packaging, resources under
+         * src/main/resources are bundled inside the JAR/WAR and
+         * "src/main/resources" directory itself no longer exists but its
+         * contents can still be accessed using classpath. 'classpath:' is a
+         * keyword or prefix used to specify that the resource should be loaded
+         * from the application's classpath. It tells Spring to look for the
+         * resource inside the directories or archives (packaged files like
+         * .jar/.war that contain compiled code and resources) that are included
+         * in the classpath (e.g., src/main/resources, or inside the JAR/WAR).
+         * The classpath is a list of locations the JVM uses to find compiled
+         * classes and resources at runtime. classpath includes directories and
+         * archives, so both can be part of the classpath. An archive means a
+         * packaged file like a .jar or .war. Directories are plain folders on
+         * your filesystem that contain compiled .class or resource files.
+         * Examples are target/classes/ (When you run your program from an IDE,
+         * it automatically adds or updates target/classes folder inside the project
+         * directory), src/main/resources/ (at development time, before
+         * packaging — automatically added to classpath by IDEs). When you run
+         * application inside NetBeans, then: files from src/main/java → all
+         * compiled into .class files → outputs go to target/classes and files from
+         * src/main/resources → all copied to target/classes. After packaging
+         * the application into a JAR/WAR the src/main/resources directory no
+         * longer exists on the filesystem inside that JAR/WAR. Its contents are
+         * embedded inside the JAR/WAR. The JAR/WAR itself becomes the classpath
+         * entry — Java looks inside it when loading classes/resources.
+         * 'Resource' interface can be used to load files from both local
          * filesystem and when application deployed as a JAR/WAR.
          */
         try (InputStream fis = resource.getInputStream();) {

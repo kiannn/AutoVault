@@ -45,7 +45,7 @@ public class SignUp_LogInController {
         String remoteAddr = req.getRemoteAddr();
         
         log.info("\nX-Forwarded-For = {}", header);
-        log.info("remote = {}", req.getRemoteAddr());
+        log.info("remote = {}", req.getRemoteAddr()); // getRemoteAddr() : It returns the IP address of the client (the user or system) that made the HTTP request to your server.If the request passed through proxies or load balancers, it may return the IP of the last proxy rather than the original client.
         log.info("User = {}",req.getRemoteUser());
 
         try {

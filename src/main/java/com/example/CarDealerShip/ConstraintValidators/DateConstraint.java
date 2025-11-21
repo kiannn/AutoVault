@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateConstraint {
 
-    String message() default "Invalid date - should not exceed 1000 years after current date";
+    String message() default "Invalid date: exceeds maximum limit of 100 years from today";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};  
 

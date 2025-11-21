@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +17,14 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
-public class CarDealerShipApplication {
+public class CarDealerShipApplication { //extends SpringBootServletInitializer {
+
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+//        
+//        System.out.println("com.example.CarDealerShip.CarDealerShipApplication.configure()\n");
+//        return application.sources(new Class[]{CarDealerShipApplication.class, SecurityConfig.class});//Add more sources (configuration classes and components) to this application.
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(new Class[]{CarDealerShipApplication.class, SecurityConfig.class}, args);

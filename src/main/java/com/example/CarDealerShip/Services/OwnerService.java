@@ -161,10 +161,10 @@ public class OwnerService {
         OwnerRepository.deleteById(user);
     }
 
-    public void userSessionValidity(String username) {
-
-        OwnerRepository.findByID(username).orElseThrow(NoSuchElementException::new); 
-    }
+//    public void userSessionValidity(String username) {
+//
+//        OwnerRepository.findByID(username).orElseThrow(NoSuchElementException::new); 
+//    }
  
     public List<MakeAndModel> availableMakesAndModels(String name) {
         

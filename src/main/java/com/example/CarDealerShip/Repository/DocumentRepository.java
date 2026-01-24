@@ -25,7 +25,7 @@ public interface DocumentRepository extends JpaRepository<Documents, Integer> {
     final String SEARCH_BY_SUB_NAME = SELECT + " WHERE d.name LIKE CONCAT(:docName,'.','%') "+OWNER_USERNAME;
     final String SEARCH_BY_SUB_NAME_CASE_INSENSITIVE = SELECT + " WHERE LOWER(d.name) LIKE LOWER(CONCAT(:docName,'.','%')) "+OWNER_USERNAME;
     
-    @Query("SELECT doc.id from documnets doc WHERE doc.car.owner.username = :username")
+    @Query("SELECT doc.id from documents doc WHERE doc.car.owner.username = :username")
     List<Integer> findByCarOwnerUsername(String username);
     
     List<Documents> findByCarItemNo(Integer username);
@@ -33,7 +33,7 @@ public interface DocumentRepository extends JpaRepository<Documents, Integer> {
     void deleteByCarItemNo(Integer carId);
      
     @Modifying 
-    @Query("DELETE FROM documnets doc WHERE doc.car.itemNo IN :carIds")
+    @Query("DELETE FROM documents doc WHERE doc.car.itemNo IN :carIds")
     void deleteAllByCarItenN(List<Integer> carIds);
 
     @Query(SEARCH_BY_EXTENSION)

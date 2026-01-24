@@ -32,7 +32,7 @@ public class HomeController {
     public String homePage(ModelMap mm) {
 
         String name = (String) mm.getAttribute("authorizedUser");
-        OwnerService.userSessionValidity(name);
+//        OwnerService.userSessionValidity(name);
 
         List<CarWithDocsDTO> findAll = CarServices.getAllCars(name);
  

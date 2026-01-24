@@ -40,7 +40,7 @@ public class Owner {
 
     @Embedded
     Credentials credentials;
-
+ 
     @Embedded
     @ElementCollection
     @CollectionTable(name = "availableMakeAndModels", joinColumns = @JoinColumn(name = "Owner username", referencedColumnName = "username"))

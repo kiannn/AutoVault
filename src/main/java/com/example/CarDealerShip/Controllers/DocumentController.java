@@ -124,8 +124,8 @@ public class DocumentController {
     @GetMapping("/searchdocs")
     public String searchDocument(ModelMap mp, DocumentDTO DocumentDTO) {
 
-        String name = (String) mp.getAttribute("authorizedUser");
-        OwnerService.userSessionValidity(name);
+//        String name = (String) mp.getAttribute("authorizedUser");
+        // OwnerService.userSessionValidity(name);
 
         mp.addAttribute("docSearchInput", DocumentDTO);
         mp.addAttribute("allExten", EnumSet.range(FileExtension.PDF, FileExtension.AVI));
@@ -165,8 +165,8 @@ public class DocumentController {
     @GetMapping("/{by}")
     public String peformSearchDocumentOrderBy(ModelMap mp, @PathVariable String by, HttpServletRequest request) throws AccessDeniedException {
 
-        String name = (String) mp.getAttribute("authorizedUser");
-        OwnerService.userSessionValidity(name); 
+//        String name = (String) mp.getAttribute("authorizedUser");
+//        OwnerService.userSessionValidity(name); 
 
         String refer = request.getHeader("Referer");
 

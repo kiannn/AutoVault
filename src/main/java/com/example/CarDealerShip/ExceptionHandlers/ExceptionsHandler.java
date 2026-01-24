@@ -47,7 +47,7 @@ public class ExceptionsHandler {
         return "redirect:/loginpage?sessionTimedOut"; 
  
     }  
-  
+   
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public String handleException3(Exception exc, Model m) {
@@ -55,7 +55,7 @@ public class ExceptionsHandler {
         m.addAttribute("msg", exc.getMessage());
         return "errorPage";
     }
-
+ 
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class, MissingServletRequestParameterException.class})
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public String handleException4(Exception exc, Model m) {
@@ -87,7 +87,7 @@ public class ExceptionsHandler {
      * java.util.NoSuchElementException :
      *    Happens when methods like findById or findByID are invoked from within other methods 
      *    OwnerService.findUserById and  OwnerService.userSessionValidity respectively while there is no user records
-     *    in the database because application re-started
+     *    in the database because application re-started (happens in development and testing phase)
      * 
      * java.nio.file.AccessDeniedException : 
      *    Happens when some controller methods like showUpdatePage, showNotInDropDownListPage, deleteCars, viewDocument

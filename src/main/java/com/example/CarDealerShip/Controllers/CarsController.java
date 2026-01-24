@@ -73,8 +73,8 @@ public class CarsController {
     @GetMapping("allcars/preshow")
     public String preShow(ModelMap mm, HttpServletRequest req) {
 
-        String name = (String) mm.getAttribute("authorizedUser");
-        OwnerService.userSessionValidity(name);
+//        String name = (String) mm.getAttribute("authorizedUser");
+//        OwnerService.userSessionValidity(name);
 
         return "redirect:" + referer.replace("false", "true");
     }
@@ -91,8 +91,8 @@ public class CarsController {
     @GetMapping("allcars/addpage")
     public String showAddPage(ModelMap mm, CarWithDocsDTO car, @RequestParam boolean carFormstate) {
 
-        String name = (String) mm.getAttribute("authorizedUser");
-        OwnerService.userSessionValidity(name);
+//        String name = (String) mm.getAttribute("authorizedUser");
+        // OwnerService.userSessionValidity(name);
          
         mm.addAttribute("message", "Add a New Car");
         mm.addAttribute("button", "Add");
@@ -112,9 +112,9 @@ public class CarsController {
                                  @RequestParam boolean carFormstate, HttpServletRequest rqst) throws AccessDeniedException {
   
         String name = (String) mm.getAttribute("authorizedUser");
- 
-        OwnerService.userSessionValidity(name);
-         
+        System.out.println("\n-------------------> showUpdatePage()= "+name+"\n");
+        // OwnerService.userSessionValidity(name);
+          
         boolean validCarIds = CarService.isValidCarIds(name, new Integer[]{id});
         if (!validCarIds) { 
             throw new AccessDeniedException("Not Authorized !");
@@ -233,8 +233,8 @@ public class CarsController {
     @GetMapping("allcars/notInDropDownListPage")
     public ModelAndView showNotInDropDownListPage(ModelMap mm, CarMakeModelDTO car, HttpServletRequest req) throws AccessDeniedException {
          
-        String name = (String) mm.getAttribute("authorizedUser");
-        OwnerService.userSessionValidity(name);
+//        String name = (String) mm.getAttribute("authorizedUser");
+        // OwnerService.userSessionValidity(name);
         
         referer = req.getHeader("Referer"); 
      
@@ -319,8 +319,8 @@ public class CarsController {
     @GetMapping("showsearchresult/show")
     public String showSearchPage(ModelMap mm, CarSearchDTO car, HttpServletRequest req) {
 
-        String name = (String) mm.getAttribute("authorizedUser");
-        OwnerService.userSessionValidity(name);
+//        String name = (String) mm.getAttribute("authorizedUser");
+        // OwnerService.userSessionValidity(name);
  
         req.getParameterMap().forEach((k, v) -> System.out.println("key = " + k + "  value = " + Arrays.toString(v)));
 
@@ -396,8 +396,8 @@ public class CarsController {
     @GetMapping({"home/{by}", "showsearchresult/{by}"})
     public String orderBy(ModelMap mm, @PathVariable String by, HttpServletRequest request) throws AccessDeniedException {
  
-        String name = (String) mm.getAttribute("authorizedUser");
-        OwnerService.userSessionValidity(name);
+//        String name = (String) mm.getAttribute("authorizedUser");
+        // OwnerService.userSessionValidity(name);
 
         String refer = request.getHeader("Referer");
 

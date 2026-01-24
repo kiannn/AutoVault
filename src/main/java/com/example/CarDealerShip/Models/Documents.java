@@ -18,11 +18,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "documnets")
+@Entity(name = "documents")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-@Getter
+@Getter 
 @Builder 
 public class Documents {
 

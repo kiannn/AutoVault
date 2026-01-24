@@ -1,10 +1,7 @@
 
 package com.example.CarDealerShip.ConstraintValidators;
 
-import com.example.CarDealerShip.ConstraintValidators.PasswordMatches;
-import com.example.CarDealerShip.Models.Car;
 import com.example.CarDealerShip.Models.Credentials;
-import com.example.CarDealerShip.Models.Owner;
 import com.example.CarDealerShip.Models.PasswordDTO;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

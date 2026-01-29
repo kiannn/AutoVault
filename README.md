@@ -12,6 +12,18 @@ Search and sort functionalities allow efficient vehicles management, while secur
 - Docker
 - MySQL
 
+## Architecture & Design
+AutoVault follows a layered monolithic architecture designed for maintainability, testability, and clear separation of concerns:
+
+- **Controller Layer**: Handles HTTP requests, form submissions, and view rendering using Spring MVC.
+- **Service Layer**: Encapsulates business logic, transactional boundaries, validation orchestration, and external API integration.
+- **Repository Layer**: Manages persistence using Hibernate/JPA and JPQL queries.
+- **DTO Layer**: Decouples persistence entities from the view layer and prevents over-fetching.
+- **Security Layer**: Implements authentication and authorization using Spring Security with JDBCUserDetailsManager.
+- **Exception Handling**: Centralized using `@ControllerAdvice` for consistent and user-friendly error handling.
+
+The application disables Open Session in View (`spring.jpa.open-in-view=false`) to ensure all required data is fetched within the service layer.
+
 ## Usage
 ### User Perspective:
 1. **User Registration and Login:**
@@ -47,9 +59,11 @@ Search and sort functionalities allow efficient vehicles management, while secur
 1. **Account Creation & Authentication:**
    - User authentication is managed using **Spring Security** with a **JDBC UserDetailsManager**.
    - Passwords are hashed for security.
-2. **Database Interaction:**
-   - Vehicle and user data are stored in a **MySQL database**.
-   - **Hibernate** and **JPQL** are used for database interaction.
+2. **Database Interaction**
+   - Vehicle and user data are stored in a MySQL database.
+   - Hibernate and JPQL are used for database interaction.
+   - Database schemas are **manually created and managed** using MySQL Workbench.
+   - Hibernate is configured with `spring.jpa.hibernate.ddl-auto=validate` to strictly validate entity mappings against the existing schema without modifying database structures.
 3. **File Management:**
    - Documents are stored as a separate entity called `Documents`, with a ManyToOne relationship to the `Car` entity. Each `Car` can have multiple associated documents through a OneToMany relationship.
    - The `Documents` entity stores information such as file name, size, extension, type, and binary data (`@Lob`) in the database, along with the `car_id` foreign key linking it to the associated vehicle.
@@ -57,11 +71,15 @@ Search and sort functionalities allow efficient vehicles management, while secur
    - The app uses **JSP pages** and **JSTL** for dynamic rendering, connected to backend services via **Spring MVC**.
    - Form submissions for adding/editing vehicles use POST requests with server-side validation.
    - The frontend is enhanced with JavaScript for interactivity.
-5. **Validation:**
-   - Validations are performed at field or object levels using `BindingResult` and `jakarta.validation.Valid` for username, password, email addresses, date of birth, purchase dates, car detail fields and document extensions. 
+5. **Validation Strategy**: Validation is implemented using Jakarta Bean Validation at both field and object levels:
+   - Standard field-level constraints are combined with **custom validation annotations**.
+   - Object-level validation is enforced using reusable `ConstraintValidator` implementations to support cross-field rules such as password confirmation and date-range         constraints.
+   - Validation is applied using `@Valid` and handled via `BindingResult` to provide controlled, user-friendly feedback without relying on exception-driven flow.
+   - External validation logic is applied to verify vehicle make and model consistency using a third-party API.
+   - This approach avoids duplication in controllers and enforces domain integrity.
 6. **Containerized Deployment:**
    - The application is containerized using **Dockerfile** making it easy to deploy in various environments.
-
+   - Sensitive configuration values such as database credentials are externalized using environment variables.
 ## Contact
  - Email: kpourd@gmail.com
  - GitHub Profile: https://github.com/kiannn/AutoVault

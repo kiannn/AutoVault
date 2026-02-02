@@ -20,7 +20,7 @@ AutoVault follows a layered monolithic architecture designed for maintainability
 - **Repository Layer**: Manages persistence using Hibernate/JPA and JPQL queries.
 - **DTO Layer**: Decouples persistence entities from the view layer and prevents over-fetching.
 - **Security Layer**: Implements authentication and authorization using Spring Security with JDBCUserDetailsManager.
-- **Exception Handling**: Centralized using `@ControllerAdvice` for consistent and user-friendly error handling.
+- **Exception Handling**: Centralized using `@ControllerAdvice` for consistent error handling.
 
 The application disables Open Session in View (`spring.jpa.open-in-view=false`) to ensure all required data is fetched within the service layer.
 

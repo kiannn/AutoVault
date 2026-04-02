@@ -73,8 +73,7 @@
 <script type="text/javascript">
 
     $('#inputdob').datepicker({
-        format: 'yyyy-M-dd'
-
+        format: 'yyyy-MM-dd'
     });
     
     function makeEnable(){

@@ -28,11 +28,8 @@ import lombok.ToString;
 public class Owner {
 
     String firstName;
-
     String lastName;
-
     String email;
-
     LocalDate dob;
 
     @Id

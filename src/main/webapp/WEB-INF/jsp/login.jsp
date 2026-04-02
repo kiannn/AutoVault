@@ -32,7 +32,7 @@
             .content{
                 height: 90%;
                 position: absolute;
-                transform: translate(55%, -140%);
+                transform: translate(50%, -140%);
             }
 
         </style>

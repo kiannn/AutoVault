@@ -167,7 +167,7 @@
                     <td>
                         <c:choose>
                             <c:when test="${carFirst.datePurchased==null}">${red}</c:when>
-                            <c:otherwise> ${carFirst.datePurchased} </c:otherwise>
+                            <c:otherwise> ${carFirst.datePurchasedDisplay} </c:otherwise>
                         </c:choose>
                     </td>
                     <td>
@@ -396,7 +396,7 @@
         
         if(ids===""){
             
-            window.window.alert("please select at least one item to delet");
+            window.alert("please select at least one item to delet");
             
         }else if(window.confirm("Are you sure you want to delet car id = "+ids+" ?")){
             

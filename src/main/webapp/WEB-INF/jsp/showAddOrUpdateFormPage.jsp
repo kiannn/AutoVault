@@ -51,7 +51,7 @@
                 <div style="justify-content: center; display: flex; margin-bottom: 45px">               
                     <!---------------------------------------------------------- 
                     Old approach, when 'docdelet' was included in request parameter:
-                        <span style="position: absolute; height: 40px;" id="msg" class="alert alert-warning pt-2">${param.docdelet}</span> 
+                    <span style="position: absolute; height: 40px;" id="msg" class="alert alert-warning pt-2">${param.docdelet}</span> 
                     ------------------------------------------------------------>        
                     <span style="position: absolute; height: 40px;" id="msg" class="alert alert-warning pt-2">${docdelet}</span>
                 </div>

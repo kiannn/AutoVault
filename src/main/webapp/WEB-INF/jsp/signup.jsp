@@ -24,7 +24,7 @@
             .content{
                 height: 100%;
                 position: absolute;
-                transform: translate(52%, -130%);
+                transform: translate(52%, -133%);
             }
 
             .datepicker {
@@ -53,6 +53,8 @@
                 </div>
 
             <h4 class="mb-3 text-dark alert-link" style="text-align: center">Create your account</h4> 
+            
+            <!-- Create a form with two fieldsets separating personal and credentials details: -->
             <form:form action="/signup" method="POST" modelAttribute="signupForm">
                 <fieldset class ="p-3 shadow-lg mb-2 bg-transparent" style="border: 1px solid darkgrey; border-radius: 10px; line-height: 10px;">    
                     <div class="form-row">

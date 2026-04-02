@@ -156,7 +156,7 @@ public class CarsController {
                                                             BindingResult br,
                                                             MultipartFile[] filee, ModelMap mm, RedirectAttributes rediAtt, HttpServletRequest r)
                                                             throws IOException {
-
+        System.out.println("br in addOrUpdateCars()\n"+br);
         if (!carDTO.getModel().isEmpty()) {
 
             List<String> verifyMakeAndModel = CarService.verifyMakeAndModelValidity(carDTO.getMake(), carDTO.getModel());
@@ -232,9 +232,6 @@ public class CarsController {
 
     @GetMapping("allcars/notInDropDownListPage")
     public ModelAndView showNotInDropDownListPage(ModelMap mm, CarMakeModelDTO car, HttpServletRequest req) throws AccessDeniedException {
-         
-//        String name = (String) mm.getAttribute("authorizedUser");
-        // OwnerService.userSessionValidity(name);
         
         referer = req.getHeader("Referer"); 
      
@@ -472,8 +469,8 @@ public class CarsController {
          * resource inside the directories or archives (packaged files like
          * .jar/.war that contain compiled code and resources) that are included
          * in the classpath (e.g., src/main/resources, or inside the JAR/WAR).
-         * The classpath is a list of locations the JVM uses to find compiled
-         * classes and resources at runtime. classpath includes directories and
+         * The classpath is list of locations where the JVM loads compiled
+         * classes and resources from, at runtime. classpath includes directories and
          * archives, so both can be part of the classpath. An archive means a
          * packaged file like a .jar or .war. Directories are plain folders on
          * your filesystem that contain compiled .class or resource files.

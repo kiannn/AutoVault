@@ -1,57 +1,30 @@
-<style>
-    table{
-
-        height: 60%;
-        width: 50%;
-        margin-bottom: 20px;
-        margin-top:1px;
-        margin-left:260px;
-        border-collapse: collapse;
-    }
-    td{
-        background-color: #e2e6ea;
-        border:5px solid white;
-        
-        line-height: 1.4;
-        text-align: center;
-        font-weight: bold;
-        font-size: 15px;
-
-    }
-     select option:checked {
-
-            background-color: darkgray; /* Highlight color */
-            color: #000; /* Text color */
-        }
-</style>
 
 <form:form modelAttribute="carMakeModelDTO" action="addToDropDownList">
     <table>
         <tr>
-            <td style="padding-right: 90px; padding-left: 90px">
+            <td style="padding-right: 90px; padding-left: 90px"><!-- 'padding-right: 90px; padding-left: 90px' makes a total extra width = 180px, so your column may become very wide. -->
                 <form:label path="make">Make:</form:label>
                 <form:select path="make" size="9" cssClass="form-control" required="required">
                     <form:option value="-" label="Please Select" disabled="true" cssClass="alert-primary"/>
                     <form:options items ="${allPossibleMakes}" cssClass="alert-link text-dark"/>                   
                 </form:select> 
-                <form:errors path="make" cssClass="text-danger" style="font-size:13px;"/>
+                <form:errors path="make" cssClass="text-danger" />
             </td>
         </tr>
         <tr>
-            <td>
+            <td style="padding-top: 5px">
                 <form:label path="model">Model(optional):</form:label>
                 <form:input path="model"/><br>
-                <form:errors path="model" cssClass="text-danger" style="font-size:13px;"/>
+                <form:errors path="model" cssClass="text-danger"/>
 
             </td>
         </tr>
     </table>
-    <p style="text-align: center"> 
-        <input type="submit" value="save" style="width: 100px;" class="btn btn-success alert-link"/>
+    <div> 
+        <input type="submit" value="Save" class="btn btn-success alert-link"/>
         &nbsp;&nbsp;&nbsp;
-        <input type="button" value="Cancel" 
-               onclick="window.location.href='/cars/allcars/preshow'" class="btn btn-warning alert-link"/>
-        &nbsp;&nbsp;                 <!-- onclick="history.back()" -->
+        <input type="button" value="Cancel" onclick="window.location.href='/cars/allcars/preshow'" class="btn btn-warning alert-link"/>
+        &nbsp;&nbsp;                 
         <input type="button" value="Clear" onclick="resset()" class="btn btn-info alert-link"/>
-    </p>
+    </div>
 </form:form>

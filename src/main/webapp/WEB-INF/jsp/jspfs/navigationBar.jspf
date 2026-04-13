@@ -77,7 +77,7 @@
     </div>
     
    <ul class="navbar-nav"> 
-       <button class="dropbtn">Account<i class="fa fa-chevron-down ml-1"></i></button> <!-- other option for Font Awesome : fa-caret-down -->          
+       <button class="dropbtn">Account<i class="fa fa-caret-down ml-1"></i></button> <!-- other option for Font Awesome : fa-caret-down -->          
         <div class="dropdown-content">
             <a href="/userpro">Profile</a>
             <a href="/userpass">Password</a>   

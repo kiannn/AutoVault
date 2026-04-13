@@ -1,0 +1,142 @@
+#sortMSG_div{
+    position: relative;
+    width: 100%;
+    height: 35px;
+}
+#sortMSG_div span#sortMessage {
+    font-weight: bold;
+    padding-right: 20px;
+    padding-left: 20px;
+    background-color: yellow;
+    position: absolute;
+    border: 1px black dashed;
+    border-radius: 20px;
+    left: 1%
+}
+
+table#listingTable {
+    width: 100%;
+    border: 2px solid darkgray;
+    margin: 5px auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+
+td[name="dataCell"], th {
+    text-align: center;
+    padding-left: 7px;
+    padding-right: 7px
+}
+td[name="dataCell"]{
+    font-size: 13.5px
+}
+
+.lastColumnDiv {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap:17px;
+    height: 40px;
+    width: 270px;
+    padding-left: 10px;
+}
+.lastColumnDiv input{
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+/*Only table#listingTable has <thead > and <th>, so I just say th{} or thead{} alone instead of 
+'table#listingTable th' or 'table#listingTable thead'*/
+th button{
+    font-size: 15px;
+    border: 1.75px solid black;
+    border-radius: 7px;
+    background-color: white
+}
+th button:hover{
+    border-color: red;
+}
+th:hover:not(:nth-last-child(1)){
+    background-color: darkgray;
+    color: whitesmoke
+}
+th:nth-last-child(1):hover{
+    background-color: white
+}
+th div {
+    margin-top: 5px
+}
+th{
+    padding-bottom: 10px;
+    padding-top: 5px;
+    font-size: 14.5px;
+    border-right: 1px darkgray solid;
+} 
+th:nth-last-child(1){
+    background-color: gainsboro
+}
+th:nth-last-child(1) div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: maroon;
+    font-size: 12.5px;
+    padding-left: 3px;
+}
+th:nth-last-child(1) div input {
+    width: 55px;
+    height: 30px;
+    font-weight: bold;
+    background-color: azure;
+    color: black;
+    border: solid 1px darkgray;
+    border-radius: 5px
+}
+th:nth-last-child(1) div input:hover{
+    background-color: lightblue
+}
+
+
+table#listingTable td {
+    border-top: 1px black solid
+}
+table#listingTable tr td:nth-child(1){
+    border-right: 1px solid black;
+    font-weight: bold;
+    font-family: serif
+}
+table#listingTable td:nth-last-child(2) {
+    border-right: 1px solid black;
+}
+table#listingTable tr td:nth-last-child(1){
+    background-color: gainsboro
+}
+
+table[name='docViewTable']{
+    margin: 0 auto
+}
+table[name='docViewTable'] a {
+    text-decoration: underline;
+}
+table[name='docViewTable'] tr td:nth-child(1){
+    width:300px;
+}
+
+div#selectAll_addAll_div{
+    position: fixed;
+    z-index: 3;
+    right:10%;
+    bottom: 10%;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    background-color: transparent
+} 
+span#recordNumber {
+    font-size:13px;
+    font-weight: bold;
+    font-style: oblique;
+    background-color: yellow;
+    text-align: center
+}

@@ -9,104 +9,76 @@
         <link href="/css/bootstrap.min.css"  rel="stylesheet">
         <link href="/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
         <link href="/css/bgStyles.css" type="text/css" media="all" rel="stylesheet">
-            
+        <link href="/css/signUp.css" rel="stylesheet"/>
         <title>Sign Up Page</title>
-        <style>
-
-            .custom-w-div1{
-                width: 50%;
-            }
-            @media(max-width:768px){
-                .custom-w-div1{
-                    width: 100%;
-                }
-            }
-            .content{
-                height: 100%;
-                position: absolute;
-                transform: translate(52%, -133%);
-            }
-
-            .datepicker {
-                background-color: black !important; /* datepicker background */
-            }
-            .datepicker td:hover,  /*datepicker cell*/
-            .datepicker th:hover, /*datepicker header*/
-            .datepicker td.focused,
-            .datepicker th.focused{
-                background-color: white !important;  /* datepicker cell and header background */
-                color: black !important;             /* datepicker cell and header text color */
-                cursor: pointer;
-            }
-        </style>
     </head>
-    <body class="text-white alert-link" style="font-size: 13.25px">
+    <body class="alert-link" style="font-size: 13.25px">
         <div class="background"></div>
         <div class="container custom-w-div1 p-3 shadow-lg content bg-transparent">
-                <div class="form-group font-weight-normal mb-0">
-                    <label style="text-decoration: underline; color: white"><a style="color: white; font-weight: bold" href="/loginpage">Back to Login</a></label>
-                    <c:if test="${sigUpErrorGeneralMsg!=null}">
-                        <div class="alert alert-danger alert-link" style="text-align: center">
-                            <span>${sigUpErrorGeneralMsg}</span>
-                        </div>
-                    </c:if>
-                </div>
+            <div class="form-group font-weight-normal mb-0">
+                <a href="/loginpage">Back to Login</a>
+                <c:if test="${sigUpErrorGeneralMsg!=null}">
+                    <div class="alert alert-danger alert-link mt-2">
+                        ${sigUpErrorGeneralMsg}
+                    </div>
+                </c:if>
+            </div>
 
-            <h4 class="mb-3 text-dark alert-link" style="text-align: center">Create your account</h4> 
-            
+            <h4>Create your account</h4>
+
             <!-- Create a form with two fieldsets separating personal and credentials details: -->
             <form:form action="/signup" method="POST" modelAttribute="signupForm">
-                <fieldset class ="p-3 shadow-lg mb-2 bg-transparent" style="border: 1px solid darkgrey; border-radius: 10px; line-height: 10px;">    
+                <fieldset class ="p-3 shadow-lg mb-2 bg-transparent" >
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <form:label path="firstName" for="inputFirstName">First Name </form:label>
                             <form:input  path="firstName" cssClass="form-control" id="inputFirstName" placeholder="Enter First Name" maxlength="20" required="true"/>
-                            <form:errors path="firstName" cssClass="text-danger font-weight-normal"  style="line-height: 20px;"/>
+                            <form:errors path="firstName"/>
                         </div>
                         <div class="form-group col-md-6">
                             <form:label path="lastName" for="inputLastName">Last Name </form:label>
                             <form:input  path="lastName" cssClass="form-control" id="inputLastName" placeholder="Enter Last Name" maxlength="20" required="true"/>
-                            <form:errors path="lastName" cssClass="text-danger font-weight-normal"  style="line-height: 20px;"/>
+                            <form:errors path="lastName"/>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6" >
                             <form:label path="dob" for="inputdob">Date of Birth </form:label>
                             <form:input  path="dob" id="inputdob"  cssClass="form-control"  placeholder="Enter Date Of Birth"/>
-                            <form:errors path="dob" cssClass="text-danger font-weight-normal"  style="line-height: 20px;"/>
+                            <form:errors path="dob"/>
                         </div>
                         <div class="form-group col-md-6" >
                             <form:label path="email" for="inputEmail">Email </form:label>
                             <form:input  path="email" cssClass="form-control" id="inputEmail" placeholder="Enter Email" maxlength="20"/>
-                            <form:errors path="email" cssClass="text-danger font-weight-normal"  style="line-height: 20px;"/>
+                            <form:errors path="email"/>
                         </div>
                     </div>
-                </fieldset>    
-                <fieldset class ="p-3 shadow-lg bg-transparent" style="border: 1px solid darkgrey; border-radius: 10px; line-height: 10px;">
+                </fieldset>
+                <fieldset class ="p-3 shadow-lg bg-transparent" >
                     <div class="form-row ">
                         <div class="form-group col-md-6">
                             <form:label path="username" for="inputUsername">Username </form:label>
                             <form:input  path="username" cssClass="form-control" id="inputUsername" placeholder="Enter Username" maxlength="20" required="true"/>
-                            <form:errors cssClass="text-danger font-weight-normal" path="username" style="line-height: 20px;"/>
+                            <form:errors path="username"/>
                         </div>
                     </div>
                     <div class="form-row ">
                         <div class="form-group col-md-6">
                             <form:label path="credentials.password" for="inputPassword">Password </form:label>
                             <form:input type="password" path="credentials.password" cssClass="form-control" id="inputPassword" placeholder="Enter Password" maxlength="20" required="true"/>
-                            <form:errors path="credentials.password" cssClass="text-danger font-weight-normal"  style="line-height: 20px;"/>
+                            <form:errors path="credentials.password"/>
                         </div>
                     </div>
                     <div class="form-row ">
                         <div class="form-group col-md-6">
                             <form:label path="credentials.confirmPassword" for="inputconfirmPassword">Confirm Password </form:label>
                             <form:input type="password" path="credentials.confirmPassword" cssClass="form-control" id="inputconfirmPassword" placeholder="Confirm Password" maxlength="20" required="true"/>
-                            <form:errors path="credentials" cssClass="text-danger font-weight-normal"  style="line-height: 20px;"/>
+                            <form:errors path="credentials"/>
 
                         </div>
                     </div>
                 </fieldset>
-                        <button type="submit" style="width: 100%; margin-top: 20px" class="btn btn-primary">Sign Up</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold w-100 mt-3">Sign Up</button>
 
             </form:form>
         </div>
@@ -117,11 +89,11 @@
 
 <script type="text/javascript">
 
-    $('#inputdob').datepicker({ 
-        format: 'yyyy-M-dd'  
-        
-        /* 
-         * 'inputdob', the id of the form:input tag, is used for datepicker 
+    $('#inputdob').datepicker({
+        format: 'yyyy-M-dd'
+
+        /*
+         * 'inputdob', the id of the form:input tag, is used for datepicker
             while 'path' is also present in it.
          */
 

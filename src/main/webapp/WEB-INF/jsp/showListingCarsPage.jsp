@@ -1,52 +1,64 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="java.time.LocalDate, java.time.format.DateTimeFormatter" %>
+
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="/css/bootstrap.min.css"  rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="/css/listingTable.css"  rel="stylesheet">
+
         <title>All Available Vehicles</title>
+
+        <style>
+            #theParentDiv{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                height:65px;
+            }
+            #theParentDiv h5{
+                font-weight: bolder
+            }
+            #theParentDiv span{
+                text-align: center;
+                box-shadow: 0 30px 40px rgba(0,0,0,0.4);
+            }
+
+        </style>
     </head>
     <body style=" background-image: url('/images/wps.jpg');">
         <%@include file="jspfs/navigationBar.jspf"%> 
-        
         <div class="container">
-            <div style="margin-bottom: 75px; justify-content: center; display: flex">
-                <h5 style="color:black; font-weight: bolder; text-align: center;">
-                    All Available Vehicles
-                </h5>
-                <!--------------------------------------------------------------
-                Old approach, when 'addOrEditMsg' was included in request parameter:
-                    <c:if test="${param.addOrEditMsg!=null}">
-                        <span style="margin-top:50px ; position: absolute" id="msg"
-                              class="alert ${param.addOrEditMsg.contains('delet')?' alert-warning':' alert-success'}  alert-link">${param.addOrEditMsg}
-                        </span>
-                    </c:if>
-                --------------------------------------------------------------->
+            <div id="theParentDiv">
+                <h5> All Available Vehicles </h5>
                 <c:if test="${addOrEditMsg!=null}">
-                    <span style="margin-top:40px ; position: absolute" id="msg"
-                          class="alert ${addOrEditMsg.contains('delet')?' alert-warning':' alert-success'}  alert-link">${addOrEditMsg}
+                    <span  id="msg" style=""
+                           class="pb-0 pt-0 w-50 alert ${addOrEditMsg.contains('delet')?' alert-warning':' alert-success'}  alert-link">${addOrEditMsg}
                     </span>
                 </c:if>
             </div>
-
             <%@include file="jspfs/table.jspf"%>   
-           
-            <span id="recordNumber" style="font-size:13px; font-weight: bold; font-style: oblique; background-color: yellow; text-align: center">
-                Number of records found : ${showAll.size()}
-            </span><br><br><br>
+            
         </div>       
         <%@include file="jspfs/bootstrapJS_jqueryJS.jspf"%>
+        <script src="/js/tableFunctionalities.js"></script>
+        <script  type="text/javascript">
+              setTimeout(function () {
+                   document.getElementById("msg").style.display = "none";
+              }, 3000);
+        </script> 
     </body>
 </html>
 
-<script  type="text/javascript">
-   
-    setTimeout(function(){ 
-      document.getElementById("msg").style.display = "none"; 
-    }, 2000); 
-    
-</script> 
+
+<!--------------------------------------------------------------
+Old approach, when 'addOrEditMsg' was included in request parameter:
+ c:if test="${param.addOrEditMsg!=null}" 
+    <span style="margin-top:50px ; position: absolute" id="msg"
+          class="alert ${param.addOrEditMsg.contains('delet')?' alert-warning':' alert-success'}  alert-link">${param.addOrEditMsg}
+    </span>
+ /c:if 
+--------------------------------------------------------------->

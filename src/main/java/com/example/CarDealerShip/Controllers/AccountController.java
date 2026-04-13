@@ -82,10 +82,13 @@ public class AccountController {
             mp.addAttribute("passwordUpdateMSG", "Password Updated Unsuccessful");
             return "password";
         }
+        
         OwnerService.updateUserPassword(username, passDto);
-        mp.addAttribute("passwordUpdateMSG", "Password Update Successfully");
-        return "password";
+        mp.addAttribute("passwordUpdateMSG", "Password Updated Successfully");
 
+        mp.addAttribute("passObj", new PasswordDTO());
+
+        return "password";
     }
 
     @GetMapping("/deletaccount")

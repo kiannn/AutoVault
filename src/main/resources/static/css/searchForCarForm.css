@@ -1,0 +1,48 @@
+table{
+    border-collapse: separate;
+    border-spacing: 2px;
+    overflow: hidden;
+    border-radius: 20px;
+    border: white 1.5px solid;
+    height: 70%;
+    margin: auto;
+    background-color: white;
+}
+td div{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-bottom: 7px;
+    line-height: 1.9;
+    font-weight: bold;
+    font-size: 15px;
+}
+select.form-control, #datePurchased, #datePurchasedTo{ /* 'select.form-control' targets each select element whose class list includes form-control. 
+                                                           It has higher specificity 0-0-1-1 (one class + one element) than form-control ( 0-0-1-0 one class)*/
+    font-size:13px;
+}
+#year, #yearTo, #datePurchased, #datePurchasedTo, #price, #priceTo{
+    width: 25%;
+}
+
+#make, #modelList{
+    width:45%
+}
+#ButtonsDiv{
+    text-align: center;
+    margin-top: 25px
+}
+#ButtonsDiv input[value='Cancel']{
+    border: 2px solid blue;
+}
+select, option{
+    font-weight: bold
+}
+tr:hover {
+    background-color:gray;
+}
+tr{
+    background-color: lightgray;
+}

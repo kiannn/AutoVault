@@ -1,0 +1,58 @@
+
+body{
+    color: white
+}
+
+.custom-w-div1{
+    width: 50%;
+}
+@media(max-width:768px){
+    .custom-w-div1{
+        width: 100%;
+    }
+}
+.content{
+    height: 100%;
+    position: absolute;
+    transform: translate(52%, -133%);
+}
+
+.datepicker {
+    background-color: black !important; /* datepicker background */
+}
+.datepicker td:hover,  /*datepicker cell*/
+.datepicker th:hover, /*datepicker header*/
+.datepicker td.focused,
+.datepicker th.focused{
+    background-color: white ;     /* datepicker cell and header background */
+    color: black ;                /* datepicker cell and header text color */
+    cursor: pointer;
+}
+
+span{ /*span targets error fields: form:errors*/
+    font-weight : normal;
+    color: #dc3545;
+    line-height: 20px;
+}
+
+div.font-weight-normal  a{
+    color: white;
+    text-decoration: underline;
+    font-weight: bold
+}
+
+div.custom-w-div1 div.alert{
+    text-align: center
+}
+h4{
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 15px
+}
+fieldset{
+    border: 1px solid darkgrey;
+    border-radius: 10px;
+    line-height: 10px;
+}
+

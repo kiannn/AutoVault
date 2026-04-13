@@ -1,0 +1,46 @@
+
+div.container{
+    position: relative;
+    font-size: 13.25px;
+    color: #002a80;
+    font-weight: bold;
+    margin-bottom: 70px;
+    width: 50%;
+    padding: 20px;
+}
+div#msg{
+    font-size: 15px;
+    height: 50px;
+    position: absolute;
+    top:1%;
+    left: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+fieldset{
+    border: 1px solid darkgrey;
+    border-radius: 10px;
+    line-height: 10px
+}
+span{
+    line-height: 20px;
+}
+
+
+div#buttonsDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px
+}
+div#buttonsDiv input[type="button"]{
+    border:2px solid blue;
+    color: darkblue;
+    margin-right: 15px
+}
+div#buttonsDiv input[type="submit"]{
+    border: 2px solid black;
+    color: snow;
+}

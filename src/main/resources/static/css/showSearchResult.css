@@ -1,0 +1,38 @@
+.serachInputTable {
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 20px;
+    border:5px solid skyblue;
+
+}
+.serachInputTable td{
+    color: darkblue;
+    height: 50px;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+.serachInputTable tr td:not(:nth-last-child(1)){
+    border-right:5px solid skyblue;
+}
+.serachInputTable tr:not(:nth-last-child(1)) td{
+    border-bottom:5px solid skyblue;
+}
+.serachInputTable td:hover{
+    background-color: lightgray;
+    color: black;
+}
+.serachInputTable tr:nth-child(1) td:nth-child(1){
+    width: 20%;
+}
+.serachInputTable tr:nth-child(1) td:nth-child(2){
+    width: 40%;
+}
+.serachInputTable tr:nth-child(1) td:nth-child(3){
+    width:40%;
+}
+

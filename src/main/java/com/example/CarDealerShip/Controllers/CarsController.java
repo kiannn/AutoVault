@@ -73,9 +73,6 @@ public class CarsController {
     @GetMapping("allcars/preshow")
     public String preShow(ModelMap mm, HttpServletRequest req) {
 
-//        String name = (String) mm.getAttribute("authorizedUser");
-//        OwnerService.userSessionValidity(name);
-
         return "redirect:" + referer.replace("false", "true");
     }
 
@@ -91,9 +88,6 @@ public class CarsController {
     @GetMapping("allcars/addpage")
     public String showAddPage(ModelMap mm, CarWithDocsDTO car, @RequestParam boolean carFormstate) {
 
-//        String name = (String) mm.getAttribute("authorizedUser");
-        // OwnerService.userSessionValidity(name);
-         
         mm.addAttribute("message", "Add a New Car");
         mm.addAttribute("button", "Add");
         mm.addAttribute("availablePowerTrain", Transmissions.values());
@@ -112,8 +106,6 @@ public class CarsController {
                                  @RequestParam boolean carFormstate, HttpServletRequest rqst) throws AccessDeniedException {
   
         String name = (String) mm.getAttribute("authorizedUser");
-        System.out.println("\n-------------------> showUpdatePage()= "+name+"\n");
-        // OwnerService.userSessionValidity(name);
           
         boolean validCarIds = CarService.isValidCarIds(name, new Integer[]{id});
         if (!validCarIds) { 
@@ -156,7 +148,7 @@ public class CarsController {
                                                             BindingResult br,
                                                             MultipartFile[] filee, ModelMap mm, RedirectAttributes rediAtt, HttpServletRequest r)
                                                             throws IOException {
-        System.out.println("br in addOrUpdateCars()\n"+br);
+
         if (!carDTO.getModel().isEmpty()) {
 
             List<String> verifyMakeAndModel = CarService.verifyMakeAndModelValidity(carDTO.getMake(), carDTO.getModel());
@@ -273,8 +265,6 @@ public class CarsController {
             }
             if (br.hasErrors()) {
                 mm.addAttribute("allPossibleMakes", rowData);
-                mm.addAttribute("selectedItem", carL.getMake());
-
                 return "showNotInListFormPage";
             }
             car.setModel(verifyMakeAndModel.get(1));
@@ -316,9 +306,6 @@ public class CarsController {
     @GetMapping("showsearchresult/show")
     public String showSearchPage(ModelMap mm, CarSearchDTO car, HttpServletRequest req) {
 
-//        String name = (String) mm.getAttribute("authorizedUser");
-        // OwnerService.userSessionValidity(name);
- 
         req.getParameterMap().forEach((k, v) -> System.out.println("key = " + k + "  value = " + Arrays.toString(v)));
 
         populateDropDownList(mm);
@@ -368,6 +355,9 @@ public class CarsController {
     public String deleteCars(@PathVariable Integer[] id, ModelMap mm, 
                               RedirectAttributes redAtt, HttpServletRequest r) throws AccessDeniedException {
  
+
+//      example request url to this method-> http://localhost:8080/cars/allcars/deletepage/120,121,1
+
         String name = (String) mm.getAttribute("authorizedUser");
         boolean validFileId = CarService.isValidCarIds(name, id);
         if (!validFileId) {
@@ -392,9 +382,6 @@ public class CarsController {
 
     @GetMapping({"home/{by}", "showsearchresult/{by}"})
     public String orderBy(ModelMap mm, @PathVariable String by, HttpServletRequest request) throws AccessDeniedException {
- 
-//        String name = (String) mm.getAttribute("authorizedUser");
-        // OwnerService.userSessionValidity(name);
 
         String refer = request.getHeader("Referer");
 
@@ -469,7 +456,7 @@ public class CarsController {
          * resource inside the directories or archives (packaged files like
          * .jar/.war that contain compiled code and resources) that are included
          * in the classpath (e.g., src/main/resources, or inside the JAR/WAR).
-         * The classpath is list of locations where the JVM loads compiled
+         * The classpath is the list of locations where the JVM loads compiled
          * classes and resources from, at runtime. classpath includes directories and
          * archives, so both can be part of the classpath. An archive means a
          * packaged file like a .jar or .war. Directories are plain folders on

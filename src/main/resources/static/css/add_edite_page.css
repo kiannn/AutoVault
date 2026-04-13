@@ -1,0 +1,140 @@
+.general{
+    border-collapse: separate; /* Important: 'border-collapse: separate' allows border-radius to work. If you use 'border-collapse: collapse' on the table element, the border-radius won’t work on the table element itself. */
+    border-spacing: 0; /* Removes gaps between cells. Removes unwanted gaps between cells when using border-collapse: separate. */
+    overflow: hidden;   /* Ensures corners clip content. Ensures that the table’s content respects the rounded corners. */
+    border-radius: 20px; /* Rounded corners */
+    border:2px solid white;  /* Table border */
+    margin: 0px auto;
+    background-color: lightgrey;
+}
+.general td{
+    border:1px solid white;
+    padding-top: 13px;
+    padding-left: 30px;
+    padding-bottom: 13px;
+    line-height: 8px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 15px;
+}
+.general select, .general input{
+    font-size:13px;
+    width:71%;
+    height: 30%
+}
+.general span{ /*span is the error element: form:errors */
+    color:#dc3545;
+    font-size:13px
+}
+.general td:hover {
+    background-color: #45a049;
+}
+.fieldsetContent{
+    font-size: 14px;
+    font-weight: normal;
+    color: black;
+    margin-right: 12px;
+    margin-top: 8.75px;
+}
+.fieldsetContent a {
+    color:blue;
+    text-decoration: underline;
+}
+
+#buttonDivs{
+    margin: 20px auto;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:20px;
+}
+#buttonDivs input[type="submit"]{
+    width: 150px
+}
+
+.fileAttachDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 15px;
+    width:63%;
+    margin: 0 auto;
+    margin-bottom: 100px;
+    border: 3px dotted wheat;
+}
+.header {
+    border-bottom: 2px solid darkslategray;
+    width: 100%; /* div.header takes up the entire width of div.fileAttachDiv */
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px
+}
+.header h5{
+    display: inline
+}
+.header label{
+    font-size: 16px;
+    font-family: serif;
+    font-weight: normal
+}
+.add_table, .edit_table {
+    width: 100%; /* table.add_table, table.edit_table take up 100% of the width of its parent that is div.fileAttachDiv */
+}
+.add_table td, .edit_table td  {
+    padding-bottom: 5px;
+}
+
+div[name='largeUploadError']{
+    padding-top: 10px;
+    color: darkred;
+    font-weight: bolder;
+}
+
+/*******************************************************************
+    Divs inside of .edit_table and .add_table tables: addFileDiv, 
+    editFileDiv, addFileInEditDiv
+*******************************************************************/
+
+#addFileDiv{
+    display: flex;
+    justify-content: flex-start;
+    gap:9px
+}
+#addFileDiv input[name='filee']{
+    width: 230px;
+}
+#addFileDiv input[value='remove']{ /*target remove button for file upload in add page*/
+    border-radius : 10px;
+    margin-left : 70px;
+    height : 35px;
+    margin-top : 4.5px;
+    padding-top : 2px;
+    font-weight:bold;
+    color:gray;
+    background-color: #dc3545
+}
+
+#editFileDiv{
+    display: flex;
+    justify-content: space-between;
+    width: 60%
+}
+#editFileDiv a{
+    text-decoration: underline;
+}
+#editFileDiv input{
+    height: 30px
+}
+
+#addFileInEditDiv{
+    display: flex;
+    justify-content: flex-start;
+    gap:15px
+}
+#addFileInEditDiv input {
+    width: 60%
+}
+

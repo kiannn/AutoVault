@@ -5,12 +5,13 @@
     <head> 
         <link href="/css/bootstrap.min.css"  rel="stylesheet">
         <link href="/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
-
-        <title>title</title>
+        <link href="/css/searchForCarForm.css" rel="stylesheet"/>
+        
+        <title>vehicle search</title>
     </head>
     <body style=" background-image: url('/images/wps.jpg'); background-size: cover;">
         <%@include file="jspfs/navigationBar.jspf"%>
-        <div class="container justify-content-center p-3 mb-5 mt-4 bg-transparent">
+        <div class="container justify-content-center p-3 mb-5 mt-4">
           <p style="font-weight: bolder; font-size: 20px; color: black; text-align: center;">
             ${message}
           </p>
@@ -31,6 +32,7 @@
     });
     $('#datePurchasedTo').datepicker({
         format: 'yyyy-M-dd'
-
     });
+    
+    //document.querySelector('div#ButtonsDiv').scrollIntoView({ block: "nearest" });
 </script> 

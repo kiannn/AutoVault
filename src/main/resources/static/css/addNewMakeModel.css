@@ -1,0 +1,41 @@
+table{
+    border-collapse: separate; /* Important: 'border-collapse: separate' allows border-radius to work. If you use 'border-collapse: collapse' on the table element, the border-radius won’t work on the table element itself. */
+    border-spacing: 0; /* Removes gaps between cells. Removes unwanted gaps between cells when using border-collapse: separate. */
+    overflow: hidden;   /* Ensures corners clip content. Ensures that the table’s content respects the rounded corners. */
+    border-radius: 20px; /* Rounded corners */
+    border:2px solid transparent;
+    height: 60%;
+    width: 50%;
+    margin: 20px auto
+
+}
+td{
+    background-color: #e2e6ea;
+    border:5px solid whitesmoke;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+form div{
+    width:fit-content;
+    margin: 30px auto;
+}
+form div input[value='Save']{
+    width: 150px;
+}
+
+select option:checked {
+    background-color: yellow; /* Highlight color */
+}
+p{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color:black;
+}
+
+span{/*span targets error fields form:errors*/
+    font-size:13px;
+}

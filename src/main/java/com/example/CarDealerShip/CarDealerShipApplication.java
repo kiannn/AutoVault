@@ -46,7 +46,7 @@ public class CarDealerShipApplication { //extends SpringBootServletInitializer {
     @ConditionalOnProperty(name = "nhtsa.base.url")
     @ConditionalOnExpression("#{!'${nhtsa.base.url}'.isBlank()}")
     public WebClient client(@Value("${nhtsa.base.url}") String baseURL){
-     // SOME CHANGES in new-feature branch applied
+        
     return WebClient.create(baseURL);
     }
     

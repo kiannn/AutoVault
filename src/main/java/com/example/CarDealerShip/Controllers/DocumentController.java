@@ -105,73 +105,55 @@ public class DocumentController {
      * values to be displayed after the document is deleted and the update page
      * is returned again. Since the form-backing object for the update/add form
      * is named 'carFormData' in the model, we include
-     * '@ModelAttribute("carFormData") carWithDocsDTO_List car' in the
+     * '@ModelAttribute("carFormData") carWithDocsDTO car' in the
      * 'deleteDocument' method parameters. This ensures that when the delete
-     * request is submitted (a POST request to 'deleteDocument'), the car object
+     * request is submitted (a POST request to 'deleteDocument'), the 'car' object
      * (which represents the model attribute object of the update/add form) is
      * populated with the latest user-entered values. Because these values may
      * contain validation errors, a BindingResult br is also declared
-     * immediately after the '@ModelAttribute("carFormData") carWithDocsDTO_List
-     * car' parameter.
+     * immediately after the '@ModelAttribute("carFormData") carWithDocsDTO car' 
+     * parameter.
      */
     @PostMapping("/edite/{id}/delete") 
-    public String deleteDocument(@PathVariable Integer id, //@ModelAttribute("carFormData")carWithDocsDTO_List car, BindingResult br, 
+    public String deleteDocument(@PathVariable Integer id, @ModelAttribute("carFormData")CarWithDocsDTO car, BindingResult br, 
                                  ModelMap ModelMap, RedirectAttributes rediAtt, HttpServletRequest req) {
 
-            String referer = req.getHeader("Referer");
-            
-            String documnet = DocumentService.getDocumnetById(id).getName();
-            DocumentService.deletSingleDocument(id);
-            
-            List<CarWithDocsDTO> carWithDocsDTO_List = (List<CarWithDocsDTO>) ModelMap.getAttribute("carFormDocs");
-            carWithDocsDTO_List.forEach( c -> System.out.println("DocumentController.deleteDocument() CarWithDocsDTO="+c+"\n"));
-            System.out.println("CarWithDocsDTO.size() = "+carWithDocsDTO_List.size()+"\n------------------");
+        String referer = req.getHeader("Referer");
+
+        String documnet = DocumentService.getDocumnetById(id).getName();
+        DocumentService.deletSingleDocument(id);
+
+        List<CarWithDocsDTO> carWithDocsDTO_List = (List<CarWithDocsDTO>) ModelMap.getAttribute("carFormDocs");
             
         /**
          * if (carWithDocsDTO_List.size() == 1) {
          *      carWithDocsDTO_List.getFirst().setDocId(null);
          *   }
-         * In form.jspf at at line 141 we have:
+         * In form.jspf at at line 111 we have:
          * <c:if test="${carFormDocs.getFirst().docId == null}">. The method
          * getFirst() throws a NoSuchElementException if the carWithDocsDTO_List
-         * collection is empty. To prevent this exception in form.jsp, when
+         * collection is empty. To prevent this exception in form.jspf, when
          * 'carWithDocsDTO_List.size() == 1', we should not remove the
-         * CarWithDocsDTO element with the matching docId (docId=id). Removing
-         * it would leave the carWithDocsDTO_List collection empty and cause
-         * getFirst() to fail. Instead, we retain the single element in the
-         * collection and set its docId to null.
+         * carWithDocsDTO_List's single element (that has the matching docId
+         * (docId=id)). Removing it would leave the carWithDocsDTO_List
+         * collection empty and cause getFirst() to fail. Instead, we retain
+         * that single element in the collection and set its docId to null.
          */
-            if (carWithDocsDTO_List.size() == 1) {
-                carWithDocsDTO_List.getFirst().setDocId(null);
-                System.out.println("\nCarWithDocsDTO.size() == 1\n" + carWithDocsDTO_List + "\n" + carWithDocsDTO_List.size() + "\n");
-            } else {
-                for (CarWithDocsDTO c : carWithDocsDTO_List) {
-                    System.out.println("\nCarWithDocsDTO=" + c + "\n" + carWithDocsDTO_List.size() + "\n");
-                    if (Objects.equals(c.getDocId(), id)) {
-                        //                    c.setDocId(null);
-                        System.out.println(">>>>> before remove >>>>>");
-                        carWithDocsDTO_List.remove(c);
-                        break;
-                    }
+        if (carWithDocsDTO_List.size() == 1) {
+            carWithDocsDTO_List.getFirst().setDocId(null);
+        } else {
+            for (CarWithDocsDTO c : carWithDocsDTO_List) {
+                if (Objects.equals(c.getDocId(), id)) {
+                    carWithDocsDTO_List.remove(c);
+                    break;
                 }
             }
-//                carWithDocsDTO_List.stream().forEach(c -> {
-//                    System.out.println("\nCarWithDocsDTO=" + c + "\n" + carWithDocsDTO_List.size() + "\n");
-//                    if (Objects.equals(c.getDocId(), id)) {
-////                    c.setDocId(null);
-//                        System.out.println(">>>>> before remove >>>>>");
-//                        carWithDocsDTO_List.remove(c);
-//
-//                    }
-//                });
-//            carWithDocsDTO_List.removeIf( c -> carWithDocsDTO_List.size()>1 && Objects.equals(c.getDocId(), null));
-//            List<Documents> docs =DocumentService.getDocumnetsByCar(car.getItemNo());
-//            car.setDocs(docs); // update form-backing obj (modelAttribute="carFormData"), which is used to display docs in the update page, after delete 
-            
-            referer = referer.replace("true", "false");
-            rediAtt.addFlashAttribute( "docdelet","document "+documnet+" deleted successfully");
-                        
-            return "redirect:"+referer;
+        }
+
+        referer = referer.replace("true", "false");
+        rediAtt.addFlashAttribute("docdelet", "document " + documnet + " deleted successfully");
+
+        return "redirect:" + referer;
 
     }
 

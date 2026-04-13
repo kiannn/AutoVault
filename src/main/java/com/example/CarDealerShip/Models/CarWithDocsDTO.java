@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
-@ToString
+
 @Getter
 @Setter // CarWithDocsDTO is used as a parameter in the controller method when binding form data to the controller. It must have setters to allow values from the form to be assigned to its properties.
 @AllArgsConstructor

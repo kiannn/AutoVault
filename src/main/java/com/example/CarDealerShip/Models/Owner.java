@@ -23,7 +23,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @Builder
 public class Owner {
 

@@ -20,7 +20,6 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @PasswordMatches
 @Embeddable
 public class Credentials {

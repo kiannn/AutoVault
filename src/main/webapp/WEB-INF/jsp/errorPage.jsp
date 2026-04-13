@@ -61,7 +61,7 @@
 <script type="text/javascript">
     
     function goBack(url) {
-    const previousUrl = document.referrer;
+    const previousUrl = document.referrer; //document.referrer gives you the URL of the page that navigated to the current page (the previous page URL).
     document.getElementById("pp").innerHTML = previousUrl;
     
 }

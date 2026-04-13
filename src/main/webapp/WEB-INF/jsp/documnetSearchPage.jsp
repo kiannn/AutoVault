@@ -3,8 +3,9 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
     <head>
-        <title>title</title>
+        <title>document search</title>
         <link href="/css/bootstrap.min.css"  rel="stylesheet">
+        <link href="/css/listingTable.css"  rel="stylesheet">
     </head>
     <body>
         <%@include file="jspfs/navigationBar.jspf"%>
@@ -54,7 +55,8 @@
             </c:if>
 
         </div>
-        <%@include file="jspfs/bootstrapJS_jqueryJS.jspf"%>
+        <%@include file="jspfs/bootstrapJS_jqueryJS.jspf" %>
+        <script src="/js/tableFunctionalities.js"></script>
     </body>
 </html>
 

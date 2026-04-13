@@ -12,19 +12,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Setter
 @Getter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class CarSearchDTO {
 
     String make;
-    
     List<String> modelList;
-
     Integer year;
     Integer yearTo;
-
+    
     @DateTimeFormat(pattern = "yyyy-MMM-dd", fallbackPatterns ={"yyyy-MM-dd","dd/MMM/yyyy","dd.MM.yyyy","MM/dd/yyyy","dd/MM/yyyy","yyyy/MM/dd","yyyy/dd/MM"})
     LocalDate datePurchased ;
     

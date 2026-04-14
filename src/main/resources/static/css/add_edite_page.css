@@ -151,7 +151,6 @@ p.header_top, p.header_bottom, span#msg{
 .header label{
     font-size: 16px;
     font-family: serif;
-    /*font-weight: normal*/
 }
 .add_table, .edit_table {
     width: 100%; /* 'width: 100%' make 'table.add_table' and 'table.edit_table' take up 100% of the width of their parent that is div.fileAttachDiv */

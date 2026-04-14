@@ -1,3 +1,76 @@
+
+div.container{
+    padding-top: 50px;
+    /*
+       Why padding-top: 50px ? 
+    
+       CSS Margin Collapsing (Parent ↔ First Child)
+    
+       When a block element ('div.container' in here) contains another block element ('p.header_top' in here)as 
+       its first child, and the parent has no border or padding before the child (between the parent and child 
+       there is no padding), then the top margin of the child collapses (is combined) with the parent’s top margin. 
+       What “margin collapse” means?  Instead of the child’s margin creating space inside the parent, 
+       the margin is merged and applied to the outside of the parent. So the child’s top margin does not stay inside 
+       the parent and it becomes (is applied to) the parent’s outer spacing. When that happens, it looks like 
+       the whole <div> (the parent) moved down from the navbar. When two vertical margins meet 
+       (parent ↔ child or sibling ↔ sibling), CSS may combine them into a single margin instead of 
+       keeping them separate. So instead of: [parent margin] + [child margin] you get only ONE margin (the larger one).
+       So this:
+            p.header_top {
+                margin-top: 50px;
+            }
+        does not push the <p> down inside the <div>. Instead, it pushes the entire parent <div> itself 
+        downward. Why this happens? CSS treats touching vertical margins as a single margin. When the child is 
+        the first element and there is no padding/contents between the parent ('div.container') and the 
+        child('p.header_top') elements or the parent has no border, then child’s top margin is considered to 
+        be touching the parent’s top edge, so they collapse into one. Why adding a border fixes it? Adding a 
+        border (even transparent) as following
+            div. container {
+                border: 2px solid transparent;
+            }
+        prevents margin collapsing because the border acts as a separator between parent and child margins. 
+        Proper fix (best practice) is instead of relying on a border hack avoid applying margin-top to the child 
+        so do not do this:
+            p.header_top {
+                margin-top: 50px;
+            }
+        Instead apply a padding-top to the parent and set the child's margin-top to 0, like this:
+            div. container {
+                padding-top: 50px;
+            }
+            p.header_top {
+                margin-top: 0;
+            }
+        This way, ‘padding-top’ on the parent cannot collapse (CSS dose not combine it into a single margin, 
+        and keep it separate). When spacing is needed at the top of a container, use padding-top on the parent 
+        instead of margin-top on the first child, to avoid margin collapsing issues.
+    */
+    position: relative;
+}
+span#msg{
+    position : absolute;
+    padding-top: 0;
+    padding-bottom: 0;
+    left:30%;
+    top:0.2%;
+    box-shadow: 0 20px 20px rgba(0,0,0,0.4);
+}
+
+p.header_top{
+    color:black;
+    font-size: 20px;
+    text-align: center;
+}
+p.header_bottom{
+    color:darkcyan;
+    font-size: 16px;
+    text-align: center;
+}
+p.header_top, p.header_bottom, span#msg{
+    font-weight: 800;
+}
+
+
 .general{
     border-collapse: separate; /* Important: 'border-collapse: separate' allows border-radius to work. If you use 'border-collapse: collapse' on the table element, the border-radius won’t work on the table element itself. */
     border-spacing: 0; /* Removes gaps between cells. Removes unwanted gaps between cells when using border-collapse: separate. */
@@ -67,7 +140,7 @@
 }
 .header {
     border-bottom: 2px solid darkslategray;
-    width: 100%; /* div.header takes up the entire width of div.fileAttachDiv */
+    width: 100%; /* 'width: 100%' makes 'div.header' take up the entire width of its containing parent which is div.fileAttachDiv */
     display: flex;
     justify-content: flex-start;
     gap: 10px
@@ -78,10 +151,10 @@
 .header label{
     font-size: 16px;
     font-family: serif;
-    font-weight: normal
+    /*font-weight: normal*/
 }
 .add_table, .edit_table {
-    width: 100%; /* table.add_table, table.edit_table take up 100% of the width of its parent that is div.fileAttachDiv */
+    width: 100%; /* 'width: 100%' make 'table.add_table' and 'table.edit_table' take up 100% of the width of their parent that is div.fileAttachDiv */
 }
 .add_table td, .edit_table td  {
     padding-bottom: 5px;

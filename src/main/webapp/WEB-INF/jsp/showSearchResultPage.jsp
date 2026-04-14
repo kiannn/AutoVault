@@ -30,7 +30,8 @@
                         Purchased Date To = ${searchUserInput.datePurchasedTo==null ? 'unknown' : searchUserInput.datePurchasedTo}</td>
                     <td>
                         Price From = ${searchUserInput.price==null ? 'unknown' : searchUserInput.price}&emsp;
-                        Price To = ${searchUserInput.priceTo==null ? 'unknown' : searchUserInput.priceTo}</td>
+                        Price To = ${searchUserInput.priceTo==null ? 'unknown' : searchUserInput.priceTo}
+                    </td>
                 </tr>
             </table>
         <%@include file="jspfs/table.jspf"%>

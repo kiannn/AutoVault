@@ -1,0 +1,60 @@
+p.header{
+    font-weight: bolder;
+    font-size: 20px;
+    color: darkgray;
+    text-align: center;
+    margin-bottom: 40px
+}
+form#docSearchInput{ /* 'modelAttribute' in form:form element is transformed into 'id' HTML attribute */
+    margin-bottom: 0; /* <form> element may have a default bottom margin depending on the browser and applied CSS. 
+                         In many cases, the browser (user-agent stylesheet) applies:
+                            form {
+                              margin-block-end: 1em; -> typically ≈ 16px
+                            }
+                        So <form> may appears with a margin-bottom depending on the browser stylesheet or surrounding layout,
+                        but that does not mean all <form> elements always have a default visible bottom margin in every page, a visible bottom margin 
+                        could come from the form's computed margin in some specific pages.
+                        This appears in DevTools as: margin: 0px 0px 16px; or: margin-block-end: 16px;
+                        So I set margin-bottom to 0 to remove this margin.
+    */
+}
+fieldset {
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap:10px;
+}
+fieldset .extension-label, fieldset .name-label{
+    margin-bottom: 1.5px
+}
+fieldset div.name-div{
+    width: 25%;    /*The width of the <div> containing the form:input with path="name" is set to 25% of its container, which is the <fieldset>.*/
+}
+fieldset div.name-div div{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+fieldset div.name-div div input{
+    margin-top: 5px
+}
+fieldset div.name-div div label{
+    margin-left: 5px;
+    font-size: 14px;
+    font-weight:normal /*overrides the class="alert-link" applied to <div class="container alert-link"> */
+}
+fieldset div.searchButton-div{
+    width: 15%;
+    margin-left: 30px;
+    margin-top: 25px;
+}
+fieldset div.searchButton-div input{
+    width: 100%
+}
+p.searchResult-message{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+

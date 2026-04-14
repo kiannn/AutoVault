@@ -1,0 +1,38 @@
+div.container{
+    color: #002a80; /* text color*/
+    font-size: 13.25px;
+    margin-bottom: 100px;
+    position: relative;
+    width: 50%
+}
+span.alert{
+    position: absolute;
+    top:1%;
+    left: 25%;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 60px;
+    padding-right: 60px;
+    font-size: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    font-weight: bold;
+}
+.top_fieldset div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:50px;
+}
+.bottom_fieldset{
+    border: 1px solid darkgrey;
+    border-radius: 10px;
+    line-height: 10px
+}
+.bottom_fieldset span{
+    line-height: 20px;
+    color: #dc3545;
+    font-weight: normal
+}
+input[type="submit"]{
+    margin-top: 15px;
+}

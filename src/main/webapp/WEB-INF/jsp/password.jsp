@@ -67,6 +67,6 @@
     }
    
    setTimeout(function(){ 
-      document.querySelector("div.container span").style.display = "none"; 
+      document.querySelector("span.alert").style.display = "none"; 
     }, 3000); 
 </script>

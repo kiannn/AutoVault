@@ -13,14 +13,12 @@
         <%@include file="jspfs/navigationBar.jspf"%>
         <div class="container bg-light">
             <c:if test="${personalInfoUpdateMSG!=null}">
-                <div id="msg">
-                    <c:if  test="${personalInfoUpdateMSG.contains('successfully')}">
-                        <span class="alert alert-success" >${personalInfoUpdateMSG}</span>
-                    </c:if>    
-                    <c:if  test="${personalInfoUpdateMSG.contains('Unsuccessful')}">
-                        <span class="alert alert-danger" >${personalInfoUpdateMSG}</span>
-                    </c:if>
-                </div>
+                <c:if  test="${personalInfoUpdateMSG.contains('successfully')}">
+                    <span class="alert alert-success" >${personalInfoUpdateMSG}</span>
+                </c:if>    
+                <c:if  test="${personalInfoUpdateMSG.contains('Unsuccessful')}">
+                    <span class="alert alert-danger" >${personalInfoUpdateMSG}</span>
+                </c:if>
             </c:if>
             <form:form modelAttribute="personalInfo">
                 <h5 class="mb-2 mt-4 ml-1">Basic Information</h5>  
@@ -84,7 +82,7 @@
     }
    
    setTimeout(function(){ 
-      document.getElementById("msg").style.display = "none"; 
+      document.querySelector("span.alert").style.display = "none"; 
     }, 3000); 
 
 </script>

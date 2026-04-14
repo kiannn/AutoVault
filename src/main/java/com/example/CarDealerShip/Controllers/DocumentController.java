@@ -206,7 +206,14 @@ public class DocumentController {
 
         String refer = request.getHeader("Referer");
 
-        boolean badRefer = refer == null || (!refer.contains("document")&&!refer.contains("updatepage"));
+        /**
+         * !refer.contains("updatepage"): User in document search page tries to
+         * edit one of the car records and clicks on 'edit' button, but in the
+         * 'update' page it clicks on 'Cancel' button to return to the previous
+         * page which is the search document page, so the refer in this would be the
+         * updatepage page URL
+         */
+        boolean badRefer = refer == null || (!refer.contains("document")&&!refer.contains("updatepage")); 
         
         if (badRefer) {
             throw new AccessDeniedException("Requested Resources Access Denied");

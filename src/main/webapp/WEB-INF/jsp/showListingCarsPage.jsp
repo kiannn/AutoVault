@@ -35,13 +35,12 @@
             <div id="theParentDiv">
                 <h5> All Available Vehicles </h5>
                 <c:if test="${addOrEditMsg!=null}">
-                    <span  id="msg" style=""
+                    <span  id="msg"
                            class="pb-0 pt-0 w-50 alert ${addOrEditMsg.contains('delet')?' alert-warning':' alert-success'}  alert-link">${addOrEditMsg}
                     </span>
                 </c:if>
             </div>
             <%@include file="jspfs/table.jspf"%>   
-            
         </div>       
         <%@include file="jspfs/bootstrapJS_jqueryJS.jspf"%>
         <script src="/js/tableFunctionalities.js"></script>

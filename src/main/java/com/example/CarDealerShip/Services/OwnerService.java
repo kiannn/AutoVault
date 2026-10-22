@@ -48,9 +48,9 @@ public class OwnerService {
                                     .build();
         
         Authorities build = Authorities.builder()
-                .authority("ROLE_USER")
-                .carOwner(ownerPersist)
-                .build();
+                                        .authority("ROLE_USER")
+                                        .carOwner(ownerPersist)
+                                        .build();
 
         ownerPersist.getCredentials().setAuthorities(List.of(build));
  

@@ -17,7 +17,7 @@
         </div>
             <%@include file="jspfs/bootstrapJS_jqueryJS.jspf"%>
             <script>   
-                const selectedItem = '${carMakeModelDTO.getMake()}'; // "const a = '&dollar;{listOfAcceptedfileExts}'" is not readable in the formFunctionalities.js file, So I had to put it in a separate script.
+                const selectedItem = '${carMakeModelDTO.getMake()}'; // "const selectedItem = '&dollar;{carMakeModelDTO.getMake()}'" is not readable in the addNewMakeModel_Functions.js file, So I had to put it in a separate script.
             </script>
             <script src="/js/addNewMakeModel_Functions.js"></script>
     </body>

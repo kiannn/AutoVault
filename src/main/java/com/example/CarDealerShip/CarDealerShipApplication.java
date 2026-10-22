@@ -2,7 +2,6 @@ package com.example.CarDealerShip;
 
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -51,7 +50,7 @@ public class CarDealerShipApplication { //extends SpringBootServletInitializer {
     }
     
     @Bean
-    @Qualifier("userClient")
+//    @Qualifier("userClient")
     @Autowired
     public WebClient clientUser(@Value("${user.data.endpoint}") String baseURL){
      

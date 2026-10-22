@@ -120,6 +120,12 @@ public class CarsController {
                                             && !referer.contains("showsearchresult")
                                             && !referer.contains("updatepage")
                                             && !referer.contains("document"));
+                                            /**********************************************************************
+                                             * The case !referer.contains("updatepage"), occurs when a document is
+                                             * deleted(lets say for car id=2) and we are re-directed to the same
+                                             * URL http://localhost:8086/cars/allcars/updatepage?id=2&carFormstate=true
+                                             * loading the update page
+                                             *********************************************************************/
                                
         if (badRefer) {
             throw new AccessDeniedException("Direct Access Denied !");
@@ -127,7 +133,12 @@ public class CarsController {
 
         List<CarWithDocsDTO> get = CarService.findCarById(id);
         CarWithDocsDTO first = get.getFirst();
-        if (carFormstate) { 
+        
+        if (carFormstate) {    /*********************************************************************************** 
+                                * in case of redirecting to 'updatepage' URL from 'addToDropDownList' URL 
+                                * when addNewItemInDropDownList method reaches its return statement,
+                                * the 'carFormstate' obj should not change as its 'model and 'make' has been updated.
+                                ***********************************************************************************/  
             mm.addAttribute("carFormData", first);
             mm.addAttribute("carFormDocs", get);
         }
@@ -292,7 +303,7 @@ public class CarsController {
         
         String name = (String) mm.getAttribute("authorizedUser");
         List<MakeAndModel> availableMakesAndModels = OwnerService.availableMakesAndModels(name);
-        
+                
         CarService.adjustModelMakeList(availableMakesAndModels, car);
         
         OwnerService.updateMakeAndModelList(name, availableMakesAndModels);

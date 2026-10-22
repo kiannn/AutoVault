@@ -379,6 +379,20 @@ public class CarServices {
 
     public void adjustModelMakeList(List<MakeAndModel> availableMakesAndModels, CarWithDocsDTO carDTO) {
 
+        /**
+         * A typical example of elements within the 'List<MakeAndModel>'
+         * list: Each availableMake value is repeated according to the number of
+         * its corresponding availableModel values
+         *
+         *  MakeAndModel(availableMake=Mercedes-Benz, availableModel=CLS-Class)
+         *  MakeAndModel(availableMake=Mercedes-Benz, availableModel=CLK-Class)
+         *  MakeAndModel(availableMake=Mercedes-Benz, availableModel=S-Class)
+         *  MakeAndModel(availableMake=BMW, availableModel=Z4)
+         *  MakeAndModel(availableMake=BMW, availableModel=740Li)
+         *  MakeAndModel(availableMake=BMW, availableModel=X3)
+         *  MakeAndModel(availableMake=CADILLAC, availableModel=XT5)
+         *  MakeAndModel(availableMake=CADILLAC, availableModel=X
+         */
         List<String> keysLowerCaseMake = availableMakesAndModels.stream().map(a -> a.getAvailableMake().toLowerCase()).toList();
         String toLowerCaseMake = carDTO.getMake().trim().toLowerCase();
 
@@ -438,9 +452,9 @@ public class CarServices {
             response = client
                     .get()
                     .uri(uriBuilder -> uriBuilder
-                    .path("api/vehicles/GetModelsForMake/" + make)
-                    .queryParam("format", "json")
-                    .build())
+                                                .path("api/vehicles/GetModelsForMake/" + make)
+                                                .queryParam("format", "json")
+                                                .build())
                     .retrieve().toEntity(NHTSAResponse.class).block();
 
         List<String> collectModel = response.getBody().data.stream()

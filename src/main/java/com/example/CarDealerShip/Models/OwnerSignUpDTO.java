@@ -25,7 +25,7 @@ public class OwnerSignUpDTO {
     String lastName;
 
     @Email(message = "Enter the email address in the format someone@example.com.")
-//    @NotNull // This annotation is not required here, because if the user leaves 'email' empty, its value will be set to an empty string, not null.
+    //@NotNull: The annotated element ONLY must not be null. Accepts any type. This annotation is not required here, because if the user leaves 'email' empty, its value will be set to an empty string, not null.
     String email;
 
     @DateTimeFormat(pattern = "yyyy-MMM-dd", fallbackPatterns ={"yyyy-MM-dd","dd/MMM/yyyy","dd.MM.yyyy","MM/dd/yyyy","dd/MM/yyyy","yyyy/MM/dd","yyyy/dd/MM"})

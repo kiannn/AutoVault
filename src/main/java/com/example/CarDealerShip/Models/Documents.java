@@ -27,7 +27,7 @@ import lombok.Setter;
 public class Documents {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @Column(name="full name", columnDefinition = "VARCHAR(255) COLLATE utf8_bin")

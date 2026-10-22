@@ -87,7 +87,9 @@ public class ExceptionsHandler {
      * java.util.NoSuchElementException :
      *    Happens when methods like findById or findByID are invoked from within other methods 
      *    OwnerService.findUserById and  OwnerService.userSessionValidity respectively while there is no user records
-     *    in the database because application re-started (happens in development and testing phase)
+     *    in the database because application re-started (happens in development and testing phase).
+     *    For example, any time application re-starts and as such users data are removed from the database but we can still navigate 
+     *    through the app, OwnerRepository.findById(name).get() throws this exception, but this happens in development phase. 
      * 
      * java.nio.file.AccessDeniedException : 
      *    Happens when some controller methods like showUpdatePage, showNotInDropDownListPage, deleteCars, viewDocument

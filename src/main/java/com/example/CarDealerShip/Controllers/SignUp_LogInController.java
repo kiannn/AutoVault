@@ -31,7 +31,7 @@ public class SignUp_LogInController {
     OwnerService OwnerService;
     
     @Autowired
-    @Qualifier("userClient")
+    @Qualifier("clientUser")
     WebClient WebClient;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -110,14 +110,13 @@ public class SignUp_LogInController {
 
         if (!emailUniqueness) {
             br.rejectValue("email", "emailBadFormat", "Someone already has this email address. Try another name");
-
         }
 
         if (userExists) {
             br.rejectValue("username", "repeatedUsername", "Username '" + username + "' already exists");
         }
-
-        if (!br.hasErrors() && !userExists) {
+        
+        if (!br.hasErrors()) {
 
             OwnerService.createNewUSer(Owner);
             return "redirect:loginpage?sigUpSuccess";

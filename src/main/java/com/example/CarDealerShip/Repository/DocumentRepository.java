@@ -19,7 +19,7 @@ public interface DocumentRepository extends JpaRepository<Documents, Integer> {
                           """;
     final String OWNER_USERNAME = "AND c.owner.username = :userName)";
     
-    final String SEARCH_BY_EXTENSION = SELECT + " WHERE d.extension = :extensionName "+OWNER_USERNAME;
+    final String SEARCH_BY_EXTENSION = SELECT + " WHERE d.extension = :extensionName "+OWNER_USERNAME; // Property of enum type is compared directly to an enum value: d.extension = :extensionName
     final String SEARCH_BY_NAME_EXTENSION = SELECT + " WHERE d.name = :docName "+OWNER_USERNAME;
     final String SEARCH_BY_NAME_EXTENSION_CASE_INSENSITIVE = SELECT + " WHERE LOWER(d.name) = :docName "+OWNER_USERNAME;
     final String SEARCH_BY_SUB_NAME = SELECT + " WHERE d.name LIKE CONCAT(:docName,'.','%') "+OWNER_USERNAME;

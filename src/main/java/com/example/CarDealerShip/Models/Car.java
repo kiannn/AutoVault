@@ -30,8 +30,8 @@ import lombok.Setter;
 public class Car {
  
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "Cars_IDGenerator_table")
-    @TableGenerator(name = "Cars_IDGenerator_table", allocationSize = 3, initialValue = 10)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "cars_idgenerator_table")
+    @TableGenerator(name = "cars_idgenerator_table", allocationSize = 3, initialValue = 10)
     /**
      * If you’re working with a MySQL database, you should always use
      * GenerationType.IDENTITY. It uses an auto-incremented database column and
